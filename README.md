@@ -2,7 +2,7 @@
 
 Project: Collaborative Sounds and Music (CSM)
 
-Team Name: DJ Cho’s Disciples 
+Team Name: DJ Cho’s Disciples
 
 **Your focus (frontend focused or backend focused)**
 
@@ -39,7 +39,6 @@ n/a
 
 Alpha: Connection with MIDI devices directly. Ability to upload, manipulate, and export audio.
 
-Beta: User collaboration over the internet. User account creation and authentication. 
+Beta: User collaboration over the internet. User account creation and authentication.
 
 Final: Front end UI polish, optimization features. Payment services
-
