@@ -37,8 +37,8 @@ n/a
 
 **What you aim to complete for the alpha version, beta version, and final version**
 
-Alpha: Connection with MIDI devices directly. Ability to upload, manipulate, and export audio.
+Alpha: User collaboration over the internet. User account creation and authentication.
 
-Beta: User collaboration over the internet. User account creation and authentication.
+Beta: Connection with MIDI devices directly. Ability to upload, manipulate, and export audio.
 
 Final: Front end UI polish, optimization features. Payment services
