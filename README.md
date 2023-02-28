@@ -9,21 +9,21 @@ Tone.js: https://tonejs.github.io/
 
 **What you aim to complete for the alpha version, beta version, and final version**
 
-### Alpha
+### [Alpha](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/1)
 
 - [ ] Basic Digital Audio Workstation (DAW) interface with single track and basic instruments
 - [ ] Bootstrap application
 
 Tentative
 
-- [ ] User account creation (login, etc.) (required for collaboration across sessions
-- [ ] Basic collaboratoin level
+- [ ] User account creation (login, etc.) (required for collaboration across sessions)
+- [ ] Basic collaboration level
 
-### Beta
+### [Beta](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/2)
 
 Connection with MIDI devices directly. Ability to upload, manipulate, and export audio.
 
-### Final
+### [Final](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/3)
 
 Front end UI polish, optimization features. Payment services
 
