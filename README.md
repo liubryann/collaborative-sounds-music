@@ -3,24 +3,28 @@
 ## Team Name: DJ Cho’s Disciples
 
 #### Useful Links
-ShareDB: https://share.github.io/sharedb/getting-started  
-Tone.js: https://tonejs.github.io/  
 
+ShareDB: https://share.github.io/sharedb/getting-started  
+Tone.js: https://tonejs.github.io/
 
 **What you aim to complete for the alpha version, beta version, and final version**
 
 ### Alpha
+
 - [ ] Basic Digital Audio Workstation (DAW) interface with single track and basic instruments
 - [ ] Bootstrap application
 
 Tentative
+
 - [ ] User account creation (login, etc.) (required for collaboration across sessions
 - [ ] Basic collaboratoin level
 
 ### Beta
+
 Connection with MIDI devices directly. Ability to upload, manipulate, and export audio.
 
 ### Final
+
 Front end UI polish, optimization features. Payment services
 
 ---
@@ -56,5 +60,3 @@ A platform for musicians to collaborate and create music together in real-time u
 **(optional) What complexity points will be attempted as bonus for the challenge factor**
 
 n/a
-
-
