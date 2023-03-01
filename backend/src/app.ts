@@ -6,7 +6,7 @@ import http from 'http';
 import WebSocketJSONStream from '@teamwork/websocket-json-stream';
 import { MongoClient, ServerApiVersion} from 'mongodb';
 
-const PORT = 3000;
+const PORT = 3001;
 //Maybe hide this but eh.
 
 const uri = "mongodb+srv://username:chosdisiples@cluster-project.znjjqvk.mongodb.net/?retryWrites=true&w=majority";
