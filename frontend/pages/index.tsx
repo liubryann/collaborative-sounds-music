@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import DigitalAudioWorkstation from "@/components/DigitalAudioWorkstation";
+import { CompositionProvider } from "@/contexts/CompositionContext";
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <DigitalAudioWorkstation />
+        <CompositionProvider>
+          <DigitalAudioWorkstation />
+        </CompositionProvider>
       </main>
     </>
   );
