@@ -1,14 +1,9 @@
 import React, { useEffect } from "react";
 import styles from "./add-instrument.module.scss";
 import { useCompositionDispatch } from "@/contexts/CompositionContext";
+import { instrumentNames } from "../../instruments";
 
-interface AddInstrumentProps {
-  availableInstruments: string[];
-}
-
-export default function AddInstrument({
-  availableInstruments,
-}: AddInstrumentProps) {
+export default function AddInstrument() {
   const [openInstrumentsPanel, setOpenInstrumentsPanel] = React.useState(false);
 
   const dispatch = useCompositionDispatch();
@@ -26,7 +21,7 @@ export default function AddInstrument({
       <button onClick={toggleInstrumentsPanel}>Add Instrument</button>
       {openInstrumentsPanel && (
         <div>
-          {availableInstruments.map((instrument) => {
+          {instrumentNames.map((instrument) => {
             return (
               <div key={instrument} onClick={() => addInstrument(instrument)}>
                 {instrument}

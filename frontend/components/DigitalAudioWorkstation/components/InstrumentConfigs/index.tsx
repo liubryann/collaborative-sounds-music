@@ -1,11 +1,18 @@
 import React from "react";
 import styles from "./instrument-configs.module.scss";
+import InstrumentSettings from "../InstrumentSettings";
+import InstrumentNotes from "../InstrumentNotes";
 
 interface InstrumentConfigsProps {
-  instrument: string;
+  instrumentName: string;
 }
 export default function InstrumentConfigs({
-  instrument,
+  instrumentName,
 }: InstrumentConfigsProps) {
-  return <div>{instrument}</div>;
+  return (
+    <div>
+      <InstrumentSettings instrument={instrumentName} />
+      <InstrumentNotes instrumentName={instrumentName} />
+    </div>
+  );
 }
