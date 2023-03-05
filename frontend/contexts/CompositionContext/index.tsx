@@ -1,4 +1,6 @@
 import { createContext, useReducer, useContext } from "react";
+import { instruments } from "../../components/DigitalAudioWorkstation/instruments";
+import * as Tone from "tone";
 
 const CompositionContext = createContext<Composition | null>(null);
 
@@ -11,7 +13,6 @@ interface CompositionProviderProps {
 }
 
 interface Composition {
-  counter: number;
   instruments: string[];
 }
 
@@ -48,12 +49,6 @@ function compositionReducer(
   action: CompositionAction
 ) {
   switch (action.type) {
-    case "increment": {
-      return {
-        ...composition,
-        counter: composition.counter + 1,
-      };
-    }
     case "addInstrument": {
       return {
         ...composition,
@@ -67,6 +62,5 @@ function compositionReducer(
 }
 
 const initialComposition: Composition = {
-  counter: 0,
   instruments: [],
 };

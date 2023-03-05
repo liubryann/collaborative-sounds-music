@@ -1,23 +1,21 @@
 import React from "react";
 import AddInstrument from "../AddInstrument";
 import styles from "./controller.module.scss";
+import * as Tone from "tone";
 
-interface ControllerProps {
-  onPlay: () => void;
-  onPause: () => void;
-  availableInstruments: string[];
-}
+export default function Controller() {
+  function onPlay() {
+    if (Tone.Transport.state !== "started") {
+      Tone.Transport.start();
+    } else {
+      Tone.Transport.stop();
+    }
+  }
 
-export default function Controller({
-  onPlay,
-  onPause,
-  availableInstruments,
-}: ControllerProps) {
   return (
     <div>
       <button onClick={onPlay}>play</button>
-      <button onClick={onPause}>pause</button>
-      <AddInstrument availableInstruments={availableInstruments} />
+      <AddInstrument />
     </div>
   );
 }
