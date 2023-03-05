@@ -1,6 +1,6 @@
-import * as Y from "yjs";
-import ws from "ws";
-import { WebsocketProvider } from "y-websocket";
+const Y = require("yjs");
+const { WebsocketProvider } = require("y-websocket");
+const ws = require("ws");
 
 const doc = new Y.Doc();
 const isProduction = process.env.NODE_ENV === "production" || false;
