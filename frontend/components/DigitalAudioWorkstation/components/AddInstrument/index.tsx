@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./add-instrument.module.scss";
 import { useCompositionDispatch } from "@/contexts/CompositionContext";
 import { instrumentNames } from "../../instruments";
+import { addPart } from "../../adapter";
 
 export default function AddInstrument() {
   const [openInstrumentsPanel, setOpenInstrumentsPanel] = React.useState(false);
@@ -13,6 +14,7 @@ export default function AddInstrument() {
   }
 
   function addInstrument(instrument: string) {
+    addPart("test", "test", instrument);
     dispatch({ type: "addInstrument", payload: { instrument } });
   }
 

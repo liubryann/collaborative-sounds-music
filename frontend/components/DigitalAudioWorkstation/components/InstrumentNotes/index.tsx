@@ -3,6 +3,7 @@ import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
 import { instruments } from "../../instruments";
 import { SynthOptions } from "tone";
+import { updateSequence } from "../../adapter";
 
 interface InstrumentNotesProps {
   instrumentName: string;
@@ -64,6 +65,7 @@ export default function InstrumentNotes({
       newSequence[j].note = 0;
     }
     setSequence(newSequence);
+    updateSequence("test", "test", newSequence);
 
     if (part) {
       part.dispose();
