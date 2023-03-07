@@ -3,7 +3,7 @@ import { WebsocketProvider } from "y-websocket";
 
 let wsProvider: WebsocketProvider;
 let doc: Y.Doc = new Y.Doc();
-const url: string = "ws://localhost:3000";
+const url: string = "ws://localhost:3001";
 
 /**
  * Connects to the websocket server and syncs the document.
