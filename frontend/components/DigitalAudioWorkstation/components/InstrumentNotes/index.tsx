@@ -80,7 +80,7 @@ export default function InstrumentNotes({
     newPart.loop = true;
     setPart(newPart);
 
-    //updateNoteGrid("test", newNoteGrid);
+    updateNoteGrid("test", newNoteGrid);
     setNoteGrid(newNoteGrid);
   }
 

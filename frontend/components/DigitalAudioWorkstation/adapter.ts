@@ -21,9 +21,16 @@ let updateNoteGrid = function (
   newNoteGrid: any,
 ) {
   const gridState: any = doc.getMap(`notegridState-${noteGridId}`);
-  const grid = gridState.get("notegrid");
-  grid.set("notegrid", newNoteGrid);
+  gridState.set("notegrid", newNoteGrid);
 };
+
+let getNoteGrid = function (
+  noteGridId: string,
+) {
+  const gridState: any = doc.getMap(`notegridState-${noteGridId}`);
+  const grid = gridState.get("notegrid");
+  return (grid);
+}
 
 let updateSequence = function (
   compositionId: string,
@@ -50,4 +57,4 @@ let addPart = function (
   part.set("sequence", new Y.Array());
 };
 
-export { updateSequence, addPart, updateNoteGrid };
+export { updateSequence, addPart, updateNoteGrid, getNoteGrid };
