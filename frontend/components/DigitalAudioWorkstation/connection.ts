@@ -12,7 +12,7 @@ function connectAndSyncDoc(room: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     wsProvider = new WebsocketProvider(url, room, doc);
 
-    wsProvider.on("status", (event) => {
+    wsProvider.on("status", (event: { status: any; }) => {
       console.log(event.status); // logs "connected" or "disconnected"
     });
 

@@ -16,19 +16,14 @@ import * as Y from "yjs";
   ]
   */
 
-// test code
-// let increment = function () {
-//   const map = doc.getMap("map");
-//   const count = map.get("count") || 0;
-//   map.set("count", count + 1);
-//   console.log(count);
-// };
-
-// let getValue = function () {
-//   const map = doc.getMap("map");
-//   const count = map.get("count") || 0;
-//   console.log(count);
-// };
+let updateNoteGrid = function (
+  noteGridId: string,
+  newNoteGrid: any,
+) {
+  const gridState: any = doc.getMap(`notegridState-${noteGridId}`);
+  const grid = gridState.get("notegrid");
+  grid.set("notegrid", newNoteGrid);
+};
 
 let updateSequence = function (
   compositionId: string,
@@ -36,8 +31,8 @@ let updateSequence = function (
   newSequence: any
 ) {
   const composition: any = doc.getMap(`composition-${compositionId}`);
-  const sequence = composition.get(`part-${partId}`).get("sequence");
-  sequence.set(newSequence);
+  const part = composition.get(`part-${partId}`);
+  part.set("sequence", newSequence);
 };
 
 let addPart = function (
@@ -55,14 +50,4 @@ let addPart = function (
   part.set("sequence", new Y.Array());
 };
 
-// let addComposition = function (compositionId) {
-//   const composition = doc.getMap(`composition-${compositionId}`, new Y.Map());
-// };
-
-// let getDoc = function () {};
-
-// let init = function () {
-//   connectAndSyncDoc("first-composition");
-// };
-
-export { updateSequence, addPart };
+export { updateSequence, addPart, updateNoteGrid };
