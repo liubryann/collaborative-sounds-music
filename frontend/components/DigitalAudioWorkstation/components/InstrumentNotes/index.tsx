@@ -3,7 +3,12 @@ import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
 import { instruments } from "../../instruments";
 import { SynthOptions } from "tone";
-import { getComposition, getNoteGrid, getSequence, updatePart } from "../../adapter";
+import {
+  getComposition,
+  getNoteGrid,
+  getSequence,
+  updatePart,
+} from "../../adapter";
 
 interface InstrumentNotesProps {
   instrumentName: string;
@@ -57,13 +62,18 @@ export default function InstrumentNotes({
     Tone.Synth<SynthOptions> | Tone.NoiseSynth
   >();
 
-  useEffect(() => {
-    const composition = getComposition("test");
-    composition.observe(() => {
-      setSequence(getSequence("test", instrumentName));
-      setNoteGrid(getNoteGrid("test", instrumentName));
-    });
-  }, [instrumentName]);
+  const composition = getComposition("test");
+  composition.observeDeep((event, transaction) => {
+    console.log(event);
+    console.log(transaction);
+    const doc = transaction.doc;
+    const composition: any = doc.getMap("composition");
+    const part = composition.get(`part-Synth`);
+    setSequence(part.get("sequence"));
+    console.log(part.get("sequence"));
+    setNoteGrid(part.get("noteGrid"));
+    console.log(part.get("noteGrid"));
+  });
 
   useEffect(() => {
     setInstrument(instruments[instrumentName]());
@@ -107,8 +117,9 @@ export default function InstrumentNotes({
               <button
                 onClick={() => toggleNoteCell(i, j)}
                 key={j}
-                className={`${styles.cell} ${noteGrid[i][j] && styles.selectedCell
-                  }`}
+                className={`${styles.cell} ${
+                  noteGrid[i][j] && styles.selectedCell
+                }`}
               >
                 {cell}
               </button>

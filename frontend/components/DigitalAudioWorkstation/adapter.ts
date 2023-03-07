@@ -2,8 +2,11 @@ import { doc } from "./connection";
 import * as Y from "yjs";
 ("use strict");
 /*
+  NOTE: one room to one composition
+  TODO: create a new collection to hold all rooms with room metadata 
+  (with backend support)
 
-  composition-id: [ 
+  composition: [ 
     "part-id": {
       "instrument": "synth",
       "sequence": [
@@ -27,10 +30,12 @@ let updatePart = function (
   newSequence: any,
   newGrid: any
 ) {
-  const composition: any = doc.getMap(`composition-${compositionId}`);
-  const part = composition.get(`part-${partId}`);
-  part.set("grid", newGrid);
-  part.set("sequence", newSequence);
+  doc.transact(() => {
+    const composition: any = doc.getMap("composition");
+    const part = composition.get(`part-${partId}`);
+    part.set("grid", newGrid);
+    part.set("sequence", newSequence);
+  });
 };
 
 let addPart = function (
@@ -38,7 +43,7 @@ let addPart = function (
   partId: string,
   instrument: string
 ) {
-  const composition = doc.getMap(`composition-${compositionId}`);
+  const composition = doc.getMap("composition");
   if (composition.has(`part-${partId}`)) {
     console.error("part already exists");
     return;
@@ -50,23 +55,21 @@ let addPart = function (
 };
 
 let getComposition = function (compositionId: string) {
-  return doc.getMap(`composition-${compositionId}`);
-}
+  return doc.getMap("composition");
+};
 
 let getNoteGrid = function (compositionId: string, partId: string) {
-  const composition: any = doc.getMap(`composition-${compositionId}`);
+  const composition: any = doc.getMap("composition");
   const part = composition.get(`part-${partId}`);
   const grid = part.get("grid");
   return grid;
 };
 
 let getSequence = function (compositionId: string, partId: string) {
-  const composition: any = doc.getMap(`composition-${compositionId}`);
+  const composition: any = doc.getMap("composition");
   const part = composition.get(`part-${partId}`);
   const grid = part.get("sequence");
   return grid;
 };
 
-
-
-export { updatePart, addPart, getComposition, getNoteGrid, getSequence };
+export { doc, updatePart, addPart, getComposition, getNoteGrid, getSequence };
