@@ -41,7 +41,7 @@ let addPart = function (
   const composition = doc.getMap(`composition-${compositionId}`);
   if (composition.has(`part-${partId}`)) {
     console.error("part already exists");
-    //return;
+    return;
   }
   const part: any = composition.set(`part-${partId}`, new Y.Map());
   part.set("instrument", instrument);
