@@ -7,17 +7,8 @@ import { connectAndSyncDoc } from "./connection";
 import { getComposition } from "./adapter";
 
 export default function DigitalAudioWorkstation() {
-  // const composition = useComposition();
-
-  const [composition, setComposition] = useState();
-
-  useEffect(() => {
-    const rcomposition = getComposition("test");
-    rcomposition.observe(() => {
-      setComposition(rcomposition.get("part-test"));
-    });
-  }, []);
-
+  const composition = useComposition();
+  
   useEffect(() => {
     connectAndSyncDoc("test");
   }, []);

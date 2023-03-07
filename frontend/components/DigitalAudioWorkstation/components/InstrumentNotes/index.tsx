@@ -3,7 +3,7 @@ import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
 import { instruments } from "../../instruments";
 import { SynthOptions } from "tone";
-import { getComposition, updateSequence } from "../../adapter";
+import { getComposition, getNoteGrid, getSequence, updatePart } from "../../adapter";
 
 interface InstrumentNotesProps {
   instrumentName: string;
@@ -25,8 +25,8 @@ export default function InstrumentNotes({
   instrumentName,
 }: InstrumentNotesProps) {
   //will probably need to add a # value in instrument. Or make instrument names unique.
-  let defaultNoteGrid = getNoteGrid("test", `${instrumentName}`);
-  if (!defaultNoteGrid || defaultNoteGrid == null) {
+  let defaultNoteGrid = getNoteGrid("test", instrumentName);
+  if (defaultNoteGrid == null) {
     defaultNoteGrid = [...Array(notes.length)].map((x) =>
       Array(gridLength).fill(false)
     );
@@ -38,13 +38,16 @@ export default function InstrumentNotes({
     gridTemplateRows: `repeat(${notes.length}, 1fr)`,
   };
 
-  const defaultSequence: Note[] = [];
-  for (let i = 0; i < gridLength; i++) {
-    defaultSequence.push({
-      time: `${bar}:${i}`,
-      note: 0,
-      duration: "4n",
-    });
+  let defaultSequence = getSequence("test", instrumentName);
+  if (defaultSequence == null) {
+    defaultSequence = [];
+    for (let i = 0; i < gridLength; i++) {
+      defaultSequence.push({
+        time: `${bar}:${i}`,
+        note: 0,
+        duration: "4n",
+      });
+    }
   }
 
   const [noteGrid, setNoteGrid] = React.useState(defaultNoteGrid);
@@ -57,9 +60,10 @@ export default function InstrumentNotes({
   useEffect(() => {
     const composition = getComposition("test");
     composition.observe(() => {
-      setSequence(...composition.get("part-test").get("sequence").toArray());
+      setSequence(getSequence("test", instrumentName));
+      setNoteGrid(getNoteGrid("test", instrumentName));
     });
-  }, []);
+  }, [instrumentName]);
 
   useEffect(() => {
     setInstrument(instruments[instrumentName]());
@@ -91,7 +95,7 @@ export default function InstrumentNotes({
     setPart(newPart);
 
     setNoteGrid(newNoteGrid);
-    updateSequence("test", `${instrumentName}`, newSequence, newNoteGrid);
+    updatePart("test", instrumentName, newSequence, newNoteGrid);
   }
 
   return (
@@ -103,9 +107,8 @@ export default function InstrumentNotes({
               <button
                 onClick={() => toggleNoteCell(i, j)}
                 key={j}
-                className={`${styles.cell} ${
-                  noteGrid[i][j] && styles.selectedCell
-                }`}
+                className={`${styles.cell} ${noteGrid[i][j] && styles.selectedCell
+                  }`}
               >
                 {cell}
               </button>

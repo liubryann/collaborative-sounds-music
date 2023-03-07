@@ -20,14 +20,8 @@ import * as Y from "yjs";
     }
   ]
   */
-let getNoteGrid = function (compositionId: string, partId: string) {
-  const composition: any = doc.getMap(`composition-${compositionId}`);
-  const part = composition.get(`part-${partId}`);
-  const grid = part.get("grid");
-  return grid;
-};
 
-let updateSequence = function (
+let updatePart = function (
   compositionId: string,
   partId: string,
   newSequence: any,
@@ -47,16 +41,32 @@ let addPart = function (
   const composition = doc.getMap(`composition-${compositionId}`);
   if (composition.has(`part-${partId}`)) {
     console.error("part already exists");
-    return;
+    //return;
   }
   const part: any = composition.set(`part-${partId}`, new Y.Map());
   part.set("instrument", instrument);
   part.set("grid", null);
-  part.set("sequence", new Y.Array());
+  part.set("sequence", null);
 };
 
-function getComposition(compositionId: string) {
+let getComposition = function (compositionId: string) {
   return doc.getMap(`composition-${compositionId}`);
 }
 
-export { updateSequence, addPart, getComposition, getNoteGrid };
+let getNoteGrid = function (compositionId: string, partId: string) {
+  const composition: any = doc.getMap(`composition-${compositionId}`);
+  const part = composition.get(`part-${partId}`);
+  const grid = part.get("grid");
+  return grid;
+};
+
+let getSequence = function (compositionId: string, partId: string) {
+  const composition: any = doc.getMap(`composition-${compositionId}`);
+  const part = composition.get(`part-${partId}`);
+  const grid = part.get("sequence");
+  return grid;
+};
+
+
+
+export { updatePart, addPart, getComposition, getNoteGrid, getSequence };
