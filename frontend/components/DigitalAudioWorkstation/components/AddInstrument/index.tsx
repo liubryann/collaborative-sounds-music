@@ -14,7 +14,7 @@ export default function AddInstrument() {
   }
 
   function addInstrument(instrument: string) {
-    addPart("test", "test", instrument);
+    addPart("test", instrument, instrument);
     dispatch({ type: "addInstrument", payload: { instrument } });
   }
 

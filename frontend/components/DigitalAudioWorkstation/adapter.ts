@@ -12,33 +12,33 @@ import * as Y from "yjs";
         {duration: "4n", note: "C1", time: "0:2"},
         ...
       ]
+      "grid": [
+        [false, false, false, false],
+        [false, false, false, false],
+        [false, false, false, false]
+      ]
     }
   ]
   */
-
-let updateNoteGrid = function (
-  noteGridId: string,
-  newNoteGrid: any,
-) {
-  const gridState: any = doc.getMap(`notegridState-${noteGridId}`);
-  gridState.set("notegrid", newNoteGrid);
-};
-
 let getNoteGrid = function (
-  noteGridId: string,
+  compositionId: string,
+  partId: string,
 ) {
-  const gridState: any = doc.getMap(`notegridState-${noteGridId}`);
-  const grid = gridState.get("notegrid");
+  const composition: any = doc.getMap(`composition-${compositionId}`);
+  const part = composition.get(`part-${partId}`);
+  const grid = part.get("grid");
   return (grid);
 }
 
 let updateSequence = function (
   compositionId: string,
   partId: string,
-  newSequence: any
+  newSequence: any,
+  newGrid: any,
 ) {
   const composition: any = doc.getMap(`composition-${compositionId}`);
   const part = composition.get(`part-${partId}`);
+  part.set("grid", newGrid);
   part.set("sequence", newSequence);
 };
 
@@ -54,7 +54,8 @@ let addPart = function (
   }
   const part: any = composition.set(`part-${partId}`, new Y.Map());
   part.set("instrument", instrument);
+  part.set("grid", null)
   part.set("sequence", new Y.Array());
 };
 
-export { updateSequence, addPart, updateNoteGrid, getNoteGrid };
+export { updateSequence, addPart, getNoteGrid };

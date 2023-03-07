@@ -3,7 +3,7 @@ import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
 import { instruments } from "../../instruments";
 import { SynthOptions } from "tone";
-import { updateSequence, updateNoteGrid, getNoteGrid } from "../../adapter";
+import { updateSequence, getNoteGrid } from "../../adapter";
 import { connectAndSyncDoc } from "../../connection";
 
 interface InstrumentNotesProps {
@@ -26,8 +26,8 @@ export default function InstrumentNotes({
   instrumentName,
 }: InstrumentNotesProps) {
   //will probably need to add a # value in instrument. Or make instrument names unique.
-  let defaultNoteGrid = getNoteGrid(`${instrumentName}`);
-  if (!defaultNoteGrid) {
+  let defaultNoteGrid = getNoteGrid("test", `${instrumentName}`);
+  if (!defaultNoteGrid || defaultNoteGrid == null) {
     defaultNoteGrid = [...Array(notes.length)].map((x) =>
       Array(gridLength).fill(false)
     );
@@ -70,7 +70,6 @@ export default function InstrumentNotes({
       newSequence[j].note = 0;
     }
     setSequence(newSequence);
-    updateSequence("test", "test", newSequence);
 
     if (part) {
       part.dispose();
@@ -85,8 +84,8 @@ export default function InstrumentNotes({
     newPart.loop = true;
     setPart(newPart);
 
-    updateNoteGrid(`${instrumentName}`, newNoteGrid);
     setNoteGrid(newNoteGrid);
+    updateSequence("test", `${instrumentName}`, newSequence, newNoteGrid);
   }
 
   return (
