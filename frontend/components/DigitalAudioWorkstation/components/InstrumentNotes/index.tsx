@@ -3,8 +3,7 @@ import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
 import { instruments } from "../../instruments";
 import { SynthOptions } from "tone";
-import { updateSequence, getNoteGrid } from "../../adapter";
-import { connectAndSyncDoc } from "../../connection";
+import { getComposition, updateSequence } from "../../adapter";
 
 interface InstrumentNotesProps {
   instrumentName: string;
@@ -54,6 +53,13 @@ export default function InstrumentNotes({
   const [instrument, setInstrument] = React.useState<
     Tone.Synth<SynthOptions> | Tone.NoiseSynth
   >();
+
+  useEffect(() => {
+    const composition = getComposition("test");
+    composition.observe(() => {
+      setSequence(...composition.get("part-test").get("sequence").toArray());
+    });
+  }, []);
 
   useEffect(() => {
     setInstrument(instruments[instrumentName]());

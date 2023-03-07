@@ -14,8 +14,9 @@ export default function AddInstrument() {
   }
 
   function addInstrument(instrument: string) {
-    addPart("test", instrument, instrument);
-    dispatch({ type: "addInstrument", payload: { instrument } });
+    addPart("test", "test", instrument);
+    // adds instrument to data type -> observe triggers dispatch
+    // dispatch({ type: "addInstrument", payload: { instrument } });
   }
 
   return (

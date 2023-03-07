@@ -20,21 +20,18 @@ import * as Y from "yjs";
     }
   ]
   */
-let getNoteGrid = function (
-  compositionId: string,
-  partId: string,
-) {
+let getNoteGrid = function (compositionId: string, partId: string) {
   const composition: any = doc.getMap(`composition-${compositionId}`);
   const part = composition.get(`part-${partId}`);
   const grid = part.get("grid");
-  return (grid);
-}
+  return grid;
+};
 
 let updateSequence = function (
   compositionId: string,
   partId: string,
   newSequence: any,
-  newGrid: any,
+  newGrid: any
 ) {
   const composition: any = doc.getMap(`composition-${compositionId}`);
   const part = composition.get(`part-${partId}`);
@@ -54,8 +51,12 @@ let addPart = function (
   }
   const part: any = composition.set(`part-${partId}`, new Y.Map());
   part.set("instrument", instrument);
-  part.set("grid", null)
+  part.set("grid", null);
   part.set("sequence", new Y.Array());
 };
 
-export { updateSequence, addPart, getNoteGrid };
+function getComposition(compositionId: string) {
+  return doc.getMap(`composition-${compositionId}`);
+}
+
+export { updateSequence, addPart, getComposition, getNoteGrid };
