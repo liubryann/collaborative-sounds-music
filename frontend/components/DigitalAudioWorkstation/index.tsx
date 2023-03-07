@@ -8,7 +8,7 @@ import { getComposition } from "./adapter";
 
 export default function DigitalAudioWorkstation() {
   const composition = useComposition();
-  
+
   useEffect(() => {
     connectAndSyncDoc("test");
   }, []);
