@@ -64,15 +64,11 @@ export default function InstrumentNotes({
 
   const composition = getComposition("test");
   composition.observeDeep((event, transaction) => {
-    console.log(event);
-    console.log(transaction);
     const doc = transaction.doc;
     const composition: any = doc.getMap("composition");
-    const part = composition.get(`part-Synth`);
+    const part = composition.get(`part-${instrumentName}`);
     setSequence(part.get("sequence"));
-    console.log(part.get("sequence"));
-    setNoteGrid(part.get("noteGrid"));
-    console.log(part.get("noteGrid"));
+    setNoteGrid(part.get("grid"));
   });
 
   useEffect(() => {
