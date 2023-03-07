@@ -3,7 +3,7 @@ import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
 import { instruments } from "../../instruments";
 import { SynthOptions } from "tone";
-import { updateSequence } from "../../adapter";
+import { updateSequence, updateNoteGrid } from "../../adapter";
 
 interface InstrumentNotesProps {
   instrumentName: string;
@@ -80,6 +80,7 @@ export default function InstrumentNotes({
     newPart.loop = true;
     setPart(newPart);
 
+    //updateNoteGrid("test", newNoteGrid);
     setNoteGrid(newNoteGrid);
   }
 
