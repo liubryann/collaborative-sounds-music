@@ -4,15 +4,13 @@ import InstrumentSettings from "../InstrumentSettings";
 import InstrumentNotes from "../InstrumentNotes";
 
 interface InstrumentConfigsProps {
-  instrumentName: string;
+  partId: string;
 }
-export default function InstrumentConfigs({
-  instrumentName,
-}: InstrumentConfigsProps) {
+export default function InstrumentConfigs({ partId }: InstrumentConfigsProps) {
   return (
     <div>
-      <InstrumentSettings instrument={instrumentName} />
-      <InstrumentNotes instrumentName={instrumentName} />
+      <InstrumentSettings partId={partId} />
+      <InstrumentNotes partId={partId} />
     </div>
   );
 }

@@ -24,4 +24,4 @@ function connectAndSyncDoc(room: string): Promise<void> {
   });
 }
 
-export { connectAndSyncDoc, doc };
+export { connectAndSyncDoc, doc, Y };

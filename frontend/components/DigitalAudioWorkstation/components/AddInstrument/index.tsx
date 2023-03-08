@@ -1,22 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./add-instrument.module.scss";
-import { useCompositionDispatch } from "@/contexts/CompositionContext";
 import { instrumentNames } from "../../instruments";
 import { addPart } from "../../adapter";
 
 export default function AddInstrument() {
   const [openInstrumentsPanel, setOpenInstrumentsPanel] = React.useState(false);
 
-  const dispatch = useCompositionDispatch();
-
   function toggleInstrumentsPanel() {
     setOpenInstrumentsPanel(!openInstrumentsPanel);
   }
 
-  function addInstrument(instrument: string) {
-    addPart("test", instrument, instrument);
-    // adds instrument to data type -> observe triggers dispatch
-    dispatch({ type: "addInstrument", payload: { instrument } });
+  function handleAddInstrument(instrument: string) {
+    const partName = prompt("Enter the name of this part");
+    if (partName !== null) {
+      addPart(instrument, partName);
+    }
   }
 
   return (
@@ -26,7 +24,10 @@ export default function AddInstrument() {
         <div>
           {instrumentNames.map((instrument) => {
             return (
-              <div key={instrument} onClick={() => addInstrument(instrument)}>
+              <div
+                key={instrument}
+                onClick={() => handleAddInstrument(instrument)}
+              >
                 {instrument}
               </div>
             );
