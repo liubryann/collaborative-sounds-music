@@ -48,14 +48,13 @@ A platform for musicians to collaborate and create music together in real-time u
 **What complexity points will this project contain**
 
 - Email: 2 pt
-- Collab API: 2-3 pts
+- Yjs: 2-3 pts
 - Worker: 3pt
 - Web audio: 1pt
 - Socket: 2pt / Peer to Peer: 1pt
 - Auth: 1pt
-- ShareDB: 2pt
 - [MIDI](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API): ?pt
-- [Reactronica](https://reactronica.com/) ?pt
+- Tonejs: ?pt
 
 **(optional) What complexity points will be attempted as bonus for the challenge factor**
 
