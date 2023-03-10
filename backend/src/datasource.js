@@ -4,7 +4,6 @@ const { MongodbPersistence } = require("y-mongodb");
 const utils = require("y-websocket/bin/utils");
 require("dotenv").config();
 
-//Maybe hide this but eh.
 const uri = process.env.DB_URI;
 const collection = process.env.COLLECTION_NAME;
 const ldb = new MongodbPersistence(uri, collection);
@@ -25,8 +24,6 @@ function startWebsocketServer(server) {
     wss.handleUpgrade(request, socket, head, handleAuth);
   });
 }
-
-// connectDatabase();
 
 function connectDatabase() {
   utils.setPersistence({
