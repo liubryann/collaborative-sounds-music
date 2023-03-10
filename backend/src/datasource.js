@@ -25,8 +25,6 @@ export const startWebsocketServer = function (server) {
   });
 };
 
-// function connectDatabase
-
 export const setPersistence = function () {
   utils.setPersistence({
     bindState: async (docName, ydoc) => {

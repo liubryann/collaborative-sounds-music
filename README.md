@@ -11,13 +11,13 @@ Tone.js: https://tonejs.github.io/
 
 ### [Alpha](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/1)
 
-- [ ] Basic Digital Audio Workstation (DAW) interface with single track and basic instruments
-- [ ] Bootstrap application
+- [x] Basic Digital Audio Workstation (DAW) interface with single track and basic instruments
+- [x] Bootstrap application
 
 Tentative
 
 - [ ] User account creation (login, etc.) (required for collaboration across sessions)
-- [ ] Basic collaboration level
+- [x] Basic collaboration level
 
 ### [Beta](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/2)
 
