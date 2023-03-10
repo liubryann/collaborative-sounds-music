@@ -1,36 +1,29 @@
-const http = require("http");
 const WebSocket = require("ws");
 const Y = require("yjs");
 const { MongodbPersistence } = require("y-mongodb");
 const utils = require("y-websocket/bin/utils");
+require("dotenv").config();
 
-//Maybe hide this but eh.
-const uri =
-  "mongodb+srv://username:chosdisiples@cluster-project.znjjqvk.mongodb.net/?retryWrites=true&w=majority";
-const collection = "composition-updates";
+const uri = process.env.DB_URI;
+const collection = process.env.COLLECTION_NAME;
 const ldb = new MongodbPersistence(uri, collection);
 
-const server = http.createServer((request, response) => {
-  response.writeHead(200, { "Content-Type": "text/plain" });
-  response.end("okay");
-});
+function startWebsocketServer(server) {
+  // const wss = new WebSocket.Server({ server });
+  const wss = new WebSocket.Server({ noServer: true });
 
-// const wss = new WebSocket.Server({ server });
-const wss = new WebSocket.Server({ noServer: true });
-
-wss.on("connection", utils.setupWSConnection);
-server.on("upgrade", (request, socket, head) => {
-  // You may check auth of request here..
-  /**
-   * @param {any} ws
-   */
-  const handleAuth = (ws) => {
-    wss.emit("connection", ws, request);
-  };
-  wss.handleUpgrade(request, socket, head, handleAuth);
-});
-
-connectDatabase();
+  wss.on("connection", utils.setupWSConnection);
+  server.on("upgrade", (request, socket, head) => {
+    // You may check auth of request here..
+    /**
+     * @param {any} ws
+     */
+    const handleAuth = (ws) => {
+      wss.emit("connection", ws, request);
+    };
+    wss.handleUpgrade(request, socket, head, handleAuth);
+  });
+}
 
 function connectDatabase() {
   utils.setPersistence({
@@ -59,4 +52,5 @@ function connectDatabase() {
     },
   });
 }
-module.exports = { server };
+
+module.exports = { startWebsocketServer, connectDatabase };

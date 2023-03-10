@@ -1,2 +1,6 @@
+# Packages
 /node_modules
 /dist
+
+# Configuration files
+.env
