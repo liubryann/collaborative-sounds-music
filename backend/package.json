@@ -15,10 +15,14 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "joi": "^17.8.3",
     "mongodb": "^5.1.0",
+    "mongoose": "^7.0.1",
     "ws": "^8.12.1",
     "y-mongodb": "^0.1.11",
     "y-websocket": "^1.4.6",

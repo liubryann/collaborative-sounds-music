@@ -8,7 +8,7 @@ const uri = process.env.DB_URI;
 const collection = process.env.COLLECTION_NAME;
 const ldb = new MongodbPersistence(uri, collection);
 
-function startWebsocketServer(server) {
+export const startWebsocketServer = function (server) {
   // const wss = new WebSocket.Server({ server });
   const wss = new WebSocket.Server({ noServer: true });
 
@@ -23,9 +23,11 @@ function startWebsocketServer(server) {
     };
     wss.handleUpgrade(request, socket, head, handleAuth);
   });
-}
+};
 
-function connectDatabase() {
+// function connectDatabase
+
+export const setPersistence = function () {
   utils.setPersistence({
     bindState: async (docName, ydoc) => {
       // Here you listen to granular document updates and store them in the database
@@ -51,6 +53,6 @@ function connectDatabase() {
       });
     },
   });
-}
+};
 
-module.exports = { startWebsocketServer, connectDatabase };
+export const connectDatabase = function () {};
