@@ -21,7 +21,12 @@ Tentative
 
 ### [Beta](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/2)
 
-Connection with MIDI devices directly. Ability to upload, manipulate, and export audio.
+- [ ] account creation + room integration (frontend)
+- [ ] Ability to upload and export audio
+- [ ] 
+
+Tentative
+- [ ] Connection with MIDI devices directly. 
 
 ### [Final](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/3)
 
