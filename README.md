@@ -23,7 +23,6 @@ Tentative
 
 - [ ] account creation + room integration (frontend)
 - [ ] Ability to upload and export audio
-- [ ]
 
 Tentative
 
