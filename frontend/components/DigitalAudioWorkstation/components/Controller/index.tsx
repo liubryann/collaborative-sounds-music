@@ -6,6 +6,7 @@ import * as Tone from "tone";
 export default function Controller() {
   function onPlay() {
     if (Tone.Transport.state !== "started") {
+      Tone.start();
       Tone.Transport.start();
     } else {
       Tone.Transport.stop();

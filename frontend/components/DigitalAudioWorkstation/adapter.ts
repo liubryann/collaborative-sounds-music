@@ -1,6 +1,6 @@
 import { doc, Y } from "./connection";
 import { schema } from "./constants";
-import { defaultNoteGrid, defaultSequence, notes } from "./instruments";
+import { getDefaultNoteGrid, getDefaultSequence, notes } from "./instruments";
 ("use strict");
 /*
   NOTE: one room to one composition
@@ -36,11 +36,11 @@ const addPart = function (instrument: string, partId: string): void {
   }
 
   doc.transact(() => {
-    parts.push([partId]);
     const part = doc.getMap(partId);
     part.set(schema.INSTRUMENT, instrument);
-    part.set(schema.NOTE_GRID, Y.Array.from(defaultNoteGrid));
-    part.set(schema.SEQUENCE, Y.Array.from(defaultSequence));
+    part.set(schema.NOTE_GRID, Y.Array.from(getDefaultNoteGrid()));
+    part.set(schema.SEQUENCE, Y.Array.from(getDefaultSequence()));
+    parts.push([partId]);
   });
 };
 

@@ -18,8 +18,8 @@ export default function DigitalAudioWorkstation() {
 
   return (
     <div className={styles.test}>
-      {parts.map((partId, i) => {
-        return <InstrumentConfigs key={i} partId={partId} />;
+      {parts.map((partId) => {
+        return <InstrumentConfigs key={partId} partId={partId} />;
       })}
       <Controller />
     </div>

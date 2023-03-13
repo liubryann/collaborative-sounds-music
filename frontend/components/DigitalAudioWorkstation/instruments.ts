@@ -25,15 +25,18 @@ const bar = 0;
 export const gridLength = 4;
 export const notes = [`C${octave}`, `D${octave}`, `E${octave}`];
 
-export const defaultNoteGrid = [...Array(notes.length)].map((x) =>
-  Array(gridLength).fill(false)
-);
+export const getDefaultNoteGrid = () => {
+  return [...Array(notes.length)].map((x) => Array(gridLength).fill(false));
+};
 
-export const defaultSequence: Note[] = [];
-for (let i = 0; i < gridLength; i++) {
-  defaultSequence.push({
-    time: `${bar}:${i}`,
-    note: 0,
-    duration: "4n",
-  });
-}
+export const getDefaultSequence: () => Note[] = () => {
+  const defaultSequence = [];
+  for (let i = 0; i < gridLength; i++) {
+    defaultSequence.push({
+      time: `${bar}:${i}`,
+      note: 0,
+      duration: "4n",
+    });
+  }
+  return defaultSequence;
+};
