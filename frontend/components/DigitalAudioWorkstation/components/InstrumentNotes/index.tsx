@@ -8,6 +8,7 @@ import {
   updateNoteGridAndSequence,
   getSequence,
   getInstrument,
+  deletePart,
 } from "../../adapter";
 
 interface InstrumentNotesProps {
@@ -33,18 +34,16 @@ export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
   >();
 
   const createNewPart = useCallback(() => {
-    // if (part) {
-    //   part.dispose();
-    // }
+    if (!instrument) {
+      console.log("error"); // TODO: this shows up but doesn't affect functionality
+      return;
+    }
     const newPart = new Tone.Part((time, value) => {
-      if (!instrument) {
-        console.log("error");
-        return;
-      }
       instrument.triggerAttackRelease(value.note, value.duration, time);
     }, sequence).start(0);
     newPart.loop = true;
-    // setPart(newPart);
+
+    return newPart;
   }, [instrument, sequence]);
 
   useEffect(() => {
@@ -59,21 +58,29 @@ export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
   }, [partId]);
 
   useEffect(() => {
+    setPart(createNewPart());
+  }, [createNewPart]);
+
+  useEffect(() => {
     return () => {
       if (part) {
         part.dispose();
       }
+    };
+  }, [part]);
+
+  useEffect(() => {
+    return () => {
       if (instrument) {
         instrument.dispose();
       }
     };
-  }, [part, instrument]);
-
-  useEffect(() => {
-    createNewPart();
-  }, [sequence, createNewPart]);
+  }, [instrument]);
 
   function toggleNoteCell(i: number, j: number) {
+    if (part) {
+      part.dispose();
+    }
     updateNoteGridAndSequence(partId, i, j);
   }
 
