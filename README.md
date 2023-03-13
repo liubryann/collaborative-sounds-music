@@ -23,6 +23,10 @@ Tentative
 
 - [ ] account creation + room integration (frontend)
 - [ ] Ability to upload and export audio
+      <<<<<<< HEAD
+      =======
+- [ ]
+  > > > > > > > a10db949cedea276a3a7414b970f355cc248f8a1
 
 Tentative
 
@@ -51,9 +55,6 @@ Bryan Liu, 1005057830
 A platform for musicians to collaborate and create music together in real-time using personalized melodies and audio.
 
 **What complexity points will this project contain**
-https://docs.google.com/spreadsheets/d/1rwvxBiIK_B1DsDoYgQu8l2LZFiDy3RW6HTDg-oEWQGY/edit#gid=0
-
-Solidified
 https://docs.google.com/spreadsheets/d/1rwvxBiIK_B1DsDoYgQu8l2LZFiDy3RW6HTDg-oEWQGY/edit#gid=0
 
 Solidified
