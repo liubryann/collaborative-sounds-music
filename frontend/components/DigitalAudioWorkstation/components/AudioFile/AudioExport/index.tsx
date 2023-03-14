@@ -24,7 +24,7 @@ export default function AudioExport() {
   }
   return (
     <div>
-      <button onClick={startRecording}>Start Recording</button>
+      <button onClick={startRecording}>Start New Recording</button>
       <button onClick={endRecording}>End Recording</button>
       <button onClick={downloadRecording}>Download Recording</button>
     </div>
