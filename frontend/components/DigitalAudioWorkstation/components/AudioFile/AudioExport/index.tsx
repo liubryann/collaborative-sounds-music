@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { getAudioFile } from "../../../adapter";
+import * as Tone from "tone";
 
-const AudioExport = () => {
-  const clickExportAudio = () => {
-
+export default function AudioExport() {
+  const recorder = new Tone.Recorder();
+  let recording: Blob | null = null;
+  const startRecording = () => {
+    recorder.start();
   }
 
+  const endRecording = async () => {
+    recording = await recorder.stop();
+  }
+
+  const downloadRecording = () => {
+    if (!recording) {
+      return;
+    }
+    const url = URL.createObjectURL(recording);
+    const anchor = document.createElement("a");
+    anchor.download = "recording.webm";
+    anchor.href = url;
+    anchor.click();
+  }
   return (
     <div>
-      <a onClick={clickExportAudio}>Export Audio</a>
+      <button onClick={startRecording}>Start Recording</button>
+      <button onClick={endRecording}>End Recording</button>
+      <button onClick={downloadRecording}>Download Recording</button>
     </div>
   );
 }

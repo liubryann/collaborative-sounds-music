@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { addAudioFile } from "../../../adapter";
 
-const AudioImport = () => {
+export default function AudioImport() {
   const clickImportAudio = () => {
 
   }
