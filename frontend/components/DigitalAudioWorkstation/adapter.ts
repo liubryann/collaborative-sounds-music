@@ -103,6 +103,19 @@ const getInstrument = function (partId: string) {
   return doc.getMap(partId).get(schema.INSTRUMENT);
 };
 
+/**
+ * Maybe need to move this, but this is for audio file stuff
+ */
+const addAudioFile = function (file: any) {
+  const audio = doc.getMap("testAudioFile");
+  audio.set("testfilename", file);
+}
+
+//NOT IN USE RIGHT NOW
+const getAudioFile = function (audioId: string) {
+  return doc.getMap("testAudioFile").get("testfilename");
+}
+
 export {
   Y,
   doc,
@@ -114,4 +127,6 @@ export {
   getNoteGrid,
   getSequence,
   getInstrument,
+  addAudioFile,
+  getAudioFile,
 };
