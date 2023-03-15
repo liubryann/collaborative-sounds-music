@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./digital-audio-workstation.module.scss";
 import Controller from "./components/Controller";
-import InstrumentConfigs from "./components/InstrumentConfigs";
+import InstrumentContainer from "./components/InstrumentContainer";
 import { connectAndSyncDoc } from "./connection";
 import { getParts } from "./adapter";
 
@@ -17,9 +17,9 @@ export default function DigitalAudioWorkstation() {
   }, []);
 
   return (
-    <div className={styles.test}>
+    <div>
       {parts.map((partId) => {
-        return <InstrumentConfigs key={partId} partId={partId} />;
+        return <InstrumentContainer key={partId} partId={partId} />;
       })}
       <Controller />
     </div>

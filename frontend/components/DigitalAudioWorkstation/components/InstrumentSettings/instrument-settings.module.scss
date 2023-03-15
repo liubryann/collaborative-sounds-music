@@ -1,0 +1,13 @@
+.instrumentSettingsContainer {
+  padding: 10px;
+}
+
+.volumeSlider {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+
+  input {
+    margin: 0 10px;
+  }
+}

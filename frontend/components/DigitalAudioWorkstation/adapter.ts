@@ -25,7 +25,7 @@ import { getDefaultNoteGrid, getDefaultSequence, notes } from "./instruments";
   */
 
 // add a new instrument to the list of instruments
-const addPart = function (instrument: string, partId: string): void {
+const addPart = function (instrumentName: string, partId: string): void {
   const parts = doc.getArray(schema.PARTS);
 
   for (let part of parts) {
@@ -37,7 +37,12 @@ const addPart = function (instrument: string, partId: string): void {
 
   doc.transact(() => {
     const part = doc.getMap(partId);
+
+    const instrument = new Y.Map();
+    instrument.set(schema.INSTRUMENT_NAME, instrumentName);
+    instrument.set(schema.INSTRUMENT_VOLUME, 100);
     part.set(schema.INSTRUMENT, instrument);
+
     part.set(schema.NOTE_GRID, Y.Array.from(getDefaultNoteGrid()));
     part.set(schema.SEQUENCE, Y.Array.from(getDefaultSequence()));
     parts.push([partId]);
@@ -99,8 +104,13 @@ const getSequence = function (partId: string) {
   return doc.getMap(partId).get(schema.SEQUENCE);
 };
 
-const getInstrument = function (partId: string) {
-  return doc.getMap(partId).get(schema.INSTRUMENT);
+const getInstrument = function (partId: string): Y.Map<any> {
+  return doc.getMap(partId).get(schema.INSTRUMENT) as Y.Map<any>;
+};
+
+const updateInstrumentVolume = function (partId: string, volume: string) {
+  const instrument = getInstrument(partId);
+  instrument.set(schema.INSTRUMENT_VOLUME, volume);
 };
 
 export {
@@ -114,4 +124,5 @@ export {
   getNoteGrid,
   getSequence,
   getInstrument,
+  updateInstrumentVolume,
 };
