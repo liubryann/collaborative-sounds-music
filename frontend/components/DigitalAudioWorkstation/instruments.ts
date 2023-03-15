@@ -5,13 +5,20 @@ const KICK = "Kick";
 
 export const instrumentNames = [SYNTH, KICK];
 
+export type Instrument = Tone.Synth<Tone.SynthOptions> | Tone.NoiseSynth;
 interface Instruments {
-  [key: string]: () => Tone.Synth<Tone.SynthOptions> | Tone.NoiseSynth;
+  [key: string]: (volume: number) => Instrument;
+}
+
+function convertVolume(volume: number) {
+  return (volume / 100) * 60 - 60;
 }
 
 export const instruments: Instruments = {
-  [SYNTH]: () => new Tone.Synth().toDestination(),
-  [KICK]: () => new Tone.MembraneSynth({ volume: 6 }).toDestination(),
+  [SYNTH]: (volume: number) =>
+    new Tone.Synth({ volume: convertVolume(volume) }).toDestination(),
+  [KICK]: (volume: number) =>
+    new Tone.MembraneSynth({ volume: convertVolume(volume) }).toDestination(),
 };
 
 export interface Note {

@@ -1,21 +1,22 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
-import { instruments, gridLength, notes, Note } from "../../instruments";
-import { SynthOptions } from "tone";
+import { gridLength, notes, Note, Instrument } from "../../instruments";
 import {
   getNoteGrid,
   updateNoteGridAndSequence,
   getSequence,
-  getInstrument,
-  deletePart,
 } from "../../adapter";
 
 interface InstrumentNotesProps {
   partId: string;
+  instrument: Instrument;
 }
 
-export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
+export default function InstrumentNotes({
+  partId,
+  instrument,
+}: InstrumentNotesProps) {
   const gridContainerStyle = {
     display: "grid",
     gridTemplateColumns: `repeat(${gridLength}, 1fr)`,
@@ -29,9 +30,6 @@ export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
     getSequence(partId).toArray()
   );
   const [part, setPart] = useState<Tone.Part>();
-  const [instrument, setInstrument] = useState<
-    Tone.Synth<SynthOptions> | Tone.NoiseSynth
-  >();
 
   const createNewPart = useCallback(() => {
     if (!instrument) {
@@ -48,8 +46,6 @@ export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
 
   useEffect(() => {
     const yNoteGrid = getNoteGrid(partId);
-    const yInstrument = getInstrument(partId);
-    setInstrument(instruments[yInstrument]());
 
     yNoteGrid.observeDeep(() => {
       setNoteGrid(getNoteGrid(partId).toArray());
@@ -68,14 +64,6 @@ export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
       }
     };
   }, [part]);
-
-  useEffect(() => {
-    return () => {
-      if (instrument) {
-        instrument.dispose();
-      }
-    };
-  }, [instrument]);
 
   function toggleNoteCell(i: number, j: number) {
     if (part) {
