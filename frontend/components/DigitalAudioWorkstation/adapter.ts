@@ -1,6 +1,11 @@
 import { doc, Y } from "./connection";
 import { schema } from "./constants";
-import { getDefaultNoteGrid, getDefaultSequence, notes } from "./instruments";
+import {
+  getDefaultNoteGrid,
+  getDefaultSequence,
+  notes,
+  baseNoteLength,
+} from "./instruments";
 ("use strict");
 /*
   NOTE: one room to one composition
@@ -66,26 +71,33 @@ const deletePart = function (partId: string): void {
   }
 };
 
+// get a part
 const getPart = function (partId: string) {
   return doc.getMap(partId);
 };
 
+// update the note grid and sequence
 const updateNoteGridAndSequence = function (
   partId: string,
   i: number,
-  j: number
+  j: number,
+  duration: string,
+  set: boolean
 ) {
   const part = doc.getMap(partId);
   const noteGrid = part.get(schema.NOTE_GRID);
   const row = noteGrid.get(i);
-  row[j] = !row[j];
+
+  row[j] = set ? duration : null;
 
   const sequence = part.get(schema.SEQUENCE);
   let newNote = sequence.get(j);
-  if (row[j]) {
+  if (set) {
     newNote.note = notes[i];
+    newNote.duration = duration;
   } else {
     newNote.note = 0;
+    newNote.duration = baseNoteLength;
   }
 
   doc.transact(() => {
@@ -96,18 +108,22 @@ const updateNoteGridAndSequence = function (
   });
 };
 
+// get the note grid
 const getNoteGrid = function (partId: string) {
   return doc.getMap(partId).get(schema.NOTE_GRID);
 };
 
+// get the sequence of notes
 const getSequence = function (partId: string) {
   return doc.getMap(partId).get(schema.SEQUENCE);
 };
 
+// get the instrument
 const getInstrument = function (partId: string): Y.Map<any> {
   return doc.getMap(partId).get(schema.INSTRUMENT) as Y.Map<any>;
 };
 
+// update the volume of the instrument
 const updateInstrumentVolume = function (partId: string, volume: string) {
   const instrument = getInstrument(partId);
   instrument.set(schema.INSTRUMENT_VOLUME, volume);

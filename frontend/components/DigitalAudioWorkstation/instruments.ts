@@ -30,10 +30,11 @@ export interface Note {
 const octave = 1;
 const bar = 0;
 export const gridLength = 4;
+export const baseNoteLength = "4n";
 export const notes = [`C${octave}`, `D${octave}`, `E${octave}`];
 
 export const getDefaultNoteGrid = () => {
-  return [...Array(notes.length)].map((x) => Array(gridLength).fill(false));
+  return [...Array(notes.length)].map((x) => Array(gridLength).fill(null));
 };
 
 export const getDefaultSequence: () => Note[] = () => {
@@ -42,7 +43,7 @@ export const getDefaultSequence: () => Note[] = () => {
     defaultSequence.push({
       time: `${bar}:${i}`,
       note: 0,
-      duration: "4n",
+      duration: baseNoteLength,
     });
   }
   return defaultSequence;
