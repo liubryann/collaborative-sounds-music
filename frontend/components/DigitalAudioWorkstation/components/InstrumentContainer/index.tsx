@@ -10,9 +10,16 @@ import debounce from "lodash.debounce";
 
 interface InstrumentContainerProps {
   partId: string;
+  openModal: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    partId: string,
+    i: number,
+    j: number
+  ) => void;
 }
 export default function InstrumentContainer({
   partId,
+  openModal,
 }: InstrumentContainerProps) {
   const [instrument, setInstrument] = useState<Instrument>(() => {
     const yInstrument = getInstrument(partId);
@@ -71,7 +78,11 @@ export default function InstrumentContainer({
         volumeSliderOnChange={volumeSliderOnChange}
       />
       {instrument && (
-        <InstrumentNotes partId={partId} instrument={instrument} />
+        <InstrumentNotes
+          partId={partId}
+          instrument={instrument}
+          openModal={openModal}
+        />
       )}
     </div>
   );

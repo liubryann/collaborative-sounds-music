@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "./instrument-notes.module.scss";
 import * as Tone from "tone";
-import { gridLength, notes, Note, Instrument } from "../../instruments";
+import {
+  gridLength,
+  notes,
+  Note,
+  Instrument,
+  baseNoteLength,
+} from "../../instruments";
 import {
   getNoteGrid,
   updateNoteGridAndSequence,
@@ -11,11 +17,18 @@ import {
 interface InstrumentNotesProps {
   partId: string;
   instrument: Instrument;
+  openModal: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    partId: string,
+    i: number,
+    j: number
+  ) => void;
 }
 
 export default function InstrumentNotes({
   partId,
   instrument,
+  openModal,
 }: InstrumentNotesProps) {
   const gridContainerStyle = {
     display: "grid",
@@ -36,9 +49,11 @@ export default function InstrumentNotes({
       console.log("error"); // TODO: this shows up but doesn't affect functionality
       return;
     }
+    const newSeq = sequence.filter((note) => note.note !== 0); // TODO: this is pretty inefficient but it works for now
+
     const newPart = new Tone.Part((time, value) => {
       instrument.triggerAttackRelease(value.note, value.duration, time);
-    }, sequence).start(0);
+    }, newSeq).start(0);
     newPart.loop = true;
 
     return newPart;
@@ -65,11 +80,23 @@ export default function InstrumentNotes({
     };
   }, [part]);
 
-  function toggleNoteCell(i: number, j: number) {
-    if (part) {
-      part.dispose();
+  function clickNoteCell(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    i: number,
+    j: number
+  ) {
+    if (e.button === 2) {
+      openModal(e, partId, i, j);
+    } else if (e.button === 0) {
+      if (part) {
+        part.dispose();
+      }
+      if (noteGrid[i][j]) {
+        updateNoteGridAndSequence(partId, i, j, baseNoteLength, false);
+      } else {
+        updateNoteGridAndSequence(partId, i, j, baseNoteLength, true);
+      }
     }
-    updateNoteGridAndSequence(partId, i, j);
   }
 
   return (
@@ -79,13 +106,14 @@ export default function InstrumentNotes({
           return row.map((cell, j) => {
             return (
               <button
-                onClick={() => toggleNoteCell(i, j)}
+                onClick={(e) => clickNoteCell(e, i, j)}
+                onContextMenu={(e) => clickNoteCell(e, i, j)}
                 key={j}
                 className={`${styles.cell} ${
                   noteGrid[i][j] && styles.selectedCell
                 }`}
               >
-                {cell}
+                {noteGrid[i][j]}
               </button>
             );
           });
