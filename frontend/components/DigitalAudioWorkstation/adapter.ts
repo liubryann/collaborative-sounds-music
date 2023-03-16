@@ -5,6 +5,7 @@ import {
   getDefaultSequence,
   notes,
   baseNoteLength,
+  defaultBpm,
 } from "./instruments";
 ("use strict");
 /*
@@ -28,6 +29,24 @@ import {
   }
   parts : []
   */
+
+// get the bpm
+const getBpm = function (): Y.Text {
+  return doc.getText(schema.BPM);
+};
+
+// update the bpm
+const updateBpm = function (bpm: string): void {
+  if (+bpm < 0) {
+    console.error("bpm cannot be negative");
+    return;
+  }
+  const bpmText = doc.getText(schema.BPM);
+  doc.transact(() => {
+    bpmText.delete(0, bpmText.length);
+    bpmText.insert(0, bpm);
+  });
+};
 
 // add a new instrument to the list of instruments
 const addPart = function (instrumentName: string, partId: string): void {
@@ -141,4 +160,6 @@ export {
   getSequence,
   getInstrument,
   updateInstrumentVolume,
+  getBpm,
+  updateBpm,
 };
