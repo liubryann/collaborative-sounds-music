@@ -6,4 +6,6 @@ export const schema = {
   SEQUENCE: "sequence",
   INSTRUMENT_VOLUME: "volume",
   INSTRUMENT_NAME: "instrumentName",
+  BPM: "bpm",
+  COMPOSITION: "composition",
 };

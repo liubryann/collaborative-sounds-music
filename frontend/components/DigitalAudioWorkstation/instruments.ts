@@ -32,6 +32,7 @@ const bar = 0;
 export const gridLength = 4;
 export const baseNoteLength = "4n";
 export const notes = [`C${octave}`, `D${octave}`, `E${octave}`];
+export const defaultBpm = 120;
 
 export const getDefaultNoteGrid = () => {
   return [...Array(notes.length)].map((x) => Array(gridLength).fill(null));
