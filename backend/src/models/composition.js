@@ -1,7 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../datasource.js";
-import { UsersCompositions } from "./userscompositions.js";
-import { User } from "./user.js";
 
 export const Composition = sequelize.define("Composition", {
   title: {
@@ -18,8 +16,4 @@ export const Composition = sequelize.define("Composition", {
       len: [4, 30],
     },
   },
-});
-
-Composition.belongsToMany(User, {
-  through: UsersCompositions,
 });
