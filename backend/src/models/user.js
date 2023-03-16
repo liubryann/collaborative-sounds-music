@@ -1,17 +1,42 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { DataTypes } from "sequelize";
+import { sequelize } from "../datasource.js";
 
-const UserSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-  firstname: { type: String, required: true },
-  lastname: { type: String, required: true },
-  password: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  compositions: [{ type: Schema.Types.ObjectId, ref: "Composition" }],
+export const User = sequelize.define("User", {
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      len: [4, 30],
+    },
+  },
+  firstname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [1, 20],
+    },
+  },
+  lastname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [1, 20],
+    },
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      min: 8,
+    },
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
+    },
+  },
 });
-
-User.virtual("fullname").get(function () {
-  return `${this.firstname} ${this.lastname}`;
-});
-
-module.exports = mongoose.model("User", UserSchema);

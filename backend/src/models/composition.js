@@ -1,10 +1,25 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { DataTypes } from "sequelize";
+import { sequelize } from "../datasource.js";
+import { UsersCompositions } from "./userscompositions.js";
+import { User } from "./user.js";
 
-const CompositionSchema = new Schema({
-  name: { type: String, required: true },
-  owner: { type: Schema.Types.ObjectId, ref: "User" },
-  collaborators: [{ type: Schema.Types.ObjectId, ref: "User" }],
+export const Composition = sequelize.define("Composition", {
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [1, 30],
+    },
+  },
+  owner: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [4, 30],
+    },
+  },
 });
 
-module.exports = mongoose.model("Composition", CompositionSchema);
+Composition.belongsToMany(User, {
+  through: UsersCompositions,
+});
