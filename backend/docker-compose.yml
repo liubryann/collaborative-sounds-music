@@ -1,0 +1,19 @@
+version: "3.5"
+services:
+  # Generic PostgreSQL database
+  postgres:
+    restart: always
+    image: postgres:15
+    ports:
+      # Different port in case host has Postgres installed already
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    # For any persistent storage, you would need to mount a volume to the docker container
+    # so that your data stays intact.
+    volumes:
+      - postgres-volume:${POSTGRES_DATA_PATH}
+      - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  postgres-volume:
