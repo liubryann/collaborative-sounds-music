@@ -23,7 +23,6 @@ Tentative
 
 - [ ] account creation + room integration (frontend)
 - [ ] Ability to upload and export audio
-- [ ]
 
 Tentative
 
@@ -60,13 +59,12 @@ Solidified
 - Yjs: 3 pts
 - Auth: 1 pts
 - Tonejs: 2 pts
-- [MIDI](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API): 2pt (?)
+- [MIDI](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API): 2pt
 
 TBD
 
 - Worker: 2pt (?)
 - Web audio: 1pt
-- Socket: 2pt / Peer to Peer: 1pt
 
 **(optional) What complexity points will be attempted as bonus for the challenge factor**
 

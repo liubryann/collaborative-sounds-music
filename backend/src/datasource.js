@@ -1,16 +1,29 @@
-const WebSocket = require("ws");
-const Y = require("yjs");
-const { MongodbPersistence } = require("y-mongodb");
-const utils = require("y-websocket/bin/utils");
-require("dotenv").config();
+import { Sequelize } from "sequelize";
+import { MongodbPersistence } from "y-mongodb";
+import * as Y from "yjs"; // TODO: investigate double import
+import utils from "y-websocket/bin/utils";
+import { WebSocketServer } from "ws";
+import dotenv from "dotenv";
+dotenv.config();
 
 const uri = process.env.DB_URI;
 const collection = process.env.COLLECTION_NAME;
+// TODO: Change to Postgres using sequelize to encode and decode document updates
 const ldb = new MongodbPersistence(uri, collection);
 
-function startWebsocketServer(server) {
-  // const wss = new WebSocket.Server({ server });
-  const wss = new WebSocket.Server({ noServer: true });
+export const sequelize = new Sequelize(
+  process.env.POSTGRES_DB,
+  process.env.POSTGRES_USER,
+  process.env.POSTGRES_PASSWORD,
+  {
+    host: process.env.POSTGRES_HOST || "localhost",
+    dialect: "postgres",
+    storage: process.env.POSTGRES_DATA_PATH,
+  }
+);
+
+export const startWebsocketServer = function (server) {
+  const wss = new WebSocketServer({ noServer: true });
 
   wss.on("connection", utils.setupWSConnection);
   server.on("upgrade", (request, socket, head) => {
@@ -23,9 +36,9 @@ function startWebsocketServer(server) {
     };
     wss.handleUpgrade(request, socket, head, handleAuth);
   });
-}
+};
 
-function connectDatabase() {
+export const setPersistence = function () {
   utils.setPersistence({
     bindState: async (docName, ydoc) => {
       // Here you listen to granular document updates and store them in the database
@@ -51,6 +64,18 @@ function connectDatabase() {
       });
     },
   });
-}
+};
 
-module.exports = { startWebsocketServer, connectDatabase };
+export const connectDatabase = async function () {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ alter: { drop: false } }); // TODO: Remove before production
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+};
+
+export const endDBConnection = async function () {
+  sequelize.close();
+};
