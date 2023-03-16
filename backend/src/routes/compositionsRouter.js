@@ -27,54 +27,35 @@ compositionRouter.post("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// Get all compositions for a user
-compositionRouter.get("/:userId", isAuthenticated, async (req, res) => {
-  if (req.session.user.id !== +req.params.userId)
-    return res.status(401).json({ error: "Unauthorized" });
-
-  const compositions = await UsersCompositions.findAll({
-    where: { UserId: +req.params.userId },
-    include: {
-      model: Composition,
-    },
-  });
-  return res
-    .status(200)
-    .json({ compositions: compositions, count: compositions.length });
-});
-
 // Get a composition by id
 compositionRouter.get("/:id", isAuthenticated, async (req, res) => {
   // only retrieve composition if it is in the user's collaborations
-  const exists = await UsersCompositions.findOne({
+  const composition = await UsersCompositions.findOne({
     where: {
       UserId: req.session.user.id,
       CompositionId: req.params.id,
     },
+    include: Composition,
   });
-  if (!exists) return res.status(404).json({ error: "Composition not found" });
-
-  const composition = await Composition.findByPk(req.params.id);
   if (!composition)
     return res.status(404).json({ error: "Composition not found" });
 
-  return res.status(200).json({ composition: composition });
+  return res.status(200).json({ composition: composition.Composition });
 });
 
-// Delete a composition
+// Delete a composition by id
 compositionRouter.delete("/:id", isAuthenticated, async (req, res) => {
-  const exists = await Composition.findOne({
-    where: {
-      id: req.params.id,
-    },
+  const composition = await Composition.findOne({
+    where: { id: req.params.id },
     include: {
       model: User,
-      where: { id: req.session.user.id },
+      on: { username: Composition.owner },
+      where: {
+        id: req.session.user.id,
+      },
+      attributes: ["id", "username"],
     },
   });
-  if (!exists) return res.status(404).json({ error: "Composition not found" });
-
-  const composition = await Composition.findByPk(req.params.id);
   if (!composition)
     return res.status(404).json({ error: "Composition not found" });
 
@@ -84,21 +65,44 @@ compositionRouter.delete("/:id", isAuthenticated, async (req, res) => {
 
 // Update a composition's title
 compositionRouter.patch("/:id", isAuthenticated, async (req, res) => {
-  const exists = await UsersCompositions.findOne({
-    where: {
-      UserId: req.session.user.id,
-      CompositionId: req.params.id,
-    },
+  validCompositionSchema.validate(req.body, (err) => {
+    if (err) return res.status(400).json({ error: err.message });
   });
-  if (!exists) return res.status(404).json({ error: "Composition not found" });
 
-  const composition = await Composition.findByPk(req.params.id);
-  if (!composition)
-    return res.status(404).json({ error: "Composition not found" });
+  try {
+    const [recordsChanged] = await Composition.update(
+      { title: req.body.title },
+      { where: { id: req.params.id, owner: req.session.user.username } }
+    );
+    if (recordsChanged === 0)
+      return res.status(404).json({ error: "Composition not found" });
 
-  let { value, err } = validCompositionSchema.validate(req.body);
-  if (err) return res.status(400).json({ error: err.message });
+    return res.status(200).json({ message: "Composition updated" });
+  } catch (e) {
+    return res.status(422).json({ error: e.message });
+  }
+});
 
-  await composition.update(value);
-  return res.status(200).json({ message: "Composition updated" });
+// TODO: post or put request?
+compositionRouter.post("/:id", isAuthenticated, async (req, res) => {
+  try {
+    const [_, recordCreated] = await UsersCompositions.findOrCreate({
+      where: {
+        UserId: req.body.userId,
+        CompositionId: req.params.id,
+      },
+    });
+    // TODO: how to handle when user already has access to the composition
+    if (!recordCreated)
+      return res
+        .status(200)
+        .json({ message: "User already has access to composition" });
+
+    const composition = await Composition.findOne({
+      where: { id: req.params.id },
+    });
+    return res.status(200).json({ composition: composition });
+  } catch (error) {
+    return res.status(422).json({ error: error.message });
+  }
 });

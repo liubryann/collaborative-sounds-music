@@ -1,6 +1,8 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import { User } from "../models/user.js";
+import { Composition } from "../models/composition.js";
+import { UsersCompositions } from "../models/userscompositions.js";
 import { isAuthenticated } from "../middleware/auth.js";
 import { validUserSchema } from "../validators/userValidator.js";
 
@@ -50,4 +52,24 @@ userRouter.post("/login", async (req, res) => {
 userRouter.get("/signout", isAuthenticated, (req, res) => {
   req.session.destroy();
   return res.status(200).json({ message: "Signed out" });
+});
+
+userRouter.get("/:userId/compositions", isAuthenticated, async (req, res) => {
+  if (req.session.user.id !== +req.params.userId)
+    return res.status(403).json({ error: "Unauthorized" });
+
+  try {
+    const { rows, count } = await UsersCompositions.findAndCountAll({
+      where: { UserId: +req.params.userId },
+      attributes: ["CompositionId"],
+      include: {
+        model: Composition,
+      },
+    });
+    // Room id's should be the composition id
+    const compositions = rows.map((row) => row.Composition);
+    return res.status(200).json({ compositions: compositions, count });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });

@@ -28,5 +28,5 @@ User.belongsToMany(Composition, {
 });
 User.hasMany(UsersCompositions);
 UsersCompositions.belongsTo(User);
-Composition.hasMany(UsersCompositions);
+Composition.hasMany(UsersCompositions, { onDelete: "CASCADE" });
 UsersCompositions.belongsTo(Composition);
