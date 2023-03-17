@@ -1,0 +1,23 @@
+.instrumentList {
+  grid-area: instrumentList;
+  padding: 20px;
+}
+
+.instrumentNotes {
+  grid-area: instrumentNotes;
+  padding: 20px;
+}
+
+.controller {
+  grid-area: controller;
+}
+
+.container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 7fr 1fr;
+  grid-template-areas:
+    "instrumentList instrumentNotes"
+    "controller controller";
+}

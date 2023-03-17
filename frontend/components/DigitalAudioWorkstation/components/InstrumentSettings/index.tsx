@@ -72,7 +72,6 @@ export default function InstrumentSettings({
           value={volume}
           onChange={volumeSliderOnChange}
         />
-        {volume}
       </div>
     </div>
   );

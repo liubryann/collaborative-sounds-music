@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import styles from "./digital-audio-workstation.module.scss";
 import Controller from "./components/Controller";
 import InstrumentSettings from "./components/InstrumentSettings";
+import AddInstrument from "./components/AddInstrument";
 import { connectAndSyncDoc } from "./connection";
 import {
   getParts,
@@ -182,21 +183,28 @@ export default function DigitalAudioWorkstation() {
   }, [parts, createNewPart]);
 
   return (
-    <div>
-      {parts.map((partId) => {
-        return (
-          <InstrumentSettings
-            key={partId}
-            partId={partId}
-            selectPart={setSelectedPart}
-            selectedPart={selectedPart === partId}
-          />
-        );
-      })}
-      {selectedPart && (
-        <InstrumentNotes partId={selectedPart} openModal={openModal} />
-      )}
-      <Controller />
+    <div className={styles.container}>
+      <div className={styles.instrumentList}>
+        {parts.map((partId) => {
+          return (
+            <InstrumentSettings
+              key={partId}
+              partId={partId}
+              selectPart={setSelectedPart}
+              selectedPart={selectedPart === partId}
+            />
+          );
+        })}
+        <AddInstrument />
+      </div>
+      <div className={styles.instrumentNotes}>
+        {selectedPart && (
+          <InstrumentNotes partId={selectedPart} openModal={openModal} />
+        )}
+      </div>
+      <div className={styles.controller}>
+        <Controller />
+      </div>
       {mousePos && (
         <NoteLengthModal
           position={mousePos}

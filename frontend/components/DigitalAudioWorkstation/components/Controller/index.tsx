@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AddInstrument from "../AddInstrument";
 import styles from "./controller.module.scss";
 import * as Tone from "tone";
 import { getBpm, updateBpm } from "../../adapter";
@@ -35,7 +34,7 @@ export default function Controller() {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <button onClick={onPlay}>play</button>
       BPM
       <input
@@ -45,7 +44,6 @@ export default function Controller() {
         onChange={handleBpmChange}
         value={bpm}
       />
-      <AddInstrument />
     </div>
   );
 }
