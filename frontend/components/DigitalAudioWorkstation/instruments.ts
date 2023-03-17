@@ -14,7 +14,7 @@ function convertVolume(volume: number) {
   return (volume / 100) * 60 - 60;
 }
 
-export const instruments: Instruments = {
+export const getToneInstrument: Instruments = {
   [SYNTH]: (volume: number) =>
     new Tone.Synth({ volume: convertVolume(volume) }).toDestination(),
   [KICK]: (volume: number) =>

@@ -1,22 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./instrument-notes.module.scss";
-import * as Tone from "tone";
-import {
-  gridLength,
-  notes,
-  Note,
-  Instrument,
-  baseNoteLength,
-} from "../../instruments";
-import {
-  getNoteGrid,
-  updateNoteGridAndSequence,
-  getSequence,
-} from "../../adapter";
+import { gridLength, notes, baseNoteLength } from "../../instruments";
+import { getNoteGrid, updateNoteGridAndSequence } from "../../adapter";
 
 interface InstrumentNotesProps {
   partId: string;
-  instrument: Instrument;
   openModal: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     partId: string,
@@ -27,7 +15,6 @@ interface InstrumentNotesProps {
 
 export default function InstrumentNotes({
   partId,
-  instrument,
   openModal,
 }: InstrumentNotesProps) {
   const gridContainerStyle = {
@@ -39,46 +26,15 @@ export default function InstrumentNotes({
   const [noteGrid, setNoteGrid] = useState<boolean[][]>(
     getNoteGrid(partId).toArray()
   );
-  const [sequence, setSequence] = useState<Note[]>(
-    getSequence(partId).toArray()
-  );
-  const [part, setPart] = useState<Tone.Part>();
-
-  const createNewPart = useCallback(() => {
-    if (!instrument) {
-      console.log("error"); // TODO: this shows up but doesn't affect functionality
-      return;
-    }
-    const newSeq = sequence.filter((note) => note.note !== 0); // TODO: this is pretty inefficient but it works for now
-
-    const newPart = new Tone.Part((time, value) => {
-      instrument.triggerAttackRelease(value.note, value.duration, time);
-    }, newSeq).start(0);
-    newPart.loop = true;
-
-    return newPart;
-  }, [instrument, sequence]);
 
   useEffect(() => {
     const yNoteGrid = getNoteGrid(partId);
+    setNoteGrid(yNoteGrid.toArray());
 
     yNoteGrid.observeDeep(() => {
       setNoteGrid(getNoteGrid(partId).toArray());
-      setSequence(getSequence(partId).toArray());
     });
   }, [partId]);
-
-  useEffect(() => {
-    setPart(createNewPart());
-  }, [createNewPart]);
-
-  useEffect(() => {
-    return () => {
-      if (part) {
-        part.dispose();
-      }
-    };
-  }, [part]);
 
   function clickNoteCell(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -88,9 +44,6 @@ export default function InstrumentNotes({
     if (e.button === 2) {
       openModal(e, partId, i, j);
     } else if (e.button === 0) {
-      if (part) {
-        part.dispose();
-      }
       if (noteGrid[i][j]) {
         updateNoteGridAndSequence(partId, i, j, baseNoteLength, false);
       } else {

@@ -134,7 +134,7 @@ const getNoteGrid = function (partId: string) {
 
 // get the sequence of notes
 const getSequence = function (partId: string) {
-  return doc.getMap(partId).get(schema.SEQUENCE);
+  return doc.getMap(partId).get(schema.SEQUENCE) as Y.Array<any>;
 };
 
 // get the instrument
