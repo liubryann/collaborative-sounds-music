@@ -19,7 +19,14 @@ export default function InstrumentNotes({
 }: InstrumentNotesProps) {
   const gridContainerStyle = {
     display: "grid",
-    gridTemplateColumns: `repeat(${gridLength}, 1fr)`,
+    gridTemplateColumns: `repeat(${gridLength}, 70px)`,
+    gridTemplateRows: `repeat(${notes.length}, 1fr)`,
+    flex: 1,
+    overflow: "scroll",
+    // maxWidth: "100%",
+  };
+  const noteColumnStyle = {
+    display: "grid",
     gridTemplateRows: `repeat(${notes.length}, 1fr)`,
   };
 
@@ -47,14 +54,23 @@ export default function InstrumentNotes({
       if (noteGrid[i][j]) {
         updateNoteGridAndSequence(partId, i, j, baseNoteLength, false);
       } else {
-        updateNoteGridAndSequence(partId, i, j, baseNoteLength, true);
+        updateNoteGridAndSequence(partId, i, j, "4n", true); // change this value to change the default note length on click
       }
     }
   }
 
   return (
-    <div>
-      <div style={gridContainerStyle}>
+    <div className={styles.container}>
+      <div style={noteColumnStyle}>
+        {notes.map((note) => {
+          return (
+            <div key={note} className={styles.note}>
+              {note}
+            </div>
+          );
+        })}
+      </div>
+      <div style={gridContainerStyle} className={styles.gridContainer}>
         {noteGrid.map((row, i) => {
           return row.map((cell, j) => {
             return (

@@ -1,5 +1,10 @@
+.container {
+  display: flex;
+  max-width: 75vw;
+}
+
 .selectedCell {
-  background-color: #3d3636;
+  background-color: #3d3636 !important;
 }
 
 .cell {
@@ -7,7 +12,19 @@
   color: #fff;
   cursor: pointer;
   font-size: 0.8rem;
-  height: 1rem;
+  height: 1.2rem;
   text-align: center;
   width: 100%;
+}
+
+.gridContainer {
+  :first-child {
+    background-color: darkgrey;
+  }
+  :nth-child(4n + 5) {
+    background-color: lightgrey;
+  }
+  :nth-child(16n + 17) {
+    background-color: darkgrey;
+  }
 }

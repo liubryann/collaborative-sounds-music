@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import styles from "./digital-audio-workstation.module.scss";
 import Controller from "./components/Controller";
 import InstrumentSettings from "./components/InstrumentSettings";
@@ -13,7 +13,7 @@ import {
 } from "./adapter";
 import NoteLengthModal from "./components/NoteLengthModal";
 import InstrumentNotes from "./components/InstrumentNotes";
-import { Instrument, getToneInstrument, Note } from "./instruments";
+import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
 
@@ -114,7 +114,13 @@ export default function DigitalAudioWorkstation() {
   }, []);
 
   // handle selectedPart when deleting instruments
+  const partsLoaded = useRef<boolean>(false);
   useEffect(() => {
+    if (!partsLoaded.current && parts.length > 0) {
+      partsLoaded.current = true;
+      setSelectedPart(parts[0]);
+      return;
+    }
     setSelectedPart((prev) => {
       if (prev && !parts.includes(prev)) {
         if (parts.length === 0) {
@@ -139,6 +145,8 @@ export default function DigitalAudioWorkstation() {
       const newPart = new Tone.Part((time, value) => {
         instrument.triggerAttackRelease(value.note, value.duration, time);
       }, newSeq).start(0);
+      newPart.loopStart = 0;
+      newPart.loopEnd = loopEnd;
       newPart.loop = true;
 
       setToneParts((prev) => {
