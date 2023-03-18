@@ -1,0 +1,25 @@
+.noteLengthModalContainer {
+  border: 0.6px solid #3d3636;
+  z-index: 99;
+  background-color: white;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    button {
+      background-color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      height: 1rem;
+      width: 2.5rem;
+
+      &:hover {
+        background-color: #3d3636;
+        color: white;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { createContext, useReducer, useContext } from "react";
-import { instruments } from "../../components/DigitalAudioWorkstation/instruments";
+import { getToneInstrument } from "../../components/DigitalAudioWorkstation/instruments";
 import * as Tone from "tone";
 
 const CompositionContext = createContext<Composition | null>(null);
