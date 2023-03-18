@@ -10,25 +10,46 @@ export default function AudioExport() {
   const [recording, setRecording] = useState<Blob>();
   const [running, setRunning] = useState<boolean>(false);
   const [options, setOptions] = useState({filename: 'recording', extension: 'webm'});
+  const [elapsedTime, setElapsed] = useState(0);
+  const [counter, setCounter] = useState<NodeJS.Timer>();
 
   useEffect(() => {
     const newRecorder = new Tone.Recorder();
     setRecorder(newRecorder);
   }, [])
 
+  /** Counter commands */
+  const count = () => {
+    const newTime = elapsedTime + 1;
+    setElapsed(newTime);
+  }
+
+  const startCount = () => {
+    const newCounter = setInterval(count, 1000);
+    setCounter(newCounter);
+  }
+
+  const stopCount = () => {
+    clearInterval(counter);
+  }
+
+  /** Recording commands */
   const startRecording = () => {
+    setElapsed(0);
     if (recorder) {
       Tone.getDestination().connect(recorder);
     }
     recorder?.start();
     Tone.start();
     Tone.Transport.start();
+    startCount();
     setRunning(true);
   }
 
   const endRecording = async () => {
     Tone.Transport.stop();
     const newRecording = await recorder?.stop();
+    stopCount();
     setRunning(false);
     setRecording(newRecording);
   }
@@ -57,6 +78,9 @@ export default function AudioExport() {
   return (
     <div>
       <button disabled={running} onClick={startRecording}>Start New Recording</button>
+      <div className="timer">
+        {elapsedTime}
+      </div>
       <button disabled={!running} onClick={endRecording}>End Recording</button>
       <form onSubmit={downloadRecording}>
         <input type="text" name="filename" value={options.filename} onChange={nameChange}/>
