@@ -1,5 +1,4 @@
-const getComposition = (id: string) => {
-};
+const getComposition = (id: string) => {};
 
 const compositionService = {
   getComposition,
