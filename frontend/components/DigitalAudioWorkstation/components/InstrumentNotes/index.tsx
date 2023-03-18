@@ -49,7 +49,7 @@ export default function InstrumentNotes({ partId }: InstrumentNotesProps) {
   useEffect(() => {
     const yNoteGrid = getNoteGrid(partId);
     const yInstrument = getInstrument(partId);
-    setInstrument(instruments[yInstrument]());
+    setInstrument(instruments[yInstrument]);
 
     yNoteGrid.observeDeep(() => {
       setNoteGrid(getNoteGrid(partId).toArray());
