@@ -1,11 +1,16 @@
 import * as Tone from "tone";
+import { PolySynth } from "tone";
 
 const SYNTH = "Synth";
+const POLYSYNTH = "PolySynth";
 const KICK = "Kick";
 
-export const instrumentNames = [SYNTH, KICK];
+export const instrumentNames = [KICK, POLYSYNTH];
 
-export type Instrument = Tone.Synth<Tone.SynthOptions> | Tone.NoiseSynth;
+export type Instrument =
+  | Tone.Synth<Tone.SynthOptions>
+  | Tone.NoiseSynth
+  | PolySynth<any>;
 interface Instruments {
   [key: string]: (volume: number) => Instrument;
 }
@@ -15,10 +20,14 @@ function convertVolume(volume: number) {
 }
 
 export const getToneInstrument: Instruments = {
-  [SYNTH]: (volume: number) =>
-    new Tone.Synth({ volume: convertVolume(volume) }).toDestination(),
   [KICK]: (volume: number) =>
-    new Tone.MembraneSynth({ volume: convertVolume(volume) }).toDestination(),
+    new Tone.PolySynth(Tone.MembraneSynth, {
+      volume: convertVolume(volume),
+    }).toDestination(),
+  [POLYSYNTH]: (volume: number) =>
+    new Tone.PolySynth(Tone.Synth, {
+      volume: convertVolume(volume),
+    }).toDestination(),
 };
 
 export interface Note {

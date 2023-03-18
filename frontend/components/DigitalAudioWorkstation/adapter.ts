@@ -112,10 +112,20 @@ const updateNoteGridAndSequence = function (
   const sequence = part.get(schema.SEQUENCE);
   let newNote = sequence.get(j);
   if (set) {
-    newNote.note = notes[i];
+    if (newNote.note === 0) {
+      newNote.note = [notes[i]];
+    } else {
+      if (!newNote.note.includes(notes[i])) {
+        newNote.note.push(notes[i]);
+      }
+    }
     newNote.duration = duration;
   } else {
-    newNote.note = 0;
+    if (newNote.note.length === 1) {
+      newNote.note = 0;
+    } else {
+      newNote.note.splice(newNote.note.indexOf(notes[i]), 1);
+    }
     newNote.duration = baseNoteLength;
   }
 
