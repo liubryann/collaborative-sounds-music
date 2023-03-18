@@ -84,25 +84,53 @@ compositionRouter.patch("/:id", isAuthenticated, async (req, res) => {
 });
 
 // TODO: post or put request?
-compositionRouter.post("/:id", isAuthenticated, async (req, res) => {
-  try {
-    const [_, recordCreated] = await UsersCompositions.findOrCreate({
-      where: {
-        UserId: req.body.userId,
-        CompositionId: req.params.id,
-      },
-    });
-    // TODO: how to handle when user already has access to the composition
-    if (!recordCreated)
-      return res
-        .status(200)
-        .json({ message: "User already has access to composition" });
+compositionRouter.post(
+  "/collaborators/:id",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const [_, recordCreated] = await UsersCompositions.findOrCreate({
+        where: {
+          UserId: req.body.userId,
+          CompositionId: req.params.id,
+        },
+      });
+      // TODO: how to handle when user already has access to the composition
+      if (!recordCreated)
+        return res
+          .status(200)
+          .json({ message: "User already has access to composition" });
 
-    const composition = await Composition.findOne({
-      where: { id: req.params.id },
-    });
-    return res.status(200).json({ composition: composition });
-  } catch (error) {
-    return res.status(422).json({ error: error.message });
+      const composition = await Composition.findOne({
+        where: { id: req.params.id },
+      });
+      return res.status(200).json({ composition: composition });
+    } catch (error) {
+      return res.status(422).json({ error: error.message });
+    }
   }
-});
+);
+
+compositionRouter.delete(
+  "/collaborators/:id",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const collaboration = await UsersCompositions.findOne({
+        where: {
+          UserId: req.body.userId,
+          CompositionId: req.params.id,
+        },
+      });
+
+      if (!collaboration) {
+        return res.status(404).json({ error: "Collaboration not found" });
+      } else {
+        await collaboration.destroy();
+        return res.status(200).json({ message: "Collaboration deleted" });
+      }
+    } catch (error) {
+      return res.status(422).json({ error: error.message });
+    }
+  }
+);
