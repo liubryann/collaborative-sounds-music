@@ -3,6 +3,7 @@ import * as Tone from "tone";
 
 export default function AudioExport() {
   const recorder = new Tone.Recorder();
+  const tone = Tone.Transport.connect(recorder);
   let recording: Blob | null = null;
   const startRecording = () => {
     recorder.start();
