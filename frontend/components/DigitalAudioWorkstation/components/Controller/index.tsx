@@ -3,6 +3,8 @@ import styles from "./controller.module.scss";
 import * as Tone from "tone";
 import { getBpm, updateBpm } from "../../adapter";
 import { defaultBpm } from "../../instruments";
+import AudioExport from "../AudioFile/AudioExport";
+import AudioImport from "../AudioFile/AudioImport";
 
 export default function Controller() {
   const [bpm, setBpm] = useState(defaultBpm.toString());
@@ -35,6 +37,7 @@ export default function Controller() {
 
   return (
     <div className={styles.container}>
+      <AudioImport />
       <button onClick={onPlay}>play</button>
       BPM
       <input
@@ -44,6 +47,7 @@ export default function Controller() {
         onChange={handleBpmChange}
         value={bpm}
       />
+      <AudioExport />
     </div>
   );
 }
