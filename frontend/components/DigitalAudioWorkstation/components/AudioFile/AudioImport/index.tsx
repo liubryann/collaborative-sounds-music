@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
+import * as Tone from "tone";
 
 /** Currently on HIATUS */
 export default function AudioImport() {
+  const [player, setPlayer] = useState<Tone.Player>();
+
+  useEffect(() => {
+    if (!player) {
+      const newPlayer = new Tone.Player();
+      setPlayer(newPlayer);
+    }
+  }, []);
+
   const clickImportAudio = () => {
 
-  }
-
-  //Adds audio file into the database
-  const addAudio = (e : React.ChangeEvent<HTMLInputElement>) => {
   }
 
   return (
     <div>
       <button onClick={clickImportAudio}>Import Audio</button>
-      <input type="file" onChange={addAudio}/>
+      <input type="file" name="audiofile" accept="audio/*"/>
     </div>
   );
 }
