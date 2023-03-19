@@ -1,6 +1,7 @@
 # Packages
 /node_modules
 /dist
+/postgres15
 
 # Configuration files
 .env
