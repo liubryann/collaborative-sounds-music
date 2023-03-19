@@ -70,7 +70,8 @@ export default function AudioExport() {
     setOptions(newOptions);
   };
 
-  const downloadRecording = () => {
+  const downloadRecording = (e: any) => {
+    e.preventDefault();
     if (!recording) {
       return;
     }

@@ -37,6 +37,7 @@ export default function Controller() {
 
   return (
     <div className={styles.container}>
+      <AudioImport />
       <button onClick={onPlay}>play</button>
       BPM
       <input
