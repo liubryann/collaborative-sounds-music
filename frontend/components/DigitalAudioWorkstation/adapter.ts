@@ -185,6 +185,4 @@ export {
   updateInstrumentVolume,
   getBpm,
   updateBpm,
-  addAudioFile,
-  getAudioFile,
 };

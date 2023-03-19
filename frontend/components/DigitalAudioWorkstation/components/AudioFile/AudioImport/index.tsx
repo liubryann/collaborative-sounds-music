@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { addAudioFile } from "../../../adapter";
 
+/** Currently on HIATUS */
 export default function AudioImport() {
   const clickImportAudio = () => {
 
@@ -8,9 +8,6 @@ export default function AudioImport() {
 
   //Adds audio file into the database
   const addAudio = (e : React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      addAudioFile(e.target.files[0]);
-    }
   }
 
   return (

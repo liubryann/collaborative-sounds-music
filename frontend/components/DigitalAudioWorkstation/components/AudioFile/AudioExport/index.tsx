@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./audio-export.module.scss";
 import * as Tone from "tone";
 
@@ -9,58 +9,55 @@ export default function AudioExport() {
   const [recorder, setRecorder] = useState<Tone.Recorder>();
   const [recording, setRecording] = useState<Blob>();
   const [running, setRunning] = useState<boolean>(false);
-  const [options, setOptions] = useState({filename: 'recording', extension: 'webm'});
-  const [elapsedTime, setElapsed] = useState(0);
-  const [counter, setCounter] = useState<NodeJS.Timer>();
+  const [options, setOptions] = useState({ filename: 'recording', extension: 'webm' });
+  const [timer, setTimer] = useState(0);
+  const [timerStart, setTimerStart] = useState(false);
+  const tick = useRef();
 
   useEffect(() => {
-    const newRecorder = new Tone.Recorder();
-    setRecorder(newRecorder);
-  }, [])
+    if (!recorder) {
+      const newRecorder = new Tone.Recorder();
+      setRecorder(newRecorder);
+    }
 
-  /** Counter commands */
-  const count = () => {
-    const newTime = elapsedTime + 1;
-    setElapsed(newTime);
-  }
+    if (timerStart) {
+      tick.current = setInterval(() => {
+        setTimer((timer) => timer + 1);
+      }, 10)
+    } else {
+      clearInterval(tick.current);
+    }
 
-  const startCount = () => {
-    const newCounter = setInterval(count, 1000);
-    setCounter(newCounter);
-  }
-
-  const stopCount = () => {
-    clearInterval(counter);
-  }
+    return () => clearInterval(tick.current);
+  }, [timerStart])
 
   /** Recording commands */
   const startRecording = () => {
-    setElapsed(0);
     if (recorder) {
       Tone.getDestination().connect(recorder);
     }
+    setTimerStart(true);
     recorder?.start();
     Tone.start();
     Tone.Transport.start();
-    startCount();
     setRunning(true);
   }
 
   const endRecording = async () => {
     Tone.Transport.stop();
     const newRecording = await recorder?.stop();
-    stopCount();
+    setTimerStart(false);
     setRunning(false);
     setRecording(newRecording);
   }
 
   const nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newOptions = {filename: e.target.value, extension: options.extension}
+    const newOptions = { filename: e.target.value, extension: options.extension }
     setOptions(newOptions);
   }
 
   const extensionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newOptions = {filename: options.filename, extension: e.target.value}
+    const newOptions = { filename: options.filename, extension: e.target.value }
     setOptions(newOptions);
   }
 
@@ -79,17 +76,23 @@ export default function AudioExport() {
     <div>
       <button disabled={running} onClick={startRecording}>Start New Recording</button>
       <div className="timer">
-        {elapsedTime}
+        Elapsed time: {Math.floor(timer/6000)} : {Math.floor(timer%6000/100)} : {Math.floor(timer%100)}
       </div>
       <button disabled={!running} onClick={endRecording}>End Recording</button>
       <form onSubmit={downloadRecording}>
-        <input type="text" name="filename" value={options.filename} onChange={nameChange}/>
-        <select value={options.extension} onChange={extensionChange}>
-          <option value="webm">.webm (Recommended)</option>
-          <option value="wav">.wav</option>
-          <option value="mp3">.mp3</option>
-        </select>
-        <input type="submit" disabled={!recording} value="Download Recording"/>
+        <label>
+          Name:
+          <input type="text" name="filename" value={options.filename} onChange={nameChange} />
+        </label>
+        <label>
+          Type:
+          <select value={options.extension} onChange={extensionChange}>
+            <option value="webm">.webm (Recommended)</option>
+            <option value="wav">.wav</option>
+            <option value="mp3">.mp3</option>
+          </select>
+        </label>
+        <input type="submit" disabled={!recording} value="Download Recording" />
       </form>
     </div>
   );

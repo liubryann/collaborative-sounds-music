@@ -3,7 +3,6 @@ import styles from "./digital-audio-workstation.module.scss";
 import Controller from "./components/Controller";
 import InstrumentSettings from "./components/InstrumentSettings";
 import AddInstrument from "./components/AddInstrument";
-import AudioExport from "./components/AudioFile/AudioExport";
 import { connectAndSyncDoc } from "./connection";
 import {
   getParts,
@@ -213,8 +212,7 @@ export default function DigitalAudioWorkstation() {
       </div>
       <div className={styles.controller}>
         <Controller />
-        <AudioExport />
-    </div>
+      </div>
       {mousePos && (
         <NoteLengthModal
           position={mousePos}
