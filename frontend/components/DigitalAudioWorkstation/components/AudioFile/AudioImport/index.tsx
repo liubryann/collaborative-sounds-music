@@ -12,14 +12,12 @@ export default function AudioImport() {
     }
   }, []);
 
-  const clickImportAudio = () => {
-
-  }
+  const clickImportAudio = () => {};
 
   return (
     <div>
       <button onClick={clickImportAudio}>Import Audio</button>
-      <input type="file" name="audiofile" accept="audio/*"/>
+      <input type="file" name="audiofile" accept="audio/*" />
     </div>
   );
 }
