@@ -82,7 +82,7 @@ export const notes = [
 export const defaultBpm = 120;
 
 export const getDefaultNoteGrid = () => {
-  return [...Array(notes.length)].map((x) => Array(gridLength).fill(null));
+  return [...Array(gridLength)].map((x) => Array(notes.length).fill(null));
 };
 
 export const getDefaultSequence: () => Note[] = () => {

@@ -1,6 +1,13 @@
 .container {
-  display: flex;
   max-width: 75vw;
+  display: grid;
+  grid-template-columns: repeat(33, 70px);
+  grid-template-rows: repeat(38, 25px);
+  overflow: scroll;
+}
+
+.container2 {
+  display: flex;
 }
 
 .selectedCell {
@@ -19,9 +26,14 @@
 
 .note {
   height: 25px;
+  text-align: center;
 }
 
 .gridContainer {
+  grid-column-start: 2;
+  grid-column-end: 33;
+  grid-row-start: 2;
+  grid-row-end: 38;
   :first-child {
     background-color: darkgrey;
   }
@@ -31,4 +43,25 @@
   :nth-child(16n + 17) {
     background-color: darkgrey;
   }
+}
+
+.barNumberLabels {
+  grid-column-start: 1;
+  grid-column-end: 34;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  display: table-row;
+}
+
+.noteLabels {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 38;
+}
+
+.header {
+  text-align: center;
+  display: table-cell;
+  width: 70px;
 }

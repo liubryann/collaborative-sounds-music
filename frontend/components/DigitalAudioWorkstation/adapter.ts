@@ -105,9 +105,19 @@ const updateNoteGridAndSequence = function (
 ) {
   const part = doc.getMap(partId);
   const noteGrid = part.get(schema.NOTE_GRID);
-  const row = noteGrid.get(i);
+  let row = noteGrid.get(j);
 
-  row[j] = set ? duration : null;
+  if (set) {
+    row[i] = duration;
+    row = row.map((cell: boolean | null) => {
+      if (cell !== null) {
+        return duration;
+      }
+      return cell;
+    });
+  } else {
+    row[i] = null;
+  }
 
   const sequence = part.get(schema.SEQUENCE);
   let newNote = sequence.get(j);
@@ -126,12 +136,11 @@ const updateNoteGridAndSequence = function (
     } else {
       newNote.note.splice(newNote.note.indexOf(notes[i]), 1);
     }
-    newNote.duration = baseNoteLength;
   }
 
   doc.transact(() => {
-    noteGrid.delete(i, 1);
-    noteGrid.insert(i, [row]);
+    noteGrid.delete(j, 1);
+    noteGrid.insert(j, [row]);
     sequence.delete(j, 1);
     sequence.insert(j, [newNote]);
   });
