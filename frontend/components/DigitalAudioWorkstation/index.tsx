@@ -29,10 +29,6 @@ export default function DigitalAudioWorkstation() {
   } | null>(null);
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
 
-  useEffect(() => {
-    connectAndSyncDoc("test");
-  }, []);
-
   // close the note length modal
   useEffect(() => {
     const clickEventHandler = () => {
@@ -81,34 +77,37 @@ export default function DigitalAudioWorkstation() {
   );
 
   useEffect(() => {
-    const yInstruments = getParts();
+    connectAndSyncDoc("test").then(() => {
+      const yInstruments = getParts();
 
-    yInstruments.observe((event) => {
-      const newParts = [...getParts()];
+      yInstruments.observe((event) => {
+        const newParts = [...getParts()];
 
-      // yjs doesn't tell you what was deleted so we have to check for it manually which sucks
-      setParts((prevParts) => {
-        if (event.changes.deleted.size > 0) {
-          prevParts
-            .filter((x) => !newParts.includes(x))
-            .forEach((x) => {
-              setToneParts((prev) => {
-                prev[x].dispose();
-                delete prev[x];
-                return { ...prev };
-              });
+        // yjs doesn't tell you what was deleted so we have to check for it manually which sucks
+        setParts((prevParts) => {
+          if (event.changes.deleted.size > 0) {
+            prevParts
+              .filter((x) => !newParts.includes(x))
+              .forEach((x) => {
+                setToneParts((prev) => {
+                  prev[x]?.dispose();
+                  delete prev[x];
+                  return { ...prev };
+                });
 
-              setInstruments((prev) => {
-                delete prev[x];
-                return { ...prev };
+                setInstruments((prev) => {
+                  delete prev[x];
+                  return { ...prev };
+                });
+                setSequences((prev) => {
+                  delete prev[x];
+                  return { ...prev };
+                });
               });
-              setSequences((prev) => {
-                delete prev[x];
-                return { ...prev };
-              });
-            });
-        }
-        return newParts;
+          }
+
+          return newParts;
+        });
       });
     });
   }, []);
@@ -141,7 +140,6 @@ export default function DigitalAudioWorkstation() {
         return;
       }
       const newSeq = sequence.filter((note: any) => note.note !== 0); // TODO: this is pretty inefficient but it works for now
-
       const newPart = new Tone.Part((time, value) => {
         instrument.triggerAttackRelease(value.note, value.duration, time);
       }, newSeq).start(0);
