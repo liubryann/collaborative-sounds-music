@@ -5,7 +5,9 @@ import {
   updateInstrumentVolume,
   Y,
   deletePart,
+  updateInstrumentOscillator,
 } from "../../adapter";
+import { oscillatorTypes } from "../../instruments";
 import { schema } from "../../constants";
 import debounce from "lodash.debounce";
 
@@ -20,10 +22,14 @@ export default function InstrumentSettings({
   selectedPart,
 }: InstrumentSettingsProps) {
   const [volume, setVolume] = useState<string>("5");
+  const [showOscillatorSettings, setShowOscillatorSettings] = useState(false);
+  const [oscillatorType, setOscillatorType] = useState<string>("");
 
   function parseYInstrument(yInstrument: Y.Map<any>) {
     const yVolume = yInstrument.get(schema.INSTRUMENT_VOLUME);
+    const yOscillator = yInstrument.get(schema.INSTRUMENT_OSCILLATOR);
     setVolume(yVolume);
+    setOscillatorType(yOscillator);
   }
 
   useEffect(() => {
@@ -56,6 +62,15 @@ export default function InstrumentSettings({
     };
   }, [debouncedUpdateInstrumentVolume]);
 
+  function openOscillatorMenu() {
+    setShowOscillatorSettings(!showOscillatorSettings);
+  }
+
+  function handleSelectOscillatorType(oscillatorType: string) {
+    setShowOscillatorSettings(false);
+    updateInstrumentOscillator(partId, oscillatorType);
+  }
+
   return (
     <div
       className={selectedPart ? styles.selectedInstrument : ""}
@@ -73,6 +88,19 @@ export default function InstrumentSettings({
           onChange={volumeSliderOnChange}
         />
       </div>
+      <button onClick={openOscillatorMenu}>{oscillatorType}</button>
+      <ul>
+        {showOscillatorSettings &&
+          oscillatorTypes.map((oscillatorType) => (
+            <li key={oscillatorType}>
+              <button
+                onClick={() => handleSelectOscillatorType(oscillatorType)}
+              >
+                {oscillatorType}
+              </button>
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }

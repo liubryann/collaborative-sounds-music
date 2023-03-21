@@ -4,30 +4,68 @@ import { PolySynth } from "tone";
 const SYNTH = "Synth";
 const POLYSYNTH = "PolySynth";
 const KICK = "Kick";
+const SNARE = "Snare";
 
-export const instrumentNames = [KICK, POLYSYNTH];
+export const instrumentNames = [KICK, POLYSYNTH, SNARE];
 
 export type Instrument =
   | Tone.Synth<Tone.SynthOptions>
   | Tone.NoiseSynth
   | PolySynth<any>;
 interface Instruments {
-  [key: string]: (volume: number) => Instrument;
+  [key: string]: (volume: number, oscillator: string) => Instrument;
 }
+
+export const oscillatorTypes = [
+  "pulse",
+  "sine",
+  "square",
+  "triangle",
+  "sawtooth",
+];
 
 function convertVolume(volume: number) {
   return (volume / 100) * 60 - 60;
 }
 
 export const getToneInstrument: Instruments = {
-  [KICK]: (volume: number) =>
+  [KICK]: (volume: number, oscillator: any) =>
     new Tone.PolySynth(Tone.MembraneSynth, {
       volume: convertVolume(volume),
     }).toDestination(),
-  [POLYSYNTH]: (volume: number) =>
+  [POLYSYNTH]: (volume, oscillator: any) =>
     new Tone.PolySynth(Tone.Synth, {
       volume: convertVolume(volume),
+      oscillator: {
+        type: oscillator || "triangle",
+      },
+      envelope: {
+        attack: 0.005,
+        decay: 0.1,
+        sustain: 0.3,
+        release: 1,
+      },
     }).toDestination(),
+  [SNARE]: (volume, oscillator: any) => {
+    const lowPass = new Tone.Filter({
+      frequency: 8000,
+    });
+    return new Tone.NoiseSynth({
+      volume: convertVolume(volume),
+      noise: {
+        type: "white",
+        playbackRate: 3,
+      },
+      envelope: {
+        attack: 0.001,
+        decay: 0.2,
+        sustain: 0.15,
+        release: 0.03,
+      },
+    })
+      .connect(lowPass)
+      .toDestination();
+  },
 };
 
 export interface Note {
