@@ -1,17 +1,20 @@
-import { Sequelize } from "sequelize";
-import { MongodbPersistence } from "y-mongodb";
-import * as Y from "yjs"; // TODO: investigate double import
-import utils from "y-websocket/bin/utils";
-import { WebSocketServer } from "ws";
-import dotenv from "dotenv";
+const { Sequelize } = require("sequelize");
+const { MongodbPersistence } = require("y-mongodb-provider");
+const Y = require("yjs");
+const { setupWSConnection, setPersistence } = require("y-websocket/bin/utils");
+const { WebSocketServer } = require("ws");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const uri = process.env.DB_URI;
 const collection = process.env.COLLECTION_NAME;
 // TODO: Change to Postgres using sequelize to encode and decode document updates
-const ldb = new MongodbPersistence(uri, collection);
+const mdb = new MongodbPersistence(uri, {
+  collectionName: collection,
+  flushSize: 100,
+});
 
-export const sequelize = new Sequelize(
+const sequelize = new Sequelize(
   process.env.POSTGRES_DB,
   process.env.POSTGRES_USER,
   process.env.POSTGRES_PASSWORD,
@@ -22,36 +25,37 @@ export const sequelize = new Sequelize(
   }
 );
 
-export const startWebsocketServer = function (server) {
-  const wss = new WebSocketServer({ noServer: true });
+const startWebsocketServer = function (server) {
+  const wss = new WebSocketServer({ server });
 
-  wss.on("connection", utils.setupWSConnection);
-  server.on("upgrade", (request, socket, head) => {
-    // You may check auth of request here..
-    /**
-     * @param {any} ws
-     */
-    const handleAuth = (ws) => {
-      wss.emit("connection", ws, request);
-    };
-    wss.handleUpgrade(request, socket, head, handleAuth);
-  });
+  wss.on("connection", setupWSConnection);
+  // TODO: figure out what the heck this is doing
+  // server.on("upgrade", (request, socket, head) => {
+  //   // You may check auth of request here..
+  //   /**
+  //    * @param {any} ws
+  //    */
+  //   const handleAuth = (ws) => {
+  //     wss.emit("connection", ws, request);
+  //   };
+  //   wss.handleUpgrade(request, socket, head, handleAuth);
+  // });
 };
 
-export const setPersistence = function () {
-  utils.setPersistence({
+const ySetPersistence = function () {
+  setPersistence({
     bindState: async (docName, ydoc) => {
       // Here you listen to granular document updates and store them in the database
       // You don't have to do this, but it ensures that you don't lose content when the server crashes
       // See https://github.com/yjs/yjs#Document-Updates for documentation on how to encode
       // document updates
 
-      const persistedYdoc = await ldb.getYDoc(docName);
+      const persistedYdoc = await mdb.getYDoc(docName);
       const newUpdates = Y.encodeStateAsUpdate(ydoc);
-      ldb.storeUpdate(docName, newUpdates);
+      mdb.storeUpdate(docName, newUpdates);
       Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc));
       ydoc.on("update", async (update) => {
-        ldb.storeUpdate(docName, update);
+        mdb.storeUpdate(docName, update);
       });
     },
     writeState: async (docName, ydoc) => {
@@ -66,7 +70,7 @@ export const setPersistence = function () {
   });
 };
 
-export const connectDatabase = async function () {
+const connectDatabase = async function () {
   try {
     await sequelize.authenticate();
     await sequelize.sync({ alter: { drop: false } }); // TODO: Remove before production
@@ -76,6 +80,14 @@ export const connectDatabase = async function () {
   }
 };
 
-export const endDBConnection = async function () {
+const endDBConnection = async function () {
   sequelize.close();
+};
+
+module.exports = {
+  endDBConnection,
+  connectDatabase,
+  ySetPersistence,
+  startWebsocketServer,
+  sequelize,
 };

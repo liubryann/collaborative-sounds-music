@@ -1,7 +1,7 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../datasource.js";
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../datasource.js");
 
-export const Composition = sequelize.define("Composition", {
+const Composition = sequelize.define("Composition", {
   title: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -17,3 +17,5 @@ export const Composition = sequelize.define("Composition", {
     },
   },
 });
+
+module.exports = { Composition };

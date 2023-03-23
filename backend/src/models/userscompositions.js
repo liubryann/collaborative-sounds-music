@@ -1,9 +1,9 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../datasource.js";
-import { Composition } from "./composition.js";
-import { User } from "./user.js";
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../datasource.js");
+const { Composition } = require("./composition.js");
+const { User } = require("./user.js");
 
-export const UsersCompositions = sequelize.define("UsersCompositions", {
+const UsersCompositions = sequelize.define("UsersCompositions", {
   UserId: {
     type: DataTypes.INTEGER,
     references: {
@@ -30,3 +30,5 @@ User.hasMany(UsersCompositions);
 UsersCompositions.belongsTo(User);
 Composition.hasMany(UsersCompositions, { onDelete: "CASCADE" });
 UsersCompositions.belongsTo(Composition);
+
+module.exports = { UsersCompositions };

@@ -1,11 +1,13 @@
-import express from "express";
-import { Composition } from "../models/composition.js";
-import { User } from "../models/user.js";
-import { UsersCompositions } from "../models/userscompositions.js";
-import { validCompositionSchema } from "../validators/compositionValidator.js";
-import { isAuthenticated } from "../middleware/auth.js";
+const express = require("express");
+const { Composition } = require("../models/composition.js");
+const { User } = require("../models/user.js");
+const { UsersCompositions } = require("../models/userscompositions.js");
+const {
+  validCompositionSchema,
+} = require("../validators/compositionValidator.js");
+const { isAuthenticated } = require("../middleware/auth.js");
 
-export const compositionRouter = express.Router();
+const compositionRouter = express.Router();
 
 // Create a new composition
 compositionRouter.post("/", isAuthenticated, async (req, res, next) => {
@@ -134,3 +136,5 @@ compositionRouter.delete(
     }
   }
 );
+
+module.exports = { compositionRouter };

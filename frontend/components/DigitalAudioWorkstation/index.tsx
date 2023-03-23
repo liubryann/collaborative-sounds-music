@@ -77,8 +77,9 @@ export default function DigitalAudioWorkstation() {
   );
 
   useEffect(() => {
-    connectAndSyncDoc("test").then(() => {
+    connectAndSyncDoc("newtest").then(() => {
       const yInstruments = getParts();
+      setParts(yInstruments.toArray());
 
       yInstruments.observe((event) => {
         const newParts = [...getParts()];

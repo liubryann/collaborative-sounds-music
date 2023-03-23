@@ -1,11 +1,11 @@
-import http from "http";
-import express from "express";
-import bodyParser from "body-parser";
-import session from "express-session";
-import * as ds from "./datasource.js";
-import { userRouter } from "./routes/usersRouter.js";
-import { compositionRouter } from "./routes/compositionsRouter.js";
-import dotenv from "dotenv";
+const express = require("express");
+const http = require("http");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const ds = require("./datasource.js");
+const { userRouter } = require("./routes/usersRouter.js");
+const { compositionRouter } = require("./routes/compositionsRouter.js");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const port = process.env.PROD_PORT || process.env.DEV_PORT;
@@ -26,7 +26,7 @@ app.use("/api/compositions", compositionRouter);
 const server = http.createServer(app);
 
 ds.startWebsocketServer(server);
-ds.setPersistence();
+ds.ySetPersistence();
 ds.connectDatabase().then(() => {
   server.listen(port);
   console.log(`Listening on http://localhost:${port}`);

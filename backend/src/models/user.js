@@ -1,7 +1,7 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../datasource.js";
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../datasource.js");
 
-export const User = sequelize.define("User", {
+const User = sequelize.define("User", {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -40,3 +40,5 @@ export const User = sequelize.define("User", {
     },
   },
 });
+
+module.exports = { User };

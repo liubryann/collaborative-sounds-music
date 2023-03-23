@@ -1,12 +1,12 @@
-import express from "express";
-import bcrypt from "bcrypt";
-import { User } from "../models/user.js";
-import { Composition } from "../models/composition.js";
-import { UsersCompositions } from "../models/userscompositions.js";
-import { isAuthenticated } from "../middleware/auth.js";
-import { validUserSchema } from "../validators/userValidator.js";
+const express = require("express");
+const bcrypt = require("bcrypt");
+const { User } = require("../models/user.js");
+const { Composition } = require("../models/composition.js");
+const { UsersCompositions } = require("../models/userscompositions.js");
+const { isAuthenticated } = require("../middleware/auth.js");
+const { validUserSchema } = require("../validators/userValidator.js");
 
-export const userRouter = express.Router();
+const userRouter = express.Router();
 
 userRouter.post("/signup", async (req, res) => {
   let { value, err } = validUserSchema.validate(req.body);
@@ -73,3 +73,5 @@ userRouter.get("/:userId/compositions", isAuthenticated, async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+module.exports = { userRouter };
