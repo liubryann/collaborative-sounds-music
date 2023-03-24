@@ -2,32 +2,33 @@ const express = require("express");
 const { Composition } = require("../models/composition.js");
 const { User } = require("../models/user.js");
 const { UsersCompositions } = require("../models/userscompositions.js");
-const {
-  validCompositionSchema,
-} = require("../validators/compositionValidator.js");
 const { isAuthenticated } = require("../middleware/auth.js");
+const compositionSchema = require("../middleware/schemas/compositionSchema.js");
+const isRequestValid = require("../middleware/validator.js");
 
 const compositionRouter = express.Router();
 
 // Create a new composition
-compositionRouter.post("/", isAuthenticated, async (req, res, next) => {
-  let { value, err } = validCompositionSchema.validate(req.body);
-  if (err) return res.status(400).json({ error: err.message });
+compositionRouter.post(
+  "/",
+  isRequestValid(compositionSchema),
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const composition = await Composition.create({
+        ...req.body,
+        owner: req.session.user.username,
+      });
+      await composition.addUser(req.session.user.id, {
+        through: "UserComposition",
+      });
 
-  try {
-    const composition = await Composition.create({
-      ...value,
-      owner: req.session.user.username,
-    });
-    await composition.addUser(req.session.user.id, {
-      through: "UserComposition",
-    });
-
-    return res.status(200).json({ composition: composition.title });
-  } catch (e) {
-    return res.status(422).json({ error: e.message });
+      return res.status(200).json({ composition: composition.title });
+    } catch (e) {
+      return res.status(422).json({ error: e.message });
+    }
   }
-});
+);
 
 // Get a composition by id
 compositionRouter.get("/:id", isAuthenticated, async (req, res) => {
@@ -66,24 +67,25 @@ compositionRouter.delete("/:id", isAuthenticated, async (req, res) => {
 });
 
 // Update a composition's title
-compositionRouter.patch("/:id", isAuthenticated, async (req, res) => {
-  validCompositionSchema.validate(req.body, (err) => {
-    if (err) return res.status(400).json({ error: err.message });
-  });
+compositionRouter.patch(
+  "/:id",
+  isRequestValid(compositionSchema),
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const [recordsChanged] = await Composition.update(
+        { title: req.body.title },
+        { where: { id: req.params.id, owner: req.session.user.username } }
+      );
+      if (recordsChanged === 0)
+        return res.status(404).json({ error: "Composition not found" });
 
-  try {
-    const [recordsChanged] = await Composition.update(
-      { title: req.body.title },
-      { where: { id: req.params.id, owner: req.session.user.username } }
-    );
-    if (recordsChanged === 0)
-      return res.status(404).json({ error: "Composition not found" });
-
-    return res.status(200).json({ message: "Composition updated" });
-  } catch (e) {
-    return res.status(422).json({ error: e.message });
+      return res.status(200).json({ message: "Composition updated" });
+    } catch (e) {
+      return res.status(422).json({ error: e.message });
+    }
   }
-});
+);
 
 // TODO: post or put request?
 compositionRouter.post(

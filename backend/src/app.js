@@ -6,12 +6,14 @@ const ds = require("./datasource.js");
 const { userRouter } = require("./routes/usersRouter.js");
 const { compositionRouter } = require("./routes/compositionsRouter.js");
 const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
 
 const port = process.env.PROD_PORT || process.env.DEV_PORT;
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "test",

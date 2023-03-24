@@ -1,5 +1,15 @@
 const API_URL = process.env.API_URL || "http://localhost:3001";
 
+/**
+ *
+ * @param username
+ * @param firstname
+ * @param lastname
+ * @param password
+ * @param email
+ * @returns Promise<{user: User}>
+ * @description Creates a new user and returns the user object.
+ */
 const signup = (
   username: string,
   firstname: string,
@@ -22,6 +32,13 @@ const signup = (
   }).then((res) => res.json());
 };
 
+/**
+ *
+ * @param username
+ * @param password
+ * @returns Promise<{user: User}>
+ * @description Logs in a user and returns the user object.
+ */
 const login = (username: string, password: string) => {
   return fetch(`${API_URL}/users/login`, {
     method: "POST",
@@ -35,36 +52,66 @@ const login = (username: string, password: string) => {
   }).then((res) => res.json());
 };
 
+/**
+ *
+ * @returns Promise<{user: User}>
+ * @description Signs out a user and returns the user object.
+ */
 const signout = () => {
   return fetch(`${API_URL}/users/signout`, {
     method: "GET",
   }).then((res) => res.json());
 };
 
+/**
+ *
+ * @param userId
+ * @returns Promise<{compositions: Composition[]}>
+ * @description Gets all compositions for a user.
+ */
 const getUsersCompositions = (userId: number) => {
   return fetch(`${API_URL}/user/${userId}/compositions`, {
     method: "GET",
   }).then((res) => res.json());
 };
 
-const createComposition = (title: string) => {
+/**
+ *
+ * @param compositionTitle
+ * @returns Promise<{composition: Composition}>
+ * @description Creates a new composition and returns the composition object.
+ */
+const createComposition = (compositionTitle: string) => {
   return fetch(`${API_URL}/api/compositions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ compositionTitle }),
   }).then((res) => res.json());
 };
 
-const getComposition = (id: number) => {
-  return fetch(`${API_URL}/api/compositions/${id}`, {
+/**
+ *
+ * @param compositionId
+ * @returns Promise<{composition: Composition}>
+ * @description Gets a composition by id and returns the composition object.
+ */
+const getComposition = (compositionId: number) => {
+  return fetch(`${API_URL}/api/compositions/${compositionId}`, {
     method: "GET",
   }).then((res) => res.json());
 };
 
-const updateComposition = (id: number, title: string) => {
-  return fetch(`${API_URL}/api/compositions/${id}`, {
+/**
+ *
+ * @param compositionId
+ * @param title
+ * @returns Promise<{message: string}>
+ * @description Updates a composition title by id and returns a message on success.
+ */
+const updateComposition = (compositionId: number, title: string) => {
+  return fetch(`${API_URL}/api/compositions/${compositionId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -73,12 +120,26 @@ const updateComposition = (id: number, title: string) => {
   }).then((res) => res.json());
 };
 
-const deleteComposition = (id: number) => {
-  return fetch(`${API_URL}/api/compositions/${id}`, {
+/**
+ *
+ * @param compositionId
+ * @returns Promise<{message: string}>
+ * @description Deletes a composition by id and returns a message on success.
+ */
+const deleteComposition = (compositionId: number) => {
+  return fetch(`${API_URL}/api/compositions/${compositionId}`, {
     method: "DELETE",
   }).then((res) => res.json());
 };
 
+/**
+ *
+ * @param compositionId
+ * @param collaboratorId
+ * @returns Promise<{composition: Composition}>
+ * @description Adds a user to a composition as a collaborator and returns the
+ *              composition object.
+ */
 const addCollaboratorToComposition = (
   compositionId: number,
   collaboratorId: number
@@ -92,6 +153,14 @@ const addCollaboratorToComposition = (
   }).then((res) => res.json());
 };
 
+/**
+ *
+ * @param compositionId
+ * @param collaboratorId
+ * @returns Promise<{message: string}>
+ * @description Removes a user from a composition as a collaborator and
+ *              returns a message on success.
+ */
 const removeCollaboratorFromComposition = (
   compositionId: number,
   collaboratorId: number
@@ -105,7 +174,7 @@ const removeCollaboratorFromComposition = (
   }).then((res) => res.json());
 };
 
-const apiService = {
+export {
   signup,
   login,
   signout,
@@ -117,5 +186,3 @@ const apiService = {
   addCollaboratorToComposition,
   removeCollaboratorFromComposition,
 };
-
-export default apiService;

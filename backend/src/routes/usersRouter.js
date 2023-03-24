@@ -4,22 +4,20 @@ const { User } = require("../models/user.js");
 const { Composition } = require("../models/composition.js");
 const { UsersCompositions } = require("../models/userscompositions.js");
 const { isAuthenticated } = require("../middleware/auth.js");
-const { validUserSchema } = require("../validators/userValidator.js");
+const userSchema = require("../middleware/schemas/userSchema.js");
+const isRequestValid = require("../middleware/validator.js");
 
 const userRouter = express.Router();
 
-userRouter.post("/signup", async (req, res) => {
-  let { value, err } = validUserSchema.validate(req.body);
-  if (err) return res.status(400).json({ error: err.message });
-
+userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
-  const password = bcrypt.hashSync(req.body.password, salt);
+  const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
   try {
     const user = await User.create({
-      ...value,
-      password: password,
+      ...req.body,
+      hashedPassword,
     });
     return res.json({ user: user.username });
   } catch (e) {
@@ -27,11 +25,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", async (req, res) => {
-  validUserSchema.validate(req.body, (err) => {
-    if (err) return res.status(400).json({ error: err.message });
-  });
-
+userRouter.post("/login", isRequestValid(userSchema), async (req, res) => {
   const user = await User.findOne({ where: { username: req.body.username } });
   if (!user)
     return res.status(401).json({ error: "Incorrect username or password" });

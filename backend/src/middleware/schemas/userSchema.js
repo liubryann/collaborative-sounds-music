@@ -1,11 +1,11 @@
 const joi = require("joi");
 
-const validUserSchema = joi.object({
+const userSchema = joi.object({
   username: joi.string().required().alphanum().min(4).max(30),
   firstname: joi.string().required().min(1).max(20),
   lastname: joi.string().required().min(1).max(20),
-  password: joi.string().required().strip(),
+  password: joi.string().strip().required().min(8),
   email: joi.string().required().email({ minDomainSegments: 2 }),
 });
 
-module.exports = { validUserSchema };
+module.exports = userSchema;
