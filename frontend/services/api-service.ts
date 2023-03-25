@@ -1,5 +1,19 @@
 const API_URL = process.env.API_URL || "http://localhost:3001";
 
+const constructURL = (path: string) => {
+  return `${API_URL}${path}`;
+};
+
+const handleResponse = (res: Response) => {
+  if (!res.ok) {
+    return res.json().then((err) => {
+      throw new Error(err.error);
+    });
+  } else {
+    return res.json();
+  }
+};
+
 /**
  *
  * @param username
@@ -11,13 +25,13 @@ const API_URL = process.env.API_URL || "http://localhost:3001";
  * @description Creates a new user and returns the user object.
  */
 const signup = (
-  username: string,
+  email: string,
   firstname: string,
   lastname: string,
-  password: string,
-  email: string
+  username: string,
+  password: string
 ) => {
-  return fetch(`${API_URL}/users/signup`, {
+  return fetch(constructURL("/users/signup"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +43,7 @@ const signup = (
       password,
       email,
     }),
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -40,7 +54,8 @@ const signup = (
  * @description Logs in a user and returns the user object.
  */
 const login = (username: string, password: string) => {
-  return fetch(`${API_URL}/users/login`, {
+  return fetch(constructURL("/users/login"), {
+    credentials: "include",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -49,7 +64,7 @@ const login = (username: string, password: string) => {
       username,
       password,
     }),
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -58,21 +73,22 @@ const login = (username: string, password: string) => {
  * @description Signs out a user and returns the user object.
  */
 const signout = () => {
-  return fetch(`${API_URL}/users/signout`, {
+  return fetch(constructURL("/users/signout"), {
+    credentials: "include",
     method: "GET",
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
  *
- * @param userId
  * @returns Promise<{compositions: Composition[]}>
- * @description Gets all compositions for a user.
+ * @description Gets all compositions for a logged in user
  */
-const getUsersCompositions = (userId: number) => {
-  return fetch(`${API_URL}/user/${userId}/compositions`, {
+const getUsersCompositions = () => {
+  return fetch(constructURL("/users/compositions"), {
+    credentials: "include",
     method: "GET",
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -82,13 +98,14 @@ const getUsersCompositions = (userId: number) => {
  * @description Creates a new composition and returns the composition object.
  */
 const createComposition = (compositionTitle: string) => {
-  return fetch(`${API_URL}/api/compositions`, {
+  return fetch(constructURL("/api/compositions"), {
+    credentials: "include",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ compositionTitle }),
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -98,9 +115,9 @@ const createComposition = (compositionTitle: string) => {
  * @description Gets a composition by id and returns the composition object.
  */
 const getComposition = (compositionId: number) => {
-  return fetch(`${API_URL}/api/compositions/${compositionId}`, {
+  return fetch(constructURL(`/api/compositions/${compositionId}`), {
     method: "GET",
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -111,13 +128,14 @@ const getComposition = (compositionId: number) => {
  * @description Updates a composition title by id and returns a message on success.
  */
 const updateComposition = (compositionId: number, title: string) => {
-  return fetch(`${API_URL}/api/compositions/${compositionId}`, {
+  return fetch(constructURL(`/api/compositions/${compositionId}`), {
+    credentials: "include",
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ title }),
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -127,9 +145,10 @@ const updateComposition = (compositionId: number, title: string) => {
  * @description Deletes a composition by id and returns a message on success.
  */
 const deleteComposition = (compositionId: number) => {
-  return fetch(`${API_URL}/api/compositions/${compositionId}`, {
+  return fetch(constructURL(`/api/compositions/${compositionId}`), {
+    credentials: "include",
     method: "DELETE",
-  }).then((res) => res.json());
+  }).then(handleResponse);
 };
 
 /**
@@ -144,13 +163,17 @@ const addCollaboratorToComposition = (
   compositionId: number,
   collaboratorId: number
 ) => {
-  return fetch(`${API_URL}/api/compositions/collaborators/${compositionId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ collaboratorId }),
-  }).then((res) => res.json());
+  return fetch(
+    constructURL(`/api/compositions/collaborators/${compositionId}`),
+    {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ collaboratorId }),
+    }
+  ).then(handleResponse);
 };
 
 /**
@@ -165,13 +188,17 @@ const removeCollaboratorFromComposition = (
   compositionId: number,
   collaboratorId: number
 ) => {
-  return fetch(`${API_URL}/api/compositions/collaborators/${compositionId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ collaboratorId }),
-  }).then((res) => res.json());
+  return fetch(
+    constructURL(`/api/compositions/collaborators/${compositionId}`),
+    {
+      credentials: "include",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ collaboratorId }),
+    }
+  ).then(handleResponse);
 };
 
 export {
