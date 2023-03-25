@@ -167,6 +167,10 @@ const updateInstrumentVolume = function (partId: string, volume: string) {
   instrument.set(schema.INSTRUMENT_VOLUME, volume);
 };
 
+const destroyDocument = function () {
+  doc.destroy();
+};
+
 export {
   Y,
   doc,
@@ -181,4 +185,5 @@ export {
   updateInstrumentVolume,
   getBpm,
   updateBpm,
+  destroyDocument,
 };

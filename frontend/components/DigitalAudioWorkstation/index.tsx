@@ -10,14 +10,21 @@ import {
   Y,
   getInstrument,
   getSequence,
+  destroyDocument,
 } from "./adapter";
 import NoteLengthModal from "./components/NoteLengthModal";
 import InstrumentNotes from "./components/InstrumentNotes";
 import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
+import { getComposition } from "@/services/api-service";
 
-export default function DigitalAudioWorkstation() {
+interface DigitalAudioWorkstationProps {
+  roomId: string;
+}
+export default function DigitalAudioWorkstation({
+  roomId,
+}: DigitalAudioWorkstationProps) {
   const [parts, setParts] = useState<string[]>([]);
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(
     null
@@ -77,7 +84,7 @@ export default function DigitalAudioWorkstation() {
   );
 
   useEffect(() => {
-    connectAndSyncDoc("newtest").then(() => {
+    connectAndSyncDoc(roomId).then(() => {
       const yInstruments = getParts();
       setParts(yInstruments.toArray());
 
@@ -85,6 +92,7 @@ export default function DigitalAudioWorkstation() {
         const newParts = [...getParts()];
 
         // yjs doesn't tell you what was deleted so we have to check for it manually which sucks
+        // TODO: find a better way to do this
         setParts((prevParts) => {
           if (event.changes.deleted.size > 0) {
             prevParts
@@ -111,7 +119,11 @@ export default function DigitalAudioWorkstation() {
         });
       });
     });
-  }, []);
+
+    return () => {
+      destroyDocument();
+    };
+  }, [roomId]);
 
   // handle selectedPart when deleting instruments
   const partsLoaded = useRef<boolean>(false);

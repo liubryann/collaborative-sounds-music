@@ -4,59 +4,77 @@ import React, { useState } from "react";
 
 export default function Signup() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const defaultInputs = {
+    email: "",
+    firstname: "",
+    lastname: "",
+    username: "",
+    password: "",
+  };
+
+  const [inputs, setInputs] = useState(defaultInputs);
+
+  const setField = (field: string, value: string) => {
+    setInputs({
+      ...inputs,
+      [field]: value,
+    });
+  };
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signup().then((res) => {
-      setUsername("");
-      setPassword("");
-      e.currentTarget.reset();
-      if (res.status === 200) {
+    const { email, firstname, lastname, username, password } = inputs;
+    signup(email, firstname, lastname, username, password)
+      .then(() => {
         router.push("/dashboard");
-      } else {
-        const errorMsg = document.getElementById("error-msg")!;
-        errorMsg.innerHTML = "Invalid username or password";
-      }
-    });
+      })
+      .catch((err) => {
+        const errorMsg = document.getElementById("signup-error-msg")!;
+        errorMsg.innerHTML = err.message;
+      })
+      .finally(() => {
+        setInputs(defaultInputs);
+      });
   };
 
   return (
     <div>
+      <p id="signup-error-msg"></p>
       <form onSubmit={handleSignup}>
         <input
           type="text"
           name="email"
           placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+          value={inputs.email}
+          onChange={(e) => setField("email", e.target.value)}
         />
         <input
           type="text"
           name="firstname"
           placeholder="First Name"
-          onChange={(e) => setFirstName(e.target.value)}
+          value={inputs.firstname}
+          onChange={(e) => setField("firstname", e.target.value)}
         />
         <input
           type="text"
           name="lastname"
           placeholder="Last Name"
-          onChange={(e) => setLastName(e.target.value)}
+          value={inputs.lastname}
+          onChange={(e) => setField("lastname", e.target.value)}
         />
         <input
           type="text"
           name="username"
           placeholder="Username"
-          onChange={(e) => setUsername(e.target.value)}
+          value={inputs.username}
+          onChange={(e) => setField("username", e.target.value)}
         />
         <input
           type="password"
           name="password"
           placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
+          value={inputs.password}
+          onChange={(e) => setField("password", e.target.value)}
         />
         <button type="submit">Sign up</button>
       </form>

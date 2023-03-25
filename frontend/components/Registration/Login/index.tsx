@@ -10,33 +10,36 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(username, password).then((res) => {
-      setUsername("");
-      setPassword("");
-      e.currentTarget.reset();
-      if (res.status === 200) {
+    login(username, password)
+      .then(() => {
         router.push("/dashboard");
-      } else {
-        const errorMsg = document.getElementById("error-msg")!;
-        errorMsg.innerHTML = "Invalid username or password";
-      }
-    });
+      })
+      .catch((err) => {
+        const errorMsg = document.getElementById("login-error-msg")!;
+        errorMsg.innerHTML = err.message;
+      })
+      .finally(() => {
+        setUsername("");
+        setPassword("");
+      });
   };
 
   return (
     <div>
-      <p id="error-msg"></p>
+      <p id="login-error-msg"></p>
       <form onSubmit={handleLogin}>
         <input
           type="text"
           name="username"
           placeholder="Username"
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
           name="password"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
