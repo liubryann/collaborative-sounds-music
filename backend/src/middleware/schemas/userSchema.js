@@ -8,4 +8,9 @@ const userSchema = joi.object({
   email: joi.string().required().email({ minDomainSegments: 2 }),
 });
 
-module.exports = userSchema;
+const loginSchema = joi.object({
+  username: joi.string().required(),
+  password: joi.string().strip().required(),
+});
+
+module.exports = { userSchema, loginSchema };
