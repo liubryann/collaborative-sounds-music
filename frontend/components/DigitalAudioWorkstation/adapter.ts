@@ -1,12 +1,6 @@
 import { doc, Y } from "./connection";
 import { schema } from "./constants";
-import {
-  getDefaultNoteGrid,
-  getDefaultSequence,
-  notes,
-  baseNoteLength,
-  defaultBpm,
-} from "./instruments";
+import { getDefaultNoteGrid, getDefaultSequence, notes } from "./instruments";
 ("use strict");
 /*
   NOTE: one room to one composition
@@ -49,7 +43,7 @@ const updateBpm = function (bpm: string): void {
 };
 
 // add a new instrument to the list of instruments
-const addPart = function (instrumentName: string, partId: string): void {
+const addPart = function (instrumentType: string, partId: string): void {
   const parts = doc.getArray(schema.PARTS);
 
   for (let part of parts) {
@@ -63,8 +57,9 @@ const addPart = function (instrumentName: string, partId: string): void {
     const part = doc.getMap(partId);
 
     const instrument = new Y.Map();
-    instrument.set(schema.INSTRUMENT_NAME, instrumentName);
+    instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
     instrument.set(schema.INSTRUMENT_VOLUME, 100);
+    instrument.set(schema.INSTRUMENT_OSCILLATOR, "triangle");
     part.set(schema.INSTRUMENT, instrument);
 
     part.set(schema.NOTE_GRID, Y.Array.from(getDefaultNoteGrid()));
@@ -167,6 +162,19 @@ const updateInstrumentVolume = function (partId: string, volume: string) {
   instrument.set(schema.INSTRUMENT_VOLUME, volume);
 };
 
+const updateInstrumentOscillator = function (
+  partId: string,
+  oscillator: string
+) {
+  const instrument = getInstrument(partId);
+  instrument.set(schema.INSTRUMENT_OSCILLATOR, oscillator);
+};
+
+const updateInstrumentType = function (partId: string, instrumentType: string) {
+  const instrument = getInstrument(partId);
+  instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
+};
+
 export {
   Y,
   doc,
@@ -181,4 +189,6 @@ export {
   updateInstrumentVolume,
   getBpm,
   updateBpm,
+  updateInstrumentOscillator,
+  updateInstrumentType,
 };

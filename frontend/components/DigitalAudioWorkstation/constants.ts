@@ -5,7 +5,8 @@ export const schema = {
   PARTS: "parts",
   SEQUENCE: "sequence",
   INSTRUMENT_VOLUME: "volume",
-  INSTRUMENT_NAME: "instrumentName",
+  INSTRUMENT_TYPE: "instrumentType",
   BPM: "bpm",
   COMPOSITION: "composition",
+  INSTRUMENT_OSCILLATOR: "oscillator",
 };

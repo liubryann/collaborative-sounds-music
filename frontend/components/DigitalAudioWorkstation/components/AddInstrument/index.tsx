@@ -1,16 +1,9 @@
 import React from "react";
 import styles from "./add-instrument.module.scss";
-import { instrumentNames } from "../../instruments";
 import { addPart } from "../../adapter";
 import * as Tone from "tone";
 
 export default function AddInstrument() {
-  const [openInstrumentsPanel, setOpenInstrumentsPanel] = React.useState(false);
-
-  function toggleInstrumentsPanel() {
-    setOpenInstrumentsPanel(!openInstrumentsPanel);
-  }
-
   function handleAddInstrument(instrument: string) {
     const partName = prompt("Enter the name of this part");
     if (partName !== null) {
@@ -21,21 +14,9 @@ export default function AddInstrument() {
 
   return (
     <div>
-      <button onClick={toggleInstrumentsPanel}>Add Instrument</button>
-      {openInstrumentsPanel && (
-        <div>
-          {instrumentNames.map((instrument) => {
-            return (
-              <div
-                key={instrument}
-                onClick={() => handleAddInstrument(instrument)}
-              >
-                {instrument}
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <button onClick={() => handleAddInstrument("Synth")}>
+        Add Instrument
+      </button>
     </div>
   );
 }

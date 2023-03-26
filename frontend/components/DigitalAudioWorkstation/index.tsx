@@ -77,7 +77,7 @@ export default function DigitalAudioWorkstation() {
   );
 
   useEffect(() => {
-    connectAndSyncDoc("newtest").then(() => {
+    connectAndSyncDoc("newtest3").then(() => {
       const yInstruments = getParts();
       setParts(yInstruments.toArray());
 
@@ -141,9 +141,18 @@ export default function DigitalAudioWorkstation() {
         return;
       }
       const newSeq = sequence.filter((note: any) => note.note !== 0); // TODO: this is pretty inefficient but it works for now
-      const newPart = new Tone.Part((time, value) => {
-        instrument.triggerAttackRelease(value.note, value.duration, time);
-      }, newSeq).start(0);
+
+      let newPart: Tone.Part;
+      if (instrument instanceof Tone.NoiseSynth) {
+        newPart = new Tone.Part((time, value) => {
+          instrument.triggerAttackRelease(value.duration, time);
+        }, newSeq).start(0);
+      } else {
+        newPart = new Tone.Part((time, value) => {
+          instrument.triggerAttackRelease(value.note, value.duration, time);
+        }, newSeq).start(0);
+      }
+
       newPart.loopStart = 0;
       newPart.loopEnd = loopEnd;
       newPart.loop = true;
@@ -158,9 +167,10 @@ export default function DigitalAudioWorkstation() {
 
   // parse the yjs instrument into a Tone.js instrument
   function parseYInstrument(yInstrument: Y.Map<any>): Instrument {
-    const yInstrumentName = yInstrument.get(schema.INSTRUMENT_NAME);
+    const yInstrumentType = yInstrument.get(schema.INSTRUMENT_TYPE);
     const yVolume = yInstrument.get(schema.INSTRUMENT_VOLUME);
-    return getToneInstrument[yInstrumentName](yVolume);
+    const yOscillator = yInstrument.get(schema.INSTRUMENT_OSCILLATOR);
+    return getToneInstrument(yInstrumentType, yVolume, yOscillator);
   }
 
   // observe the yjs instruments and sequences and update the Tone.js parts
