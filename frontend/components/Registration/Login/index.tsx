@@ -1,3 +1,4 @@
+import styles from "../registration.module.scss";
 import React, { useState } from "react";
 import { login } from "@/services/api-service";
 import Link from "next/link";
@@ -7,6 +8,7 @@ export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,8 +17,7 @@ export default function Login() {
         router.push("/dashboard");
       })
       .catch((err) => {
-        const errorMsg = document.getElementById("login-error-msg")!;
-        errorMsg.innerHTML = err.message;
+        setError(err.message);
       })
       .finally(() => {
         setUsername("");
@@ -25,26 +26,32 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <p id="login-error-msg"></p>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
-      <Link href="/signup">Sign Up</Link>
+    <div className={styles["registration-container"]}>
+      <div className={styles["registration-card"]}>
+        <div>Compose something beautiful</div>
+        <p className={styles["error-msg"]}>{error}</p>
+        <form onSubmit={handleLogin} className={styles["registration-form"]}>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Login</button>
+        </form>
+        <div>or</div>
+        <Link href="/signup">Sign up</Link>
+      </div>
     </div>
   );
 }

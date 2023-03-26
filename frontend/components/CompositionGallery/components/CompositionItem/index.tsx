@@ -19,7 +19,7 @@ export default function CompositionItem({
       month: "short",
       day: "numeric",
     };
-    return new Date(date).toLocaleDateString("en-US",options);
+    return new Date(date).toLocaleDateString("en-US", options);
   }
   return (
     <div>
