@@ -23,7 +23,7 @@ compositionRouter.post(
         through: "UserComposition",
       });
 
-      return res.status(200).json({ composition: composition.title });
+      return res.status(200).json({ composition });
     } catch (e) {
       return res.status(422).json({ error: e.message });
     }

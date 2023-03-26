@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React from "react";
 
 interface CompositionItemProps {
@@ -14,15 +13,18 @@ export default function CompositionItem({
   owner,
   updatedAt,
 }: CompositionItemProps) {
-  const router = useRouter();
-
-  function selectComposition() {
-    router.push(`/compose/${id}`);
+  function formatDate(date: string) {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return new Date(date).toLocaleDateString("en-US",options);
   }
-
   return (
     <div>
-      <div onClick={selectComposition}>{title}</div>
+      <div>{title}</div>
+      <div>{formatDate(updatedAt)}</div>
     </div>
   );
 }

@@ -17,7 +17,6 @@ import InstrumentNotes from "./components/InstrumentNotes";
 import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
-import { getComposition } from "@/services/api-service";
 
 interface DigitalAudioWorkstationProps {
   roomId: string;

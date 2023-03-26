@@ -1,0 +1,11 @@
+.composition-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dashboard-header {
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+}

@@ -104,7 +104,7 @@ const createComposition = (compositionTitle: string) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ compositionTitle }),
+    body: JSON.stringify({ title: compositionTitle }),
   }).then(handleResponse);
 };
 
