@@ -42,7 +42,7 @@ export default function Signup() {
     <div className={styles["registration-container"]}>
       <div className={styles["registration-card"]}>
         <div>Begin your musical journey. Together.</div>
-        <p className={styles["error-msg"]}></p>
+        <p className={styles["error-msg"]}>{error}</p>
         <form onSubmit={handleSignup} className={styles["registration-form"]}>
           <input
             type="text"

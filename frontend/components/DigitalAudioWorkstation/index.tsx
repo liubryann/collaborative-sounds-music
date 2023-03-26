@@ -91,7 +91,6 @@ export default function DigitalAudioWorkstation({
         const newParts = [...getParts()];
 
         // yjs doesn't tell you what was deleted so we have to check for it manually which sucks
-        // TODO: find a better way to do this
         setParts((prevParts) => {
           if (event.changes.deleted.size > 0) {
             prevParts

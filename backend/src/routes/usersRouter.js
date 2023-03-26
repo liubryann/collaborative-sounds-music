@@ -52,9 +52,6 @@ userRouter.get("/signout", isAuthenticated, (req, res) => {
 });
 
 userRouter.get("/compositions", isAuthenticated, async (req, res) => {
-  // if (req.session.user.id !== +req.params.userId)
-  //   return res.status(403).json({ error: "Unauthorized" });
-
   try {
     const { rows, count } = await UsersCompositions.findAndCountAll({
       where: { UserId: +req.session.user.id },
