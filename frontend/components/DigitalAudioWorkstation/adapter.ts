@@ -170,6 +170,10 @@ const updateInstrumentOscillator = function (
   instrument.set(schema.INSTRUMENT_OSCILLATOR, oscillator);
 };
 
+const destroyDocument = function () {
+  doc.destroy();
+};
+
 const updateInstrumentType = function (partId: string, instrumentType: string) {
   const instrument = getInstrument(partId);
   instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
@@ -189,6 +193,7 @@ export {
   updateInstrumentVolume,
   getBpm,
   updateBpm,
+  destroyDocument,
   updateInstrumentOscillator,
   updateInstrumentType,
 };

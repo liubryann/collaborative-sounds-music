@@ -4,22 +4,23 @@ const { User } = require("../models/user.js");
 const { Composition } = require("../models/composition.js");
 const { UsersCompositions } = require("../models/userscompositions.js");
 const { isAuthenticated } = require("../middleware/auth.js");
-const { validUserSchema } = require("../validators/userValidator.js");
+const {
+  loginSchema,
+  userSchema,
+} = require("../middleware/schemas/userSchema.js");
+const isRequestValid = require("../middleware/validator.js");
 
 const userRouter = express.Router();
 
-userRouter.post("/signup", async (req, res) => {
-  let { value, err } = validUserSchema.validate(req.body);
-  if (err) return res.status(400).json({ error: err.message });
-
+userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
-  const password = bcrypt.hashSync(req.body.password, salt);
+  const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
   try {
     const user = await User.create({
-      ...value,
-      password: password,
+      ...req.body,
+      password: hashedPassword,
     });
     return res.json({ user: user.username });
   } catch (e) {
@@ -27,11 +28,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", async (req, res) => {
-  validUserSchema.validate(req.body, (err) => {
-    if (err) return res.status(400).json({ error: err.message });
-  });
-
+userRouter.post("/login", isRequestValid(loginSchema), async (req, res) => {
   const user = await User.findOne({ where: { username: req.body.username } });
   if (!user)
     return res.status(401).json({ error: "Incorrect username or password" });
@@ -54,13 +51,10 @@ userRouter.get("/signout", isAuthenticated, (req, res) => {
   return res.status(200).json({ message: "Signed out" });
 });
 
-userRouter.get("/:userId/compositions", isAuthenticated, async (req, res) => {
-  if (req.session.user.id !== +req.params.userId)
-    return res.status(403).json({ error: "Unauthorized" });
-
+userRouter.get("/compositions", isAuthenticated, async (req, res) => {
   try {
     const { rows, count } = await UsersCompositions.findAndCountAll({
-      where: { UserId: +req.params.userId },
+      where: { UserId: +req.session.user.id },
       attributes: ["CompositionId"],
       include: {
         model: Composition,

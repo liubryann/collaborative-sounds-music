@@ -10,6 +10,7 @@ import {
   Y,
   getInstrument,
   getSequence,
+  destroyDocument,
 } from "./adapter";
 import NoteLengthModal from "./components/NoteLengthModal";
 import InstrumentNotes from "./components/InstrumentNotes";
@@ -17,7 +18,12 @@ import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
 
-export default function DigitalAudioWorkstation() {
+interface DigitalAudioWorkstationProps {
+  roomId: string;
+}
+export default function DigitalAudioWorkstation({
+  roomId,
+}: DigitalAudioWorkstationProps) {
   const [parts, setParts] = useState<string[]>([]);
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(
     null
@@ -72,7 +78,7 @@ export default function DigitalAudioWorkstation() {
   const toneParts = useRef<{ [partId: string]: Tone.Part }>({});
 
   useEffect(() => {
-    connectAndSyncDoc("newtest4").then(() => {
+    connectAndSyncDoc(roomId).then(() => {
       const yParts = getParts();
       setParts(yParts.toArray());
 
@@ -96,7 +102,11 @@ export default function DigitalAudioWorkstation() {
         });
       });
     });
-  }, []);
+
+    return () => {
+      destroyDocument();
+    };
+  }, [roomId]);
 
   // handle selectedPart when deleting instruments
   const partsLoaded = useRef<boolean>(false);
