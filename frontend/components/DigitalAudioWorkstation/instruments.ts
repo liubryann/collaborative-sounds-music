@@ -1,17 +1,8 @@
 import * as Tone from "tone";
-import { PolySynth } from "tone";
-
-const SYNTH = "Synth";
-const POLYSYNTH = "PolySynth";
-const KICK = "Kick";
-const SNARE = "Snare";
-
-export const instrumentNames = [KICK, POLYSYNTH, SNARE];
 
 export type Instrument =
-  | Tone.Synth<Tone.SynthOptions>
   | Tone.NoiseSynth
-  | PolySynth<any>;
+  | Tone.PolySynth<Tone.Synth<Tone.SynthOptions>>;
 interface Instruments {
   [key: string]: (volume: number, oscillator: string) => Instrument;
 }
@@ -24,29 +15,28 @@ export const oscillatorTypes = [
   "sawtooth",
 ];
 
+export const instrumentTypes = [
+  "Synth",
+  "AMSynth",
+  "DuoSynth",
+  "FMSynth",
+  "MembraneSynth",
+  "MetalSynth",
+  "MonoSynth",
+  "NoiseSynth",
+  "PluckSynth",
+];
+
 function convertVolume(volume: number) {
   return (volume / 100) * 60 - 60;
 }
 
-export const getToneInstrument: Instruments = {
-  [KICK]: (volume: number, oscillator: any) =>
-    new Tone.PolySynth(Tone.MembraneSynth, {
-      volume: convertVolume(volume),
-    }).toDestination(),
-  [POLYSYNTH]: (volume, oscillator: any) =>
-    new Tone.PolySynth(Tone.Synth, {
-      volume: convertVolume(volume),
-      oscillator: {
-        type: oscillator || "triangle",
-      },
-      envelope: {
-        attack: 0.005,
-        decay: 0.1,
-        sustain: 0.3,
-        release: 1,
-      },
-    }).toDestination(),
-  [SNARE]: (volume, oscillator: any) => {
+export const getToneInstrument = (
+  instrumentType: string,
+  volume: number,
+  oscillator: string
+): Instrument => {
+  if (instrumentType === "NoiseSynth") {
     const lowPass = new Tone.Filter({
       frequency: 8000,
     });
@@ -65,7 +55,20 @@ export const getToneInstrument: Instruments = {
     })
       .connect(lowPass)
       .toDestination();
-  },
+  }
+
+  return new Tone.PolySynth(Tone[instrumentType], {
+    volume: convertVolume(volume),
+    oscillator: {
+      type: oscillator || "triangle",
+    },
+    envelope: {
+      attack: 0.005,
+      decay: 0.1,
+      sustain: 0.3,
+      release: 1,
+    },
+  }).toDestination();
 };
 
 export interface Note {
