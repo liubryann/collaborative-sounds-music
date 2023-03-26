@@ -6,8 +6,9 @@ import {
   Y,
   deletePart,
   updateInstrumentOscillator,
+  updateInstrumentType,
 } from "../../adapter";
-import { oscillatorTypes } from "../../instruments";
+import { oscillatorTypes, instrumentTypes } from "../../instruments";
 import { schema } from "../../constants";
 import debounce from "lodash.debounce";
 
@@ -24,10 +25,14 @@ export default function InstrumentSettings({
   const [volume, setVolume] = useState<string>("5");
   const [showOscillatorSettings, setShowOscillatorSettings] = useState(false);
   const [oscillatorType, setOscillatorType] = useState<string>("");
+  const [instrumentType, setInstrumentType] = useState<string>("");
+  const [showInstrumentTypes, setShowInstrumentTypes] = useState(false);
 
   function parseYInstrument(yInstrument: Y.Map<any>) {
+    const yInstrumentType = yInstrument.get(schema.INSTRUMENT_TYPE);
     const yVolume = yInstrument.get(schema.INSTRUMENT_VOLUME);
     const yOscillator = yInstrument.get(schema.INSTRUMENT_OSCILLATOR);
+    setInstrumentType(yInstrumentType);
     setVolume(yVolume);
     setOscillatorType(yOscillator);
   }
@@ -71,6 +76,15 @@ export default function InstrumentSettings({
     updateInstrumentOscillator(partId, oscillatorType);
   }
 
+  function openInstrumentTypesMenu() {
+    setShowInstrumentTypes(!showInstrumentTypes);
+  }
+
+  function handleSelectInstrumentType(instrumentType: string) {
+    setShowInstrumentTypes(false);
+    updateInstrumentType(partId, instrumentType);
+  }
+
   return (
     <div
       className={selectedPart ? styles.selectedInstrument : ""}
@@ -78,6 +92,19 @@ export default function InstrumentSettings({
     >
       {partId}
       <button onClick={handleDeleteInstrument}>x</button>
+      <button onClick={openInstrumentTypesMenu}>{instrumentType}</button>
+      <ul>
+        {showInstrumentTypes &&
+          instrumentTypes.map((instrumentType) => (
+            <li key={instrumentType}>
+              <button
+                onClick={() => handleSelectInstrumentType(instrumentType)}
+              >
+                {instrumentType}
+              </button>
+            </li>
+          ))}
+      </ul>
       <div className={styles.volumeSlider}>
         Volume
         <input
