@@ -73,21 +73,16 @@ export default function DigitalAudioWorkstation({
   }
 
   // below is the code for the Tone.js stuff
-  // TODO: these can probably be changed to useRef
-  const [instruments, setInstruments] = useState<{
-    [partId: string]: Instrument;
-  }>({});
-  const [sequences, setSequences] = useState<{ [partId: string]: Note[] }>({});
-  const [toneParts, setToneParts] = useState<{ [partId: string]: Tone.Part }>(
-    {}
-  );
+  const instruments = useRef<{ [partId: string]: Instrument }>({});
+  const sequences = useRef<{ [partId: string]: Note[] }>({});
+  const toneParts = useRef<{ [partId: string]: Tone.Part }>({});
 
   useEffect(() => {
     connectAndSyncDoc(roomId).then(() => {
-      const yInstruments = getParts();
-      setParts(yInstruments.toArray());
+      const yParts = getParts();
+      setParts(yParts.toArray());
 
-      yInstruments.observe((event) => {
+      yParts.observe((event) => {
         const newParts = [...getParts()];
 
         // yjs doesn't tell you what was deleted so we have to check for it manually which sucks
@@ -96,20 +91,10 @@ export default function DigitalAudioWorkstation({
             prevParts
               .filter((x) => !newParts.includes(x))
               .forEach((x) => {
-                setToneParts((prev) => {
-                  prev[x]?.dispose();
-                  delete prev[x];
-                  return { ...prev };
-                });
-
-                setInstruments((prev) => {
-                  delete prev[x];
-                  return { ...prev };
-                });
-                setSequences((prev) => {
-                  delete prev[x];
-                  return { ...prev };
-                });
+                toneParts.current[x]?.dispose();
+                delete toneParts.current[x];
+                delete instruments.current[x];
+                delete sequences.current[x];
               });
           }
 
@@ -150,7 +135,7 @@ export default function DigitalAudioWorkstation({
         console.log("error"); // TODO: this shows up but doesn't affect functionality
         return;
       }
-      const newSeq = sequence.filter((note: any) => note.note !== 0); // TODO: this is pretty inefficient but it works for now
+      const newSeq = sequence.filter((note: Note) => note.note !== 0); // TODO: this is pretty inefficient but it works for now
 
       let newPart: Tone.Part;
       if (instrument instanceof Tone.NoiseSynth) {
@@ -166,11 +151,8 @@ export default function DigitalAudioWorkstation({
       newPart.loopStart = 0;
       newPart.loopEnd = loopEnd;
       newPart.loop = true;
-
-      setToneParts((prev) => {
-        prev[partId]?.dispose();
-        return { ...prev, [partId]: newPart };
-      });
+      toneParts.current[partId]?.dispose();
+      toneParts.current[partId] = newPart;
     },
     []
   );
@@ -192,18 +174,18 @@ export default function DigitalAudioWorkstation({
 
       const ySequence = getSequence(partId);
       let newSequence = ySequence.toArray();
-      setSequences((prev) => ({ ...prev, [partId]: newSequence }));
-      setInstruments((prev) => ({ ...prev, [partId]: newInstrument }));
+      sequences.current[partId] = newSequence;
+      instruments.current[partId] = newInstrument;
       createNewPart(newInstrument, ySequence.toArray(), partId);
 
       yInstrument.observeDeep((e) => {
         newInstrument = parseYInstrument(yInstrument);
-        setInstruments((prev) => ({ ...prev, [partId]: newInstrument }));
+        instruments.current[partId] = newInstrument;
         createNewPart(newInstrument, getSequence(partId).toArray(), partId);
       });
       ySequence.observeDeep((e) => {
         newSequence = getSequence(partId).toArray();
-        setSequences((prev) => ({ ...prev, [partId]: newSequence }));
+        sequences.current[partId] = newSequence;
         createNewPart(parseYInstrument(yInstrument), newSequence, partId);
       });
     });
