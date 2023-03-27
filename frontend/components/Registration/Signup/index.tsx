@@ -29,12 +29,10 @@ export default function Signup() {
     signup(email, firstname, lastname, username, password)
       .then(() => {
         router.push("/dashboard");
+        setInputs(defaultInputs);
       })
       .catch((err) => {
         setError(err.message);
-      })
-      .finally(() => {
-        setInputs(defaultInputs);
       });
   };
 

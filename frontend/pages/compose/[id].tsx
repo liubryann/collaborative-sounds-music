@@ -1,4 +1,5 @@
 import Container from "@/components/Container";
+import { UserProvider } from "@/contexts/UserContext";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 const DigitalAudioWorkstation = dynamic(
@@ -11,8 +12,10 @@ export default function Workstation() {
   const id = router.query.id as string;
 
   return (
-    <Container>
-      <DigitalAudioWorkstation roomId={id} />
-    </Container>
+    <UserProvider>
+      <Container>
+        <DigitalAudioWorkstation roomId={id} />
+      </Container>
+    </UserProvider>
   );
 }

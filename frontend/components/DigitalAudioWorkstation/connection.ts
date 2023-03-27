@@ -8,10 +8,11 @@ const url: string = "ws://localhost:3001";
 /**
  * Connects to the websocket server and syncs the document.
  */
-function connectAndSyncDoc(room: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
+function connectAndSyncDoc(room: string): Promise<any> {
+  return new Promise<any>((resolve, reject) => {
     doc = new Y.Doc();
     wsProvider = new WebsocketProvider(url, room, doc);
+    const awareness = wsProvider.awareness;
 
     wsProvider.on("status", (event: { status: any }) => {
       console.log(event.status); // logs "connected" or "disconnected"
@@ -20,7 +21,7 @@ function connectAndSyncDoc(room: string): Promise<void> {
     const pollConnected = setInterval(() => {
       if (wsProvider.wsconnected) {
         clearInterval(pollConnected);
-        resolve();
+        resolve(awareness);
       }
     }, 1000);
   });

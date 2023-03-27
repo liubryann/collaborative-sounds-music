@@ -11,11 +11,15 @@ interface InstrumentNotesProps {
     i: number,
     j: number
   ) => void;
+  selectedCellAwareness: any;
+  setSelectedCellAwareness: any;
 }
 
 export default function InstrumentNotes({
   partId,
   openModal,
+  selectedCellAwareness,
+  setSelectedCellAwareness,
 }: InstrumentNotesProps) {
   const gridContainerStyle = {
     display: "grid",
@@ -53,11 +57,22 @@ export default function InstrumentNotes({
           updateNoteGridAndSequence(partId, i, j, baseNote, true); // change this value to change the default note length on click
         }
       }
+      setSelectedCellAwareness(partId, i, j);
     },
-    [noteGrid, partId, openModal]
+    [noteGrid, partId, openModal, setSelectedCellAwareness]
   );
 
   const renderNoteGrid = useMemo(() => {
+    const getCellBorderColor = (i: number, j: number) => {
+      if (!selectedCellAwareness) {
+        return "";
+      }
+      const index = [i, j].toString();
+      return selectedCellAwareness[index]
+        ? `4px solid ${selectedCellAwareness[index]}`
+        : "";
+    };
+
     const grid = [];
     for (let i = 0; i < notes.length; i++) {
       const row = [];
@@ -70,6 +85,9 @@ export default function InstrumentNotes({
             className={`${styles.cell} ${
               noteGrid[j][i] && styles.selectedCell
             }`}
+            style={{
+              border: getCellBorderColor(i, j),
+            }}
           >
             {noteGrid[j][i]}
           </button>
@@ -78,7 +96,7 @@ export default function InstrumentNotes({
       grid.push(row);
     }
     return grid;
-  }, [noteGrid, clickNoteCell]);
+  }, [noteGrid, clickNoteCell, selectedCellAwareness]);
 
   const renderBarNumbers = () => {
     const barNumbers = Array.from(Array(gridLength + 1).keys()).map((i) => (

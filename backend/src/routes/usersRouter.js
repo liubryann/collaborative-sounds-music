@@ -68,4 +68,18 @@ userRouter.get("/compositions", isAuthenticated, async (req, res) => {
   }
 });
 
+userRouter.get("/me", isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.session.user.id);
+    return res.status(200).json({
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = { userRouter };
