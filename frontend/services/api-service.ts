@@ -80,6 +80,17 @@ const signout = () => {
 };
 
 /**
+ * @returns Promise<{user: User}>
+ * @description Gets the logged in user and returns the user object.
+ */
+const getLoggedInUser = () => {
+  return fetch(constructURL("/users/me"), {
+    credentials: "include",
+    method: "GET",
+  }).then(handleResponse);
+};
+
+/**
  *
  * @returns Promise<{compositions: Composition[]}>
  * @description Gets all compositions for a logged in user
@@ -205,6 +216,7 @@ export {
   signup,
   login,
   signout,
+  getLoggedInUser,
   getUsersCompositions,
   createComposition,
   getComposition,

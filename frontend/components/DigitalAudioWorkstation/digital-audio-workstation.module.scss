@@ -12,12 +12,17 @@
   grid-area: controller;
 }
 
+.userPresence {
+  grid-area: userPresence;
+}
+
 .container {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 5fr;
-  grid-template-rows: 7fr 1fr;
+  grid-template-rows: 30px auto 100px;
   grid-template-areas:
+    "userPresence userPresence"
     "instrumentList instrumentNotes"
     "controller controller";
 }

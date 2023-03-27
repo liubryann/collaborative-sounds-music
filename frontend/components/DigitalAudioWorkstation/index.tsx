@@ -5,6 +5,16 @@ import InstrumentSettings from "./components/InstrumentSettings";
 import AddInstrument from "./components/AddInstrument";
 import { connectAndSyncDoc } from "./connection";
 import {
+  parseAwarenessStates,
+  removeUserPresence,
+  setUserSelectedPartAwareness,
+  setUserPresence,
+  UserAwareness,
+  SelectedPartAwareness,
+  SelectedCellAwareness,
+  setUserSelectedCellAwareness,
+} from "./awarenessHelper";
+import {
   getParts,
   updateNoteGridAndSequence,
   Y,
@@ -12,8 +22,10 @@ import {
   getSequence,
   destroyDocument,
 } from "./adapter";
+import { useUser } from "@/contexts/UserContext";
 import NoteLengthModal from "./components/NoteLengthModal";
 import InstrumentNotes from "./components/InstrumentNotes";
+import ActiveUsers from "./components/ActiveUsers";
 import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
@@ -21,9 +33,11 @@ import * as Tone from "tone";
 interface DigitalAudioWorkstationProps {
   roomId: string;
 }
+
 export default function DigitalAudioWorkstation({
   roomId,
 }: DigitalAudioWorkstationProps) {
+  const user = useUser();
   const [parts, setParts] = useState<string[]>([]);
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(
     null
@@ -46,6 +60,13 @@ export default function DigitalAudioWorkstation({
       window.removeEventListener("click", clickEventHandler);
     };
   }, []);
+
+  // handle part select awareness
+  useEffect(() => {
+    if (selectedPart) {
+      setUserSelectedPartAwareness(awareness.current, selectedPart);
+    }
+  }, [selectedPart]);
 
   // open the note length modal
   function openModal(
@@ -78,7 +99,22 @@ export default function DigitalAudioWorkstation({
   const toneParts = useRef<{ [partId: string]: Tone.Part }>({});
 
   useEffect(() => {
-    connectAndSyncDoc(roomId).then(() => {
+    connectAndSyncDoc(roomId).then((res) => {
+      // awareness handling
+      awareness.current = res;
+      setUserPresence(awareness.current, user?.username);
+
+      awareness.current.on("change", () => {
+        const [
+          usersAwarenessRes,
+          selectedPartAwarenessRes,
+          selectedCellAwarenessRes,
+        ] = parseAwarenessStates(awareness.current);
+        setUsersAwareness(usersAwarenessRes);
+        setPartsAwareness(selectedPartAwarenessRes);
+        setSelectedCellAwareness(selectedCellAwarenessRes);
+      });
+
       const yParts = getParts();
       setParts(yParts.toArray());
 
@@ -105,8 +141,9 @@ export default function DigitalAudioWorkstation({
 
     return () => {
       destroyDocument();
+      removeUserPresence(awareness.current);
     };
-  }, [roomId]);
+  }, [roomId, user?.username]);
 
   // handle selectedPart when deleting instruments
   const partsLoaded = useRef<boolean>(false);
@@ -191,8 +228,28 @@ export default function DigitalAudioWorkstation({
     });
   }, [parts, createNewPart]);
 
+  // below is awareness stuff
+  const [usersAwareness, setUsersAwareness] = useState<UserAwareness[]>([]);
+  const [partsAwareness, setPartsAwareness] = useState<SelectedPartAwareness>(
+    {}
+  );
+  const [selectedCellAwareness, setSelectedCellAwareness] =
+    useState<SelectedCellAwareness>({});
+  const awareness = useRef<any>(null);
+
+  function setCellSelectionAwarenessWrapper(
+    partId: string,
+    i: number,
+    j: number
+  ) {
+    setUserSelectedCellAwareness(awareness.current, partId, i, j);
+  }
+
   return (
     <div className={styles.container}>
+      <div className={styles.userPresence}>
+        <ActiveUsers activeUsers={usersAwareness} />
+      </div>
       <div className={styles.instrumentList}>
         {parts.map((partId) => {
           return (
@@ -201,6 +258,7 @@ export default function DigitalAudioWorkstation({
               partId={partId}
               selectPart={setSelectedPart}
               selectedPart={selectedPart === partId}
+              userColors={partsAwareness[partId]}
             />
           );
         })}
@@ -208,7 +266,12 @@ export default function DigitalAudioWorkstation({
       </div>
       <div className={styles.instrumentNotes}>
         {selectedPart && (
-          <InstrumentNotes partId={selectedPart} openModal={openModal} />
+          <InstrumentNotes
+            partId={selectedPart}
+            openModal={openModal}
+            selectedCellAwareness={selectedCellAwareness[selectedPart]}
+            setSelectedCellAwareness={setCellSelectionAwarenessWrapper}
+          />
         )}
       </div>
       <div className={styles.controller}>

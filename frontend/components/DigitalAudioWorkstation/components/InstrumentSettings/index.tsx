@@ -16,11 +16,13 @@ interface InstrumentSettingsProps {
   partId: string;
   selectPart: (partId: string) => void;
   selectedPart: boolean;
+  userColors: string[] | undefined;
 }
 export default function InstrumentSettings({
   partId,
   selectPart,
   selectedPart,
+  userColors,
 }: InstrumentSettingsProps) {
   const [volume, setVolume] = useState<string>("5");
   const [showOscillatorSettings, setShowOscillatorSettings] = useState(false);
@@ -90,7 +92,16 @@ export default function InstrumentSettings({
       className={selectedPart ? styles.selectedInstrument : ""}
       onClick={() => selectPart(partId)}
     >
-      {partId}
+      <div className={styles.partsAwarenessContainer}>
+        {userColors?.map((color) => (
+          <div
+            key={color}
+            className={styles.partAwareness}
+            style={{ backgroundColor: color }}
+          />
+        ))}
+      </div>
+      <div>{partId}</div>
       <button onClick={handleDeleteInstrument}>x</button>
       <button onClick={openInstrumentTypesMenu}>{instrumentType}</button>
       <ul>
