@@ -251,17 +251,19 @@ export default function DigitalAudioWorkstation({
         <ActiveUsers activeUsers={usersAwareness} />
       </div>
       <div className={styles.instrumentList}>
-        {parts.map((partId) => {
-          return (
-            <InstrumentSettings
-              key={partId}
-              partId={partId}
-              selectPart={setSelectedPart}
-              selectedPart={selectedPart === partId}
-              userColors={partsAwareness[partId]}
-            />
-          );
-        })}
+        <div className={styles.hiddenScroll}>
+          {parts.map((partId) => {
+            return (
+              <InstrumentSettings
+                key={partId}
+                partId={partId}
+                selectPart={setSelectedPart}
+                selectedPart={selectedPart === partId}
+                userColors={partsAwareness[partId]}
+              />
+            );
+          })}
+        </div>
         <AddInstrument />
       </div>
       <div className={styles.instrumentNotes}>
