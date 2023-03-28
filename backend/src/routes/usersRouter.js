@@ -26,7 +26,7 @@ userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
     //Try to send an email
     const msg = {
       to: req.body.email,
-      from: 'djchosdisciples@gmail.com',
+      from: process.env.SENDGRID_EMAIL_ADDR,
       subject: 'Signup Confirmation to Creative Sounds and Music',
       text: 'Excited to start making some tunes with you!',
     };
