@@ -12,9 +12,16 @@ const Composition = sequelize.define("Composition", {
   owner: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      len: [4, 30],
+    references: {
+      model: "Users",
+      key: "username",
     },
+  },
+  pageUuid: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    allowNull: false,
+    unique: true,
   },
 });
 

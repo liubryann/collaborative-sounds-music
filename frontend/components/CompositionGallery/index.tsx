@@ -13,6 +13,8 @@ interface Composition {
   id: number;
   title: string;
   owner: string;
+  pageUuid: string;
+  createdAt: string;
   updatedAt: string;
 }
 
@@ -47,8 +49,8 @@ export default function CompositionGallery() {
       router.push("/");
     });
   }
-  function selectComposition(id: number) {
-    router.push(`/compose/${id}`);
+  function selectComposition(uuid: string) {
+    router.push(`/compose/${uuid}`);
   }
 
   return (
@@ -71,7 +73,7 @@ export default function CompositionGallery() {
           return (
             <CardContainer
               key={composition.id}
-              clickHandler={() => selectComposition(composition.id)}
+              clickHandler={() => selectComposition(composition.pageUuid)}
             >
               <CompositionItem
                 key={composition.id}

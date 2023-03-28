@@ -22,6 +22,7 @@ userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
       ...req.body,
       password: hashedPassword,
     });
+    req.session.user = user;
     return res.json({ user: user.username });
   } catch (e) {
     return res.status(422).json({ error: e.message });

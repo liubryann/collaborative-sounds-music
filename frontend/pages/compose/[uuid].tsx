@@ -9,13 +9,11 @@ const DigitalAudioWorkstation = dynamic(
 
 export default function Workstation() {
   const router = useRouter();
-  const id = router.query.id as string;
+  const uuid = router.query.uuid as string;
 
   return (
-    <UserProvider>
-      <Container>
-        <DigitalAudioWorkstation roomId={id} />
-      </Container>
-    </UserProvider>
+    <Container>
+      <DigitalAudioWorkstation roomId={uuid} />
+    </Container>
   );
 }
