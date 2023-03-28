@@ -5,9 +5,12 @@ import { getBpm, updateBpm } from "../../adapter";
 import { defaultBpm } from "../../instruments";
 import AudioExport from "../AudioFile/AudioExport";
 import AudioImport from "../AudioFile/AudioImport";
+import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
+import { IconContext } from "react-icons";
 
 export default function Controller() {
   const [bpm, setBpm] = useState(defaultBpm.toString());
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const yBpm = getBpm();
@@ -30,24 +33,28 @@ export default function Controller() {
     if (Tone.Transport.state !== "started") {
       Tone.start();
       Tone.Transport.start();
+      setIsPlaying(true);
     } else {
       Tone.Transport.stop();
+      setIsPlaying(false);
     }
   }
 
   return (
-    <div className={styles.container}>
-      <AudioImport />
-      <button onClick={onPlay}>play</button>
-      BPM
-      <input
-        className={styles.bpm}
-        type="number"
-        min="1"
-        onChange={handleBpmChange}
-        value={bpm}
-      />
-      <AudioExport />
-    </div>
+    <IconContext.Provider value={{ size: "4em" }}>
+      <div className={styles.container}>
+        {/* <AudioImport /> */}
+        <div className={styles.playControls}>
+          <button className={styles.playButton} onClick={onPlay}>
+            {isPlaying ? <AiFillPauseCircle /> : <AiFillPlayCircle />}
+          </button>
+          <AudioExport />
+        </div>
+        <div className={styles.bpm}>
+          BPM
+          <input type="number" min="1" onChange={handleBpmChange} value={bpm} />
+        </div>
+      </div>
+    </IconContext.Provider>
   );
 }

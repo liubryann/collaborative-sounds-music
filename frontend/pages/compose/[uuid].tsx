@@ -12,8 +12,10 @@ export default function Workstation() {
   const uuid = router.query.uuid as string;
 
   return (
-    <Container>
-      <DigitalAudioWorkstation roomId={uuid} />
-    </Container>
+    <UserProvider>
+      <Container>
+        <DigitalAudioWorkstation roomId={uuid} />
+      </Container>
+    </UserProvider>
   );
 }
