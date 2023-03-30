@@ -11,6 +11,10 @@ import {
 import { oscillatorTypes, instrumentTypes } from "../../instruments";
 import { schema } from "../../constants";
 import debounce from "lodash.debounce";
+import { AiFillSound, AiFillDelete } from "react-icons/ai";
+import { IconContext } from "react-icons";
+import Dropdown from "../../../Dropdown";
+import RangeInput from "../RangeInput";
 
 interface InstrumentSettingsProps {
   partId: string;
@@ -25,10 +29,8 @@ export default function InstrumentSettings({
   userColors,
 }: InstrumentSettingsProps) {
   const [volume, setVolume] = useState<string>("5");
-  const [showOscillatorSettings, setShowOscillatorSettings] = useState(false);
   const [oscillatorType, setOscillatorType] = useState<string>("");
   const [instrumentType, setInstrumentType] = useState<string>("");
-  const [showInstrumentTypes, setShowInstrumentTypes] = useState(false);
 
   function parseYInstrument(yInstrument: Y.Map<any>) {
     const yInstrumentType = yInstrument.get(schema.INSTRUMENT_TYPE);
@@ -69,76 +71,68 @@ export default function InstrumentSettings({
     };
   }, [debouncedUpdateInstrumentVolume]);
 
-  function openOscillatorMenu() {
-    setShowOscillatorSettings(!showOscillatorSettings);
-  }
-
   function handleSelectOscillatorType(oscillatorType: string) {
-    setShowOscillatorSettings(false);
     updateInstrumentOscillator(partId, oscillatorType);
   }
 
-  function openInstrumentTypesMenu() {
-    setShowInstrumentTypes(!showInstrumentTypes);
-  }
-
   function handleSelectInstrumentType(instrumentType: string) {
-    setShowInstrumentTypes(false);
     updateInstrumentType(partId, instrumentType);
   }
 
   return (
-    <div
-      className={selectedPart ? styles.selectedInstrument : ""}
-      onClick={() => selectPart(partId)}
-    >
-      <div className={styles.partsAwarenessContainer}>
-        {userColors?.map((color) => (
-          <div
-            key={color}
-            className={styles.partAwareness}
-            style={{ backgroundColor: color }}
+    <IconContext.Provider value={{ size: "0.8em", style: { opacity: "0.65" } }}>
+      <div
+        className={`${styles.instrumentContainer} ${
+          selectedPart ? styles.selectedInstrument : ""
+        }`}
+        onClick={() => selectPart(partId)}
+      >
+        <div className={styles.partsAwarenessContainer}>
+          {userColors?.map((color) => (
+            <div
+              key={color}
+              className={styles.partAwareness}
+              style={{ backgroundColor: color }}
+            />
+          ))}
+        </div>
+        <div className={styles.partIdContainer}>
+          <div className={styles.partId}>{partId}</div>{" "}
+          {selectedPart && (
+            <button onClick={handleDeleteInstrument}>
+              <AiFillDelete size={"1em"} />
+            </button>
+          )}
+        </div>
+
+        <div className={styles.volumeSlider}>
+          <AiFillSound />
+          <RangeInput
+            min={"0"}
+            max={"100"}
+            value={volume}
+            onChange={volumeSliderOnChange}
           />
-        ))}
+        </div>
+        {selectedPart && (
+          <div>
+            <Dropdown
+              wrapperStyle={styles.dropdown}
+              label={"Instrument"}
+              selectedItem={instrumentType}
+              handleSelectItem={handleSelectInstrumentType}
+              items={instrumentTypes}
+            />
+            <Dropdown
+              wrapperStyle={styles.dropdown}
+              label={"Oscillator"}
+              selectedItem={oscillatorType}
+              handleSelectItem={handleSelectOscillatorType}
+              items={oscillatorTypes}
+            />
+          </div>
+        )}
       </div>
-      <div>{partId}</div>
-      <button onClick={handleDeleteInstrument}>x</button>
-      <button onClick={openInstrumentTypesMenu}>{instrumentType}</button>
-      <ul>
-        {showInstrumentTypes &&
-          instrumentTypes.map((instrumentType) => (
-            <li key={instrumentType}>
-              <button
-                onClick={() => handleSelectInstrumentType(instrumentType)}
-              >
-                {instrumentType}
-              </button>
-            </li>
-          ))}
-      </ul>
-      <div className={styles.volumeSlider}>
-        Volume
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={volume}
-          onChange={volumeSliderOnChange}
-        />
-      </div>
-      <button onClick={openOscillatorMenu}>{oscillatorType}</button>
-      <ul>
-        {showOscillatorSettings &&
-          oscillatorTypes.map((oscillatorType) => (
-            <li key={oscillatorType}>
-              <button
-                onClick={() => handleSelectOscillatorType(oscillatorType)}
-              >
-                {oscillatorType}
-              </button>
-            </li>
-          ))}
-      </ul>
-    </div>
+    </IconContext.Provider>
   );
 }

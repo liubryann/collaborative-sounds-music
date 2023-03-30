@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./audio-export.module.scss";
 import * as Tone from "tone";
+import { BsFillRecordCircleFill, BsStopCircleFill } from "react-icons/bs";
+import { IconContext } from "react-icons";
 
 export default function AudioExport() {
   /** Notes, need to disable Play/Stop in controller when audio
@@ -15,6 +17,7 @@ export default function AudioExport() {
   });
   const [timer, setTimer] = useState(0);
   const [timerStart, setTimerStart] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const tick = useRef();
 
   useEffect(() => {
@@ -52,6 +55,7 @@ export default function AudioExport() {
     setTimerStart(false);
     setRunning(false);
     setRecording(newRecording);
+    setOpenModal(true);
   };
 
   const nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,40 +84,63 @@ export default function AudioExport() {
     anchor.download = options.filename + "." + options.extension;
     anchor.href = url;
     anchor.click();
+    setOpenModal(false);
   };
 
   return (
-    <div>
-      <button disabled={running} onClick={startRecording}>
-        Start New Recording
-      </button>
-      <div className="timer">
-        Elapsed time: {Math.floor(timer / 6000)} :{" "}
-        {Math.floor((timer % 6000) / 100)} : {Math.floor(timer % 100)}
+    <IconContext.Provider value={{ size: "1.5em", style: { color: "red" } }}>
+      <div className={styles.wrapper}>
+        {running ? (
+          <button
+            className={styles.recordButton}
+            disabled={!running}
+            onClick={endRecording}
+          >
+            <BsStopCircleFill />
+          </button>
+        ) : (
+          <button
+            className={styles.recordButton}
+            disabled={running}
+            onClick={startRecording}
+          >
+            <BsFillRecordCircleFill />
+          </button>
+        )}
+
+        <span className="timer">
+          {Math.floor(timer / 6000)} : {Math.floor((timer % 6000) / 100)} :{" "}
+          {Math.floor(timer % 100)}
+        </span>
+
+        {openModal && (
+          <div className={styles.saveModalBackground}>
+            <form className={styles.saveModal} onSubmit={downloadRecording}>
+              <label>
+                <span>Name:</span>
+                <input
+                  type="text"
+                  name="filename"
+                  value={options.filename}
+                  onChange={nameChange}
+                />
+              </label>
+              <label>
+                <span>Type:</span>
+                <select value={options.extension} onChange={extensionChange}>
+                  <option value="webm">.webm (Recommended)</option>
+                  <option value="wav">.wav</option>
+                  <option value="mp3">.mp3</option>
+                </select>
+              </label>
+              <div>
+                <input type="submit" disabled={!recording} value="Save" />
+                <button onClick={() => setOpenModal(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
-      <button disabled={!running} onClick={endRecording}>
-        End Recording
-      </button>
-      <form onSubmit={downloadRecording}>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="filename"
-            value={options.filename}
-            onChange={nameChange}
-          />
-        </label>
-        <label>
-          Type:
-          <select value={options.extension} onChange={extensionChange}>
-            <option value="webm">.webm (Recommended)</option>
-            <option value="wav">.wav</option>
-            <option value="mp3">.mp3</option>
-          </select>
-        </label>
-        <input type="submit" disabled={!recording} value="Download Recording" />
-      </form>
-    </div>
+    </IconContext.Provider>
   );
 }
