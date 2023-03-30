@@ -1,7 +1,10 @@
+@use "../../../../styles/globals.scss" as *;
+
 .container {
   display: flex;
-  padding: 20px;
   justify-content: center;
+  padding-bottom: 15px;
+  padding-top: 10px;
 }
 
 .activeUser {
@@ -9,5 +12,9 @@
   height: 20px;
   border-radius: 5px;
   margin-right: 10px;
-  text-align: center;
+  font-family: $main-font;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -13,7 +13,7 @@ export default function AddInstrument() {
   }
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <button onClick={() => handleAddInstrument("Synth")}>
         Add Instrument
       </button>
