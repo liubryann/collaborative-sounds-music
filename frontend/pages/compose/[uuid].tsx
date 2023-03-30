@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import { UserProvider } from "@/contexts/UserContext";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 const DigitalAudioWorkstation = dynamic(
@@ -7,7 +8,7 @@ const DigitalAudioWorkstation = dynamic(
   { ssr: false }
 );
 
-export default function Workstation() {
+export default withPageAuthRequired(function Workstation() {
   const router = useRouter();
   const uuid = router.query.uuid as string;
 
@@ -16,4 +17,4 @@ export default function Workstation() {
       <DigitalAudioWorkstation roomId={uuid} />
     </Container>
   );
-}
+});
