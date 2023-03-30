@@ -1,5 +1,8 @@
+@use "../../../../styles/globals.scss" as *;
+
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -7,5 +10,21 @@
 }
 
 .bpm {
-  width: 2.5rem;
+  font-family: $main-font;
+  margin-top: 10px;
+  font-size: 0.8rem;
+
+  input {
+    width: 2.5rem;
+    margin-left: 5px;
+  }
+}
+
+.playControls {
+  display: flex;
+  margin-left: 100px;
+  .playButton {
+    border: none;
+    background-color: transparent;
+  }
 }
