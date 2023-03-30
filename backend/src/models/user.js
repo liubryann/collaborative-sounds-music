@@ -39,6 +39,10 @@ const User = sequelize.define("User", {
       isEmail: true,
     },
   },
+  mailing: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 });
 
 module.exports = { User };

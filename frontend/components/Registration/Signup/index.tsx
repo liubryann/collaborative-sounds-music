@@ -11,10 +11,12 @@ export default function Signup() {
     lastname: "",
     username: "",
     password: "",
+    mailing: false,
   };
-
+  const defaultAgree = false;
   const [inputs, setInputs] = useState(defaultInputs);
   const [error, setError] = useState<string | null>(null);
+  const [agree, setAgree] = useState(defaultAgree);
 
   const setField = (field: string, value: string) => {
     setInputs({
@@ -23,10 +25,18 @@ export default function Signup() {
     });
   };
 
+  const agreeCheck = () => {
+    setAgree(!agree);
+  }
+
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, firstname, lastname, username, password } = inputs;
-    signup(email, firstname, lastname, username, password)
+    if (!agree) {
+      setError("Must agree to terms of service");
+      return;
+    }
+    const { email, firstname, lastname, username, password, mailing } = inputs;
+    signup(email, firstname, lastname, username, password, mailing)
       .then(() => {
         router.push("/dashboard");
         setInputs(defaultInputs);
@@ -80,6 +90,22 @@ export default function Signup() {
             value={inputs.password}
             onChange={(e) => setField("password", e.target.value)}
           />
+          <label>
+            Agree to join our mailing list (Optional)
+            <input
+              type="checkbox"
+              value={inputs.mailing}
+              onChange{(e) => setField("mailing", e.target.checked)}
+            />
+          </label>
+          <label>
+            Agree to our Terms of Service (Placeholder, Required)
+            <input
+              type="checkbox"
+              value={inputs.mailing}
+              onChange{agreeCheck()}
+            />
+          </label>
           <button type="submit">Sign up</button>
         </form>
       </div>
