@@ -99,7 +99,11 @@ export default function Signup() {
             Agree to join our mailing list. Optional
           </label>
           <label>
-            <input type="checkbox" checked={agree} onChange={(e) => agreeCheck(e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={agree}
+              onChange={(e) => agreeCheck(e.target.checked)}
+            />
             Agree to our Terms of Service. Placeholder, Required
           </label>
           <button type="submit">Sign up</button>
