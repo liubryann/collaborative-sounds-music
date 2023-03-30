@@ -1,5 +1,13 @@
 version: "3.5"
 services:
+  backend:
+    build: .
+    restart: on-failure
+    depends_on:
+      - postgres
+    ports:
+      - 3001:3001
+
   # Generic PostgreSQL database
   postgres:
     restart: always

@@ -9,7 +9,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 dotenv.config();
 
-const port = process.env.PROD_PORT || process.env.DEV_PORT;
+const port = process.env.PORT;
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,5 +36,5 @@ ds.startWebsocketServer(server);
 ds.ySetPersistence();
 ds.connectDatabase().then(() => {
   server.listen(port);
-  console.log(`Listening on http://localhost:${port}`);
+  console.log(`Listening on port ${port}`);
 });
