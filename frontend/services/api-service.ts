@@ -31,7 +31,7 @@ const signup = (
   lastname: string,
   username: string,
   password: string,
-  mailing: boolean,
+  mailing: boolean
 ) => {
   return fetch(constructURL("/users/signup"), {
     method: "POST",

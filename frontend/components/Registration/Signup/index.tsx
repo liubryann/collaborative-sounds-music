@@ -18,7 +18,7 @@ export default function Signup() {
   const [error, setError] = useState<string | null>(null);
   const [agree, setAgree] = useState(defaultAgree);
 
-  const setField = (field: string, value: string) => {
+  const setField = (field: string, value: any) => {
     setInputs({
       ...inputs,
       [field]: value,
@@ -27,7 +27,7 @@ export default function Signup() {
 
   const agreeCheck = () => {
     setAgree(!agree);
-  }
+  };
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,20 +91,17 @@ export default function Signup() {
             onChange={(e) => setField("password", e.target.value)}
           />
           <label>
-            Agree to join our mailing list (Optional)
             <input
               type="checkbox"
-              value={inputs.mailing}
-              onChange{(e) => setField("mailing", e.target.checked)}
+              checked={inputs.mailing}
+              onChange
+              {...(e) => setField("mailing", e.target.checked)}
             />
+            Agree to join our mailing list. Optional
           </label>
           <label>
-            Agree to our Terms of Service (Placeholder, Required)
-            <input
-              type="checkbox"
-              value={inputs.mailing}
-              onChange{agreeCheck()}
-            />
+            <input type="checkbox" checked={agree} onChange {...agreeCheck()} />
+            Agree to our Terms of Service. Placeholder, Required
           </label>
           <button type="submit">Sign up</button>
         </form>

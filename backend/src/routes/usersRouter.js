@@ -27,10 +27,15 @@ userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
     const msg = {
       to: req.body.email,
       from: process.env.SENDGRID_EMAIL_ADDR,
-      subject: 'Signup Confirmation to Creative Sounds and Music',
-      text: 'Excited to start making some tunes with you!',
+      subject: "Signup Confirmation to Creative Sounds and Music",
+      text: "Excited to start making some tunes with you!",
     };
-    sgMail.send(msg).then(() => { console.log("Email") }).catch(console.error("failed email"));
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email");
+      })
+      .catch(console.error("failed email"));
     return res.json({ user: user.username });
   } catch (e) {
     return res.status(422).json({ error: e.message });
