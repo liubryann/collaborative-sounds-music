@@ -25,7 +25,7 @@ export default function Signup() {
     });
   };
 
-  const agreeCheck = () => {
+  const agreeCheck = (value: boolean) => {
     setAgree(!agree);
   };
 
@@ -94,13 +94,12 @@ export default function Signup() {
             <input
               type="checkbox"
               checked={inputs.mailing}
-              onChange
-              {...(e) => setField("mailing", e.target.checked)}
+              onChange={(e) => setField("mailing", e.target.checked)}
             />
             Agree to join our mailing list. Optional
           </label>
           <label>
-            <input type="checkbox" checked={agree} onChange {...agreeCheck()} />
+            <input type="checkbox" checked={agree} onChange={(e) => agreeCheck(e.target.checked)} />
             Agree to our Terms of Service. Placeholder, Required
           </label>
           <button type="submit">Sign up</button>
