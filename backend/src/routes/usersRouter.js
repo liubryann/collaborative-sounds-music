@@ -9,19 +9,33 @@ const {
   userSchema,
 } = require("../middleware/schemas/userSchema.js");
 const isRequestValid = require("../middleware/validator.js");
+const sgMail = require("@sendgrid/mail");
 
 const userRouter = express.Router();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
   const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-
   try {
     const user = await User.create({
       ...req.body,
       password: hashedPassword,
     });
+    //Try to send an email
+    const msg = {
+      to: req.body.email,
+      from: process.env.SENDGRID_EMAIL_ADDR,
+      subject: "Signup Confirmation to Creative Sounds and Music",
+      text: "Excited to start making some tunes with you!",
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email");
+      })
+      .catch(console.error("failed email"));
     req.session.user = user;
     return res.json({ user: user.username });
   } catch (e) {
