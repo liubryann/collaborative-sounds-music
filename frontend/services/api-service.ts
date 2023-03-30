@@ -34,6 +34,7 @@ const signup = (
   mailing: boolean
 ) => {
   return fetch(constructURL("/users/signup"), {
+    credentials: "include",
     method: "POST",
     headers: {
       "Content-Type": "application/json",

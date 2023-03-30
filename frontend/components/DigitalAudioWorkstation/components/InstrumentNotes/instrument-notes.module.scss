@@ -1,33 +1,46 @@
+@use "../../../../styles/globals.scss" as *;
+
 .container {
-  max-width: 75vw;
-  max-height: 75vh;
   display: grid;
   grid-template-columns: repeat(33, 70px);
   grid-template-rows: repeat(38, 25px);
+
+  padding-right: 17px;
+  box-sizing: content-box;
+  height: 100%;
+  width: 100%;
   overflow: scroll;
 }
 
 .container2 {
-  display: flex;
+  overflow: hidden;
+  max-width: 75vw;
+  max-height: 75vh;
+  height: 100%;
+  width: 100%;
 }
 
 .selectedCell {
-  background-color: #3d3636 !important;
+  background-color: rgb(100, 95, 95) !important;
 }
 
 .cell {
-  border: 0.6px solid #3d3636;
-  color: #fff;
+  border: 0.5px solid #3d3636;
+  color: lightgray;
   cursor: pointer;
   font-size: 0.8rem;
   height: 25px;
   text-align: center;
   width: 100%;
+  font-family: $main-font;
+  font-size: 0.8rem;
 }
 
 .note {
   height: 25px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gridContainer {
@@ -52,6 +65,8 @@
   grid-row-start: 1;
   grid-row-end: 2;
   display: table-row;
+  font-family: $main-font;
+  font-size: 0.9rem;
 }
 
 .noteLabels {
@@ -59,6 +74,24 @@
   grid-column-end: 2;
   grid-row-start: 2;
   grid-row-end: 38;
+  font-family: $main-font;
+  font-size: 0.9rem;
+
+  :nth-child(12n + 2) {
+    background-color: lightgrey;
+  }
+  :nth-child(12n + 4) {
+    background-color: lightgrey;
+  }
+  :nth-child(12n + 7) {
+    background-color: lightgrey;
+  }
+  :nth-child(12n + 9) {
+    background-color: lightgrey;
+  }
+  :nth-child(12n + 11) {
+    background-color: lightgrey;
+  }
 }
 
 .header {

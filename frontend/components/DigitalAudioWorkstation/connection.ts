@@ -15,7 +15,7 @@ function connectAndSyncDoc(room: string): Promise<any> {
     const awareness = wsProvider.awareness;
 
     wsProvider.on("status", (event: { status: any }) => {
-      console.log(event.status); // logs "connected" or "disconnected"
+      // console.log(event.status); // logs "connected" or "disconnected"
     });
 
     const pollConnected = setInterval(() => {
