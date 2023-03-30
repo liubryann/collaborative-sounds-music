@@ -13,10 +13,9 @@ export default function Signup() {
     password: "",
     mailing: false,
   };
-  const defaultAgree = false;
   const [inputs, setInputs] = useState(defaultInputs);
   const [error, setError] = useState<string | null>(null);
-  const [agree, setAgree] = useState(defaultAgree);
+  const [agree, setAgree] = useState(false);
 
   const setField = (field: string, value: any) => {
     setInputs({
