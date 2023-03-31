@@ -127,19 +127,34 @@ export default function AudioExport({ play, pause }: AudioExportProps) {
                   name="filename"
                   value={options.filename}
                   onChange={nameChange}
+                  className={styles.input}
                 />
               </label>
               <label>
                 <span>Type:</span>
-                <select value={options.extension} onChange={extensionChange}>
+                <select
+                  value={options.extension}
+                  onChange={extensionChange}
+                  className={styles.input}
+                >
                   <option value="webm">.webm (Recommended)</option>
                   <option value="wav">.wav</option>
                   <option value="mp3">.mp3</option>
                 </select>
               </label>
               <div>
-                <input type="submit" disabled={!recording} value="Save" />
-                <button onClick={() => setOpenModal(false)}>Cancel</button>
+                <input
+                  className={styles.button}
+                  type="submit"
+                  disabled={!recording}
+                  value="Save"
+                />
+                <button
+                  className={styles.button}
+                  onClick={() => setOpenModal(false)}
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </div>

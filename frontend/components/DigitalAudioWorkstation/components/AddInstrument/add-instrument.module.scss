@@ -3,7 +3,7 @@
 .wrapper {
   // margin-top: 20px;
   // margin-right: 17px;
-  margin: 20px 17px 0 17px;
+  margin: 20px 15px 0 15px;
 
   button {
     background-color: $background-color;
@@ -16,8 +16,9 @@
     border-radius: $big-border-radius;
 
     &:hover {
-      background-color: #e0e0e0;
+      background-color: $highlight-color-2;
       cursor: pointer;
+      border: $border-highlight;
     }
   }
 }
