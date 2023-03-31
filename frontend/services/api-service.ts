@@ -154,7 +154,7 @@ const updateComposition = (compositionId: number, title: string) => {
 };
 
 const shareComposition = (compositionId: string, email: string) => {
-  return fetch(constructURL(`/api/compisitions/share/${compositionId}`), {
+  return fetch(constructURL(`/api/compositions/collaborators/${compositionId}`), {
     credentials: "include",
     method: "POST",
     headers: {

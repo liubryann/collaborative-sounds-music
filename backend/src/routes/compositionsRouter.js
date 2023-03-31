@@ -90,21 +90,28 @@ compositionRouter.patch(
 );
 
 // Update the composition's shared
-compositionRouter.post("/share/:id", isRequestValid(compositionSchema), isAuthenticated, async (req, res) => {
-  console.log()
+compositionRouter.post("/collaborators/:id", isAuthenticated, async (req, res) => {
   const user = await User.findOne({
     where: { email: req.body.email }
   })
   if (!user) {
     return res.status(404).json({ error: "No user with that email." })
   }
+  const comp = await Composition.findOne({
+    where: { pageUuid: req.params.id }
+  })
+  if (!comp) {
+    return res.status(404).json({ error: "Composition not found" });
+  }
   try {
     const newusercomp = await UsersCompositions.findOrCreate({
-      CompositionId: req.params.id,
-      UserId: user.id,
+      where: {
+        CompositionId: comp.id,
+        UserId: user.id,
+      }
     });
-    if (newusercomp === null) {
-      return res.status(404).json({ error: "Composition not found" });
+    if (!newusercomp) {
+      return res.status(500).json({ error: "Creation failed" });
     }
     //send email.
     //Try to send an email
@@ -124,34 +131,6 @@ compositionRouter.post("/share/:id", isRequestValid(compositionSchema), isAuthen
     return res.status(422).json({ error: e.message });
   }
 })
-
-// TODO: post or put request?
-compositionRouter.post(
-  "/collaborators/:id",
-  isAuthenticated,
-  async (req, res) => {
-    try {
-      const [_, recordCreated] = await UsersCompositions.findOrCreate({
-        where: {
-          UserId: req.body.userId,
-          CompositionId: req.params.id,
-        },
-      });
-      // TODO: how to handle when user already has access to the composition
-      if (!recordCreated)
-        return res
-          .status(200)
-          .json({ message: "User already has access to composition" });
-
-      const composition = await Composition.findOne({
-        where: { id: req.params.id },
-      });
-      return res.status(200).json({ composition: composition });
-    } catch (error) {
-      return res.status(422).json({ error: error.message });
-    }
-  }
-);
 
 compositionRouter.delete(
   "/collaborators/:id",
