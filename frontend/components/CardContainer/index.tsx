@@ -3,14 +3,14 @@ import styles from "./card-container.module.scss";
 
 interface CardContainerProps {
   children: ReactNode;
-  clickHandler: () => void;
+  handleClick: () => void;
 }
 export default function CardContainer({
   children,
-  clickHandler,
+  handleClick,
 }: CardContainerProps) {
   return (
-    <div className={styles.card} onClick={clickHandler}>
+    <div className={styles.card} onClick={handleClick}>
       {children}
     </div>
   );
