@@ -5,6 +5,7 @@ const session = require("express-session");
 const ds = require("./datasource.js");
 const { userRouter } = require("./routes/usersRouter.js");
 const { compositionRouter } = require("./routes/compositionsRouter.js");
+const { audioRouter } = require("./routes/audioRouter.js");
 const dotenv = require("dotenv");
 const cors = require("cors");
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(
 
 app.use("/users", userRouter);
 app.use("/api/compositions", compositionRouter);
+app.use("/api/audio", audioRouter);
 
 const server = http.createServer(app);
 
