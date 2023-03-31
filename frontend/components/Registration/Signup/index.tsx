@@ -48,7 +48,6 @@ export default function Signup() {
   return (
     <div className={styles["registration-container"]}>
       <div className={styles["registration-card"]}>
-        <div>Begin your musical journey. Together.</div>
         <p className={styles["error-msg"]}>{error}</p>
         <form onSubmit={handleSignup} className={styles["registration-form"]}>
           <input
@@ -103,7 +102,7 @@ export default function Signup() {
               checked={agree}
               onChange={(e) => agreeCheck(e.target.checked)}
             />
-            Agree to our Terms of Service. Placeholder, Required
+            Agree to our Terms of Service. Required
           </label>
           <button type="submit">Sign up</button>
         </form>
