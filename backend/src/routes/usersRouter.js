@@ -32,8 +32,7 @@ userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
     };
     sgMail
       .send(msg)
-      .then(() => {
-      })
+      .then(() => {})
       .catch(console.error("failed email"));
     req.session.user = user;
     return res.json({ user: user.username });

@@ -154,15 +154,18 @@ const updateComposition = (compositionId: number, title: string) => {
 };
 
 const shareComposition = (compositionId: string, email: string) => {
-  return fetch(constructURL(`/api/compositions/collaborators/${compositionId}`), {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email }),
-  }).then(handleResponse);
-}
+  return fetch(
+    constructURL(`/api/compositions/collaborators/${compositionId}`),
+    {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    }
+  ).then(handleResponse);
+};
 
 /**
  *

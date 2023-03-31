@@ -1,18 +1,16 @@
-
 import React from "react";
 import styles from "./collaborationmodal.module.scss";
 import { RiCloseLine } from "react-icons/ri";
 import { shareComposition } from "@/services/api-service";
 
 const CollaborationModal = ({ setIsOpen, roomId }) => {
-
   const handleSubmit = (e) => {
     e.preventDefault();
     shareComposition(roomId.roomId, e.target.email.value).then((res) => {
       console.log(res);
-    })
+    });
     setIsOpen(false);
-  }
+  };
 
   return (
     <>
@@ -26,12 +24,17 @@ const CollaborationModal = ({ setIsOpen, roomId }) => {
             <RiCloseLine style={{ marginBottom: "-3px" }} />
           </button>
           <div className={styles.modalContent}>
-            Enter the e-mail of the user you wish to collaborate with on this composition.
+            Enter the e-mail of the user you wish to collaborate with on this
+            composition.
           </div>
           <form onSubmit={handleSubmit} className={styles.modalForm}>
-            <input type="text" name="email" className={styles.formInput}></input>
+            <input
+              type="text"
+              name="email"
+              className={styles.formInput}
+            ></input>
             <div className={styles.actionsContainer}>
-              <button type="submit" className={styles.submitBtn} >
+              <button type="submit" className={styles.submitBtn}>
                 Share
               </button>
               <button
@@ -42,10 +45,10 @@ const CollaborationModal = ({ setIsOpen, roomId }) => {
               </button>
             </div>
           </form>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
   );
 };
 
-export default CollaborationModal
+export default CollaborationModal;

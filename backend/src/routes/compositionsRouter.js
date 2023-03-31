@@ -90,47 +90,52 @@ compositionRouter.patch(
 );
 
 // Update the composition's shared
-compositionRouter.post("/collaborators/:id", isAuthenticated, async (req, res) => {
-  const user = await User.findOne({
-    where: { email: req.body.email }
-  })
-  if (!user) {
-    return res.status(404).json({ error: "No user with that email." })
-  }
-  const comp = await Composition.findOne({
-    where: { pageUuid: req.params.id }
-  })
-  if (!comp) {
-    return res.status(404).json({ error: "Composition not found" });
-  }
-  try {
-    const newusercomp = await UsersCompositions.findOrCreate({
-      where: {
-        CompositionId: comp.id,
-        UserId: user.id,
-      }
+compositionRouter.post(
+  "/collaborators/:id",
+  isAuthenticated,
+  async (req, res) => {
+    const user = await User.findOne({
+      where: { email: req.body.email },
     });
-    if (!newusercomp) {
-      return res.status(500).json({ error: "Creation failed" });
+    if (!user) {
+      return res.status(404).json({ error: "No user with that email." });
     }
-    //send email.
-    //Try to send an email
-    const msg = {
-      to: req.body.email,
-      from: process.env.SENDGRID_EMAIL_ADDR,
-      subject: "Invite to collaborate on CSM.",
-      text: "A new composition has been shared with you! View it here: notdeployedyet/compose/" + req.params.id,
-    };
-    sgMail
-      .send(msg)
-      .then(() => {
-      })
-      .catch(console.error("failed email"));
-    return res.status(200).json({ message: "Composition updated" });
-  } catch (e) {
-    return res.status(422).json({ error: e.message });
+    const comp = await Composition.findOne({
+      where: { pageUuid: req.params.id },
+    });
+    if (!comp) {
+      return res.status(404).json({ error: "Composition not found" });
+    }
+    try {
+      const newusercomp = await UsersCompositions.findOrCreate({
+        where: {
+          CompositionId: comp.id,
+          UserId: user.id,
+        },
+      });
+      if (!newusercomp) {
+        return res.status(500).json({ error: "Creation failed" });
+      }
+      //send email.
+      //Try to send an email
+      const msg = {
+        to: req.body.email,
+        from: process.env.SENDGRID_EMAIL_ADDR,
+        subject: "Invite to collaborate on CSM.",
+        text:
+          "A new composition has been shared with you! View it here: notdeployedyet/compose/" +
+          req.params.id,
+      };
+      sgMail
+        .send(msg)
+        .then(() => {})
+        .catch(console.error("failed email"));
+      return res.status(200).json({ message: "Composition updated" });
+    } catch (e) {
+      return res.status(422).json({ error: e.message });
+    }
   }
-})
+);
 
 compositionRouter.delete(
   "/collaborators/:id",
