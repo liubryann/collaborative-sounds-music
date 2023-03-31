@@ -216,6 +216,41 @@ const removeCollaboratorFromComposition = (
   ).then(handleResponse);
 };
 
+
+/**
+ * 
+ * @param formData 
+ * @returns 
+ */
+const importAudio = (formData: any) => {
+  return fetch(`/api/images`, {
+    method: "POST",
+    body: formData,
+  }).then((res) => res.json());
+};
+
+/**
+ * 
+ * @param audioId 
+ * @returns 
+ */
+const getAudio = (audioId: any) => {
+  return fetch(`/api/audio/${audioId}`).then((res) =>
+    res.json()
+  );
+};
+
+/**
+ * 
+ * @param audioId 
+ * @returns 
+ */
+const deleteAudio = (audioId: any) => {
+  return fetch(`/api/audio/${audioId}`, {
+    method: "DELETE",
+  }).then((res) => res.json());
+};
+
 export {
   signup,
   login,
@@ -228,4 +263,7 @@ export {
   deleteComposition,
   addCollaboratorToComposition,
   removeCollaboratorFromComposition,
+  importAudio,
+  getAudio,
+  deleteAudio,
 };

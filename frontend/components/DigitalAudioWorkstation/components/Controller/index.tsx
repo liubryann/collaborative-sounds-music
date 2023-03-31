@@ -43,8 +43,8 @@ export default function Controller() {
   return (
     <IconContext.Provider value={{ size: "4em" }}>
       <div className={styles.container}>
-        {/* <AudioImport /> */}
         <div className={styles.playControls}>
+          <AudioImport />
           <button className={styles.playButton} onClick={onPlay}>
             {isPlaying ? <AiFillPauseCircle /> : <AiFillPlayCircle />}
           </button>
