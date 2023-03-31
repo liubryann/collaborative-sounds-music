@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import styles from "./instrument-notes.module.scss";
-import { gridLength, notes, baseNoteLength } from "../../instruments";
+import {
+  gridLength,
+  notes,
+  baseNoteLength,
+  getDefaultSequence,
+  loopEnd,
+} from "../../instruments";
 import { getNoteGrid, updateNoteGridAndSequence } from "../../adapter";
+import * as Tone from "tone";
 
 interface InstrumentNotesProps {
   partId: string;
@@ -100,7 +107,12 @@ export default function InstrumentNotes({
 
   const renderBarNumbers = () => {
     const barNumbers = Array.from(Array(gridLength + 1).keys()).map((i) => (
-      <div className={styles.header} key={i}>
+      <div
+        className={`${styles.header} ${
+          currentBar === i ? styles.highlight : ""
+        }`}
+        key={i}
+      >
         {i}
       </div>
     ));
@@ -112,6 +124,35 @@ export default function InstrumentNotes({
 
     return barNumbers;
   };
+
+  const [currentBar, setCurrentBar] = useState(0);
+
+  // TODO: Experimental
+  // useEffect(() => {
+  //   const seq = getDefaultSequence();
+  //   console.log(seq);
+  //   const drawPart = new Tone.Part((time, value) => {
+  //     Tone.Draw.schedule(() => {
+  //       const t = Tone.Time(time).toBarsBeatsSixteenths();
+  //       const [bar, beat, sixteenth] = t.split(".")[0].split(":");
+  //       // console.log(bar, beat, sixteenth);
+  //       const index =
+  //         (parseInt(bar) % 2) * 16 +
+  //         parseInt(beat) * 4 +
+  //         parseInt(sixteenth) +
+  //         1;
+  //       console.log(index);
+  //       setCurrentBar(index);
+  //     }, time);
+  //   }, seq).start(0);
+  //   drawPart.loopStart = 0;
+  //   drawPart.loopEnd = loopEnd;
+  //   drawPart.loop = true;
+
+  //   return () => {
+  //     drawPart.dispose();
+  //   };
+  // }, []);
 
   return (
     <div className={styles.container2}>

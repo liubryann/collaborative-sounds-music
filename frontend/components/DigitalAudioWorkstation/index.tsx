@@ -98,6 +98,19 @@ export default function DigitalAudioWorkstation({
   const sequences = useRef<{ [partId: string]: Note[] }>({});
   const toneParts = useRef<{ [partId: string]: Tone.Part }>({});
 
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  function play() {
+    Tone.start();
+    Tone.Transport.start("+0.1");
+    setIsPlaying(true);
+  }
+
+  function pause() {
+    Tone.Transport.pause();
+    setIsPlaying(false);
+  }
+
   useEffect(() => {
     connectAndSyncDoc(roomId).then((res) => {
       // awareness handling
@@ -142,6 +155,14 @@ export default function DigitalAudioWorkstation({
     return () => {
       destroyDocument();
       removeUserPresence(awareness.current);
+
+      // dispose of all the Tone.js parts
+      Object.values(toneParts.current).forEach((part) => {
+        part.dispose();
+      });
+      toneParts.current = {};
+      instruments.current = {};
+      sequences.current = {};
     };
   }, [roomId, user?.username]);
 
@@ -177,11 +198,15 @@ export default function DigitalAudioWorkstation({
       let newPart: Tone.Part;
       if (instrument instanceof Tone.NoiseSynth) {
         newPart = new Tone.Part((time, value) => {
-          instrument.triggerAttackRelease(value.duration, time);
+          instrument.triggerAttackRelease(value.duration, time + 0.05);
         }, newSeq).start(0);
       } else {
         newPart = new Tone.Part((time, value) => {
-          instrument.triggerAttackRelease(value.note, value.duration, time);
+          instrument.triggerAttackRelease(
+            value.note,
+            value.duration,
+            time + 0.05
+          );
         }, newSeq).start(0);
       }
 
@@ -264,7 +289,7 @@ export default function DigitalAudioWorkstation({
             );
           })}
         </div>
-        <AddInstrument />
+        <AddInstrument pause={pause} />
       </div>
       <div className={styles.instrumentNotes}>
         {selectedPart && (
@@ -277,7 +302,7 @@ export default function DigitalAudioWorkstation({
         )}
       </div>
       <div className={styles.controller}>
-        <Controller />
+        <Controller play={play} pause={pause} isPlaying={isPlaying} />
       </div>
       {mousePos && (
         <NoteLengthModal

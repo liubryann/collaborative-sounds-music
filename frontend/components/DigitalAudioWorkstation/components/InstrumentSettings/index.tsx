@@ -80,7 +80,9 @@ export default function InstrumentSettings({
   }
 
   return (
-    <IconContext.Provider value={{ size: "0.8em", style: { opacity: "0.65" } }}>
+    <IconContext.Provider
+      value={{ size: "0.8em", style: { opacity: "0.65", color: "#dbdbdb" } }}
+    >
       <div
         className={`${styles.instrumentContainer} ${
           selectedPart ? styles.selectedInstrument : ""

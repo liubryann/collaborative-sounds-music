@@ -3,11 +3,15 @@ import styles from "./add-instrument.module.scss";
 import { addPart } from "../../adapter";
 import * as Tone from "tone";
 
-export default function AddInstrument() {
+interface AddInstrumentProps {
+  pause: () => void;
+}
+
+export default function AddInstrument({ pause }: AddInstrumentProps) {
   function handleAddInstrument(instrument: string) {
     const partName = prompt("Enter the name of this part");
     if (partName !== null) {
-      Tone.Transport.stop();
+      pause();
       addPart(instrument, partName);
     }
   }
