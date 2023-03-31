@@ -29,6 +29,7 @@ import ActiveUsers from "./components/ActiveUsers";
 import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
+import CollaborationController from "./components/CollaborationController";
 
 interface DigitalAudioWorkstationProps {
   roomId: string;
@@ -274,6 +275,9 @@ export default function DigitalAudioWorkstation({
     <div className={styles.container}>
       <div className={styles.userPresence}>
         <ActiveUsers activeUsers={usersAwareness} />
+      </div>
+      <div className={styles.collaboration}>
+        <CollaborationController roomId={roomId} />
       </div>
       <div className={styles.instrumentList}>
         <div className={styles.hiddenScroll}>

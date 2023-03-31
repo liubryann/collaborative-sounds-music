@@ -36,15 +36,18 @@
   grid-area: userPresence;
 }
 
+.collaboration {
+  grid-area: collaboration;
+}
+
 .container {
   flex: 1;
   display: grid;
   grid-template-columns: 220px auto;
   grid-template-rows: 30px 80vh 100px;
   grid-template-areas:
-    "userPresence userPresence"
+    "userPresence userPresence collaboration"
     "instrumentList instrumentNotes"
     "controller controller";
-
   background-color: $background-color;
 }
