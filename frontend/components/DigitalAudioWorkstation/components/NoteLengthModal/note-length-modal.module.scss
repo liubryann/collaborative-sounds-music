@@ -1,23 +1,35 @@
+@use "../../../../styles/globals.scss" as *;
+
 .noteLengthModalContainer {
   border: 0.6px solid #3d3636;
   z-index: 99;
-  background-color: white;
+  background-color: $background-color;
+  border-radius: $big-border-radius;
+  border: $border;
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%;
 
     button {
-      background-color: white;
+      background-color: transparent;
       border: none;
       cursor: pointer;
       font-size: 0.8rem;
       height: 1rem;
       width: 2.5rem;
-
+      color: $text-color;
+      width: 100%;
+      padding: 0 5px;
+      margin: 2px 0;
       &:hover {
-        background-color: #3d3636;
+        background-color: $highlight-color;
         color: white;
       }
     }

@@ -39,7 +39,7 @@ export default function Controller({
   }
 
   return (
-    <IconContext.Provider value={{ size: "4em" }}>
+    <IconContext.Provider value={{ size: "4em", color: "#1377b9" }}>
       <div className={styles.container}>
         {/* <AudioImport /> */}
         <div className={styles.playControls}>

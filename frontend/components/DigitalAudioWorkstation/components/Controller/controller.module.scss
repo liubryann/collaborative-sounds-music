@@ -6,23 +6,37 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: #f5f5f5;
+  background-color: $background-color;
 }
 
 .bpm {
   font-family: $main-font;
   margin-top: 10px;
   font-size: 0.8rem;
+  color: $text-color;
 
   input {
-    width: 2.5rem;
+    width: 2rem;
+    text-align: center;
     margin-left: 5px;
+    background-color: $layer-color;
+    color: $text-color;
+    border-radius: $border-radius;
+    border: $border;
+
+    &:focus-visible {
+      border: $border-highlight !important;
+      outline: none;
+    }
+  }
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
   }
 }
 
 .playControls {
   display: flex;
-  margin-left: 100px;
+  margin-left: 50px;
   .playButton {
     border: none;
     background-color: transparent;

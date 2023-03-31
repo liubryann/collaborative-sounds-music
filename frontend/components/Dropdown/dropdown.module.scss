@@ -2,13 +2,15 @@
 .label {
   font-family: $main-font;
   font-size: 0.7rem;
+  color: $text-color;
 }
 
 .modifier {
-  border: 1px solid #e0e0e0;
+  border: $border;
   border-radius: 5px;
   padding: 5px 10px;
   font-family: $main-font;
+  color: $text-color;
   font-size: 0.8rem;
 
   .modifierNameContainer {
@@ -38,17 +40,18 @@
         height: 100%;
         text-align: left;
         padding: 5px 0;
+        color: $text-color;
       }
 
       &:hover {
         cursor: pointer;
-        background-color: #d0d0d0;
+        background-color: $highlight-color;
       }
     }
   }
 
   &:hover {
     cursor: pointer;
-    background-color: #e0e0e0;
+    background-color: $layer-color;
   }
 }
