@@ -4,7 +4,12 @@ import * as Tone from "tone";
 import { BsFillRecordCircleFill, BsStopCircleFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 
-export default function AudioExport() {
+interface AudioExportProps {
+  play: () => void;
+  pause: () => void;
+}
+
+export default function AudioExport({ play, pause }: AudioExportProps) {
   /** Notes, need to disable Play/Stop in controller when audio
    * export is running.
    */
@@ -44,13 +49,12 @@ export default function AudioExport() {
     }
     setTimerStart(true);
     recorder?.start();
-    Tone.start();
-    Tone.Transport.start();
+    play();
     setRunning(true);
   };
 
   const endRecording = async () => {
-    Tone.Transport.stop();
+    pause();
     const newRecording = await recorder?.stop();
     setTimerStart(false);
     setRunning(false);
@@ -108,8 +112,8 @@ export default function AudioExport() {
           </button>
         )}
 
-        <span className="timer">
-          {Math.floor(timer / 6000)} : {Math.floor((timer % 6000) / 100)} :{" "}
+        <span className={styles.timer}>
+          {Math.floor(timer / 6000)}:{Math.floor((timer % 6000) / 100)}:
           {Math.floor(timer % 100)}
         </span>
 

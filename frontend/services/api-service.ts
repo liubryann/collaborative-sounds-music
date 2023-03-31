@@ -21,6 +21,7 @@ const handleResponse = (res: Response) => {
  * @param lastname
  * @param password
  * @param email
+ * @param mailing
  * @returns Promise<{user: User}>
  * @description Creates a new user and returns the user object.
  */
@@ -29,7 +30,8 @@ const signup = (
   firstname: string,
   lastname: string,
   username: string,
-  password: string
+  password: string,
+  mailing: boolean
 ) => {
   return fetch(constructURL("/users/signup"), {
     credentials: "include",
@@ -43,6 +45,7 @@ const signup = (
       lastname,
       password,
       email,
+      mailing,
     }),
   }).then(handleResponse);
 };

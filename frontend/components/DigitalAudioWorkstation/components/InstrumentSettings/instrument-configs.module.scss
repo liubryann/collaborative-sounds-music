@@ -2,12 +2,14 @@
 
 .instrumentContainer {
   padding: 5px 15px 15px 15px;
-  border: 1px solid #e0e0e0;
+  border: $border;
+  background-color: $background-color;
+  border-radius: $border-radius;
+  margin: 5px 0;
 }
 
 .selectedInstrument {
-  background-color: #f5f5f5;
-  border: 1px solid #e0e0e0;
+  border: 2px solid $highlight-color;
 }
 
 .partsAwarenessContainer {
@@ -29,6 +31,7 @@
 
   .partId {
     flex-grow: 1;
+    color: $text-color;
   }
 
   button {
