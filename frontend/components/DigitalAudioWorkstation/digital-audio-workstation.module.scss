@@ -33,13 +33,17 @@
   grid-area: userPresence;
 }
 
+.collaboration {
+  grid-area: collaboration;
+}
+
 .container {
   flex: 1;
   display: grid;
   grid-template-columns: 220px auto;
   grid-template-rows: 30px 80vh 100px;
   grid-template-areas:
-    "userPresence userPresence"
-    "instrumentList instrumentNotes"
-    "controller controller";
+    "userPresence userPresence collaboration"
+    "instrumentList instrumentNotes instrumentNotes"
+    "controller controller controller";
 }
