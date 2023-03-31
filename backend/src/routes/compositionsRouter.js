@@ -5,6 +5,8 @@ const { UsersCompositions } = require("../models/userscompositions.js");
 const { isAuthenticated } = require("../middleware/auth.js");
 const compositionSchema = require("../middleware/schemas/compositionSchema.js");
 const isRequestValid = require("../middleware/validator.js");
+const { sequelize } = require("../datasource.js");
+const sgMail = require("@sendgrid/mail");
 
 const compositionRouter = express.Router();
 
@@ -86,6 +88,42 @@ compositionRouter.patch(
     }
   }
 );
+
+// Update the composition's shared
+compositionRouter.post("/share/:id", isRequestValid(compositionSchema), isAuthenticated, async (req, res) => {
+  console.log()
+  const user = await User.findOne({
+    where: { email: req.body.email }
+  })
+  if (!user) {
+    return res.status(404).json({ error: "No user with that email." })
+  }
+  try {
+    const newusercomp = await UsersCompositions.findOrCreate({
+      CompositionId: req.params.id,
+      UserId: user.id,
+    });
+    if (newusercomp === null) {
+      return res.status(404).json({ error: "Composition not found" });
+    }
+    //send email.
+    //Try to send an email
+    const msg = {
+      to: req.body.email,
+      from: process.env.SENDGRID_EMAIL_ADDR,
+      subject: "Invite to collaborate on CSM.",
+      text: "A new composition has been shared with you!",
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+      })
+      .catch(console.error("failed email"));
+    return res.status(200).json({ message: "Composition updated" });
+  } catch (e) {
+    return res.status(422).json({ error: e.message });
+  }
+})
 
 // TODO: post or put request?
 compositionRouter.post(

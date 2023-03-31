@@ -153,6 +153,17 @@ const updateComposition = (compositionId: number, title: string) => {
   }).then(handleResponse);
 };
 
+const shareComposition = (compositionId: string, email: string) => {
+  return fetch(constructURL(`/api/compisitions/share/${compositionId}`), {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  }).then(handleResponse);
+}
+
 /**
  *
  * @param compositionId
@@ -225,6 +236,7 @@ export {
   createComposition,
   getComposition,
   updateComposition,
+  shareComposition,
   deleteComposition,
   addCollaboratorToComposition,
   removeCollaboratorFromComposition,

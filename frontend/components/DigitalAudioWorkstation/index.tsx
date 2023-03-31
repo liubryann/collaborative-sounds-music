@@ -277,7 +277,7 @@ export default function DigitalAudioWorkstation({
         <ActiveUsers activeUsers={usersAwareness} />
       </div>
       <div className={styles.collaboration}>
-        <CollaborationController />
+        <CollaborationController roomId={roomId} />
       </div>
       <div className={styles.instrumentList}>
         <div className={styles.hiddenScroll}>

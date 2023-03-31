@@ -33,7 +33,6 @@ userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
     sgMail
       .send(msg)
       .then(() => {
-        console.log("Email");
       })
       .catch(console.error("failed email"));
     req.session.user = user;
