@@ -1,24 +1,10 @@
-.registration-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #f1f1f1;
-}
+@use "../../styles/globals.scss" as *;
 
 .registration-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 300px;
-  height: fit-content;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background: #fff;
 }
 
 .registration-form {
@@ -31,7 +17,6 @@
     padding: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background: #fff;
   }
   button {
@@ -41,8 +26,14 @@
     padding: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: #cccccc;
+    background: $highlight-color;
+  }
+  label {
+    input {
+      height: auto;
+      margin-right: 15px;
+    }
+    font-size: small;
   }
 }
 
