@@ -1,14 +1,19 @@
 @use "../../../../styles/globals.scss" as *;
 
 .wrapper {
-  margin-top: 20px;
-  margin-right: 17px;
+  // margin-top: 20px;
+  // margin-right: 17px;
+  margin: 20px 17px 0 17px;
 
   button {
+    background-color: $background-color;
+
     font-family: $main-font;
+    color: $text-color;
     width: 100%;
     height: 30px;
-    border: 1px solid #e0e0e0;
+    border: $border;
+    border-radius: $big-border-radius;
 
     &:hover {
       background-color: #e0e0e0;

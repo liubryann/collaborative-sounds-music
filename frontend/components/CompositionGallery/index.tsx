@@ -52,6 +52,12 @@ export default function CompositionGallery() {
   function selectComposition(uuid: string) {
     router.push(`/compose/${uuid}`);
   }
+  function handleDelete(e: React.MouseEvent<HTMLButtonElement>, id: number) {
+    e.stopPropagation();
+    setCompositions(
+      compositions.filter((composition) => composition.id !== id)
+    );
+  }
 
   return (
     <div>
@@ -73,7 +79,7 @@ export default function CompositionGallery() {
           return (
             <CardContainer
               key={composition.id}
-              clickHandler={() => selectComposition(composition.pageUuid)}
+              handleClick={() => selectComposition(composition.pageUuid)}
             >
               <CompositionItem
                 key={composition.id}
@@ -81,6 +87,7 @@ export default function CompositionGallery() {
                 title={composition.title}
                 owner={composition.owner}
                 updatedAt={composition.updatedAt}
+                handleDelete={handleDelete}
               />
             </CardContainer>
           );
