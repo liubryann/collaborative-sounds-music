@@ -5,6 +5,7 @@ interface CompositionItemProps {
   title: string;
   owner: string;
   updatedAt: string;
+  handleDelete: (e: React.MouseEvent<HTMLButtonElement>, id: number) => void;
 }
 
 export default function CompositionItem({
@@ -12,6 +13,7 @@ export default function CompositionItem({
   title,
   owner,
   updatedAt,
+  handleDelete,
 }: CompositionItemProps) {
   function formatDate(date: string) {
     const options = {
@@ -25,6 +27,7 @@ export default function CompositionItem({
     <div>
       <div>{title}</div>
       <div>{formatDate(updatedAt)}</div>
+      <button onClick={(e) => handleDelete(e, id)}>x</button>
     </div>
   );
 }
