@@ -1,5 +1,7 @@
+@use "../../../../styles/globals.scss" as *;
+
 .darkBG {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100vw;
   height: 100vh;
   z-index: 0;
@@ -17,19 +19,21 @@
 }
 
 .modal {
-  width: 250px;
+  width: 300px;
   height: 170px;
-  background: white;
-  color: white;
+  background: $background-color;
+  color: $text-color;
   z-index: 10;
   border-radius: 16px;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
   margin: auto;
+  padding: 10px;
 }
 
 .modalHeader {
-  height: 50px;
-  background: white;
+  height: 30px;
+  background: $background-color;
+  color: $text-color;
   overflow: hidden;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -38,16 +42,16 @@
 .heading {
   margin: 0;
   padding: 10px;
-  color: #2c3e50;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1rem;
+  font-family: $main-font;
   text-align: center;
 }
 
 .modalContent {
   padding: 10px;
-  font-size: 14px;
-  color: #2c3e50;
+  font-size: 0.8rem;
+  font-family: $main-font;
   text-align: center;
 }
 
@@ -60,71 +64,40 @@
 .formInput {
   margin: auto;
   width: 100%;
+  background-color: $layer-color;
+  color: $text-color;
+  border-radius: $border-radius;
+  border: $border;
+  padding: 5px;
+
+  &:focus {
+    border: $border-highlight;
+    outline: none;
+  }
 }
 
 .actionsContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
+  width: 105%;
 }
 
-.closeBtn {
-  margin-top: 5px;
+.btn {
   cursor: pointer;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 8px;
-  border: none;
-  font-size: 18px;
-  color: #2c3e50;
-  background: white;
-  transition: all 0.25s ease;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
-  position: absolute;
-  right: 0;
-  top: 0;
-  align-self: flex-end;
-}
-
-.closeBtn:hover {
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
-  transform: translate(-4px, 4px);
-}
-
-.submitBtn {
-  margin-top: 5px;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 11px 28px;
-  border-radius: 12px;
+  padding: 10px;
+  border-radius: $big-border-radius;
   font-size: 0.8rem;
-  border: none;
-  color: #fff;
-  background: #85c7f2;
-  transition: all 0.25s ease;
+  font-family: $main-font;
+  color: $text-color;
+  border: $border;
+  background: $layer-color;
+  flex-grow: 1;
+  margin: 0 5px;
 }
 
-.submitBtn:hover {
-  box-shadow: 0 10px 20px -10px #1b2021;
-  transform: translateY(-5px);
-  background: #30343f;
-}
-
-.cancelBtn {
-  margin: auto;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 11px 28px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  border: none;
-  color: #2c3e50;
-  background: #fcfcfc;
-  transition: all 0.25s ease;
-}
-
-.cancelBtn:hover {
-  box-shadow: none;
-  transform: none;
-  background: whitesmoke;
+.btn:hover {
+  background-color: $highlight-color;
+  border: $border-highlight;
 }

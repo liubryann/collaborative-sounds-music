@@ -2,10 +2,10 @@
 
 .container {
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 50px;
   background-color: $background-color;
   font-family: $main-font;
   color: $text-color;
+  padding-left: 15px;
 }

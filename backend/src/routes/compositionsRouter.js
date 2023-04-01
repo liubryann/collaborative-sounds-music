@@ -122,9 +122,7 @@ compositionRouter.post(
         to: req.body.email,
         from: process.env.SENDGRID_EMAIL_ADDR,
         subject: "Invite to collaborate on CSM.",
-        text:
-          "A new composition has been shared with you! View it here: notdeployedyet/compose/" +
-          req.params.id,
+        text: `A new composition has been shared with you! View it here: localhost:3000/compose/${req.params.id}`,
       };
       sgMail
         .send(msg)

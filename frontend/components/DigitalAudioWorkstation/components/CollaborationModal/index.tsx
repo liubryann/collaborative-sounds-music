@@ -3,10 +3,15 @@ import styles from "./collaborationmodal.module.scss";
 import { RiCloseLine } from "react-icons/ri";
 import { shareComposition } from "@/services/api-service";
 
-const CollaborationModal = ({ setIsOpen, roomId }) => {
+interface CollaborationModalProps {
+  setIsOpen: (isOpen: boolean) => void;
+  roomId: string;
+}
+
+const CollaborationModal = ({ setIsOpen, roomId }: CollaborationModalProps) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    shareComposition(roomId.roomId, e.target.email.value).then((res) => {
+    shareComposition(roomId, e.target.email.value).then((res) => {
       console.log(res);
     });
     setIsOpen(false);
@@ -20,9 +25,6 @@ const CollaborationModal = ({ setIsOpen, roomId }) => {
           <div className={styles.modalHeader}>
             <h5 className={styles.heading}>Share Composition</h5>
           </div>
-          <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>
-            <RiCloseLine style={{ marginBottom: "-3px" }} />
-          </button>
           <div className={styles.modalContent}>
             Enter the e-mail of the user you wish to collaborate with on this
             composition.
@@ -34,13 +36,10 @@ const CollaborationModal = ({ setIsOpen, roomId }) => {
               className={styles.formInput}
             ></input>
             <div className={styles.actionsContainer}>
-              <button type="submit" className={styles.submitBtn}>
+              <button type="submit" className={styles.btn}>
                 Share
               </button>
-              <button
-                className={styles.cancelBtn}
-                onClick={() => setIsOpen(false)}
-              >
+              <button className={styles.btn} onClick={() => setIsOpen(false)}>
                 Cancel
               </button>
             </div>
