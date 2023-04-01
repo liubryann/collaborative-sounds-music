@@ -46,7 +46,7 @@
   grid-template-columns: 220px auto;
   grid-template-rows: 30px 80vh 100px;
   grid-template-areas:
-    "userPresence userPresence collaboration"
+    "collaboration userPresence"
     "instrumentList instrumentNotes"
     "controller controller";
   background-color: $background-color;
