@@ -16,15 +16,10 @@ export default function CompositionItem({
   handleDelete,
 }: CompositionItemProps) {
   function formatDate(date: string) {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    return new Date(date).toLocaleDateString("en-US", options);
+    return new Date(date).toLocaleDateString("en-US", { month: 'short' });
   }
   return (
-    <div>
+    <div>x
       <div>{title}</div>
       <div>{formatDate(updatedAt)}</div>
       <button onClick={(e) => handleDelete(e, id)}>x</button>
