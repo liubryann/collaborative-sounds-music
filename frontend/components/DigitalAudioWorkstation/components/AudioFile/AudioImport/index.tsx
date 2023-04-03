@@ -7,8 +7,7 @@ import * as Tone from "tone";
 /** Currently on HIATUS */
 export default function AudioImport() {
   const [player, setPlayer] = useState<Tone.Player>();
-  const [audioURL, setAudioURL] = useState("");
-  const [fileId, setFileId] = useState<any | null>(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     if (!player) {
@@ -21,19 +20,11 @@ export default function AudioImport() {
     }
   }, []);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //alert(event.target)
-    //setSelectedFile(event.target.value);
-  }
-
   const clickImportAudio = (e) => {
     e.preventDefault();
     //Only one at a time, delete old file, can be async.
-    if (fileId != null) {
-      deleteAudio(fileId);
-    }
+    alert(JSON.stringify(e.target.file));
     const formData = new FormData(e.target);
-    alert(JSON.stringify(e.target.file.files));
     /*
     importAudio(formData).then(function (audiofile) {
       setFileId(audiofile.id);
@@ -48,8 +39,8 @@ export default function AudioImport() {
 
   return (
     <div className={styles.body}>
-      <form onSubmit={clickImportAudio} className={styles.form}>
-        <input type="file" name="file" accept="audio/*" />
+      <form onSubmit={clickImportAudio} className={styles.form} encType="multipart/form-data">
+        <input type="file" name="file" accept="audio/*" onChange={(e) => setSelectedFile(e.target.files[0])} />
         <input type="submit" value="Import Audio" />
       </form>
     </div>

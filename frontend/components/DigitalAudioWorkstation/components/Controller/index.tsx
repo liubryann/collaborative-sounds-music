@@ -41,6 +41,7 @@ export default function Controller({
   return (
     <IconContext.Provider value={{ size: "4em" }}>
       <div className={styles.container}>
+        <AudioImport />
         <div className={styles.playControls}>
           {isPlaying ? (
             <button className={styles.playButton} onClick={pause}>
