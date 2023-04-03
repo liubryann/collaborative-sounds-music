@@ -26,6 +26,7 @@
     "yjs": "^13.5.48"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "prettier": "^2.8.4",
     "sass": "^1.58.3"
   }

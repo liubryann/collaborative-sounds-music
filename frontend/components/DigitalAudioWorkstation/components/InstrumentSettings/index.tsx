@@ -84,9 +84,8 @@ export default function InstrumentSettings({
       value={{ size: "0.8em", style: { opacity: "0.65", color: "#dbdbdb" } }}
     >
       <div
-        className={`${styles.instrumentContainer} ${
-          selectedPart ? styles.selectedInstrument : ""
-        }`}
+        className={`${styles.instrumentContainer} ${selectedPart ? styles.selectedInstrument : ""
+          }`}
         onClick={() => selectPart(partId)}
       >
         <div className={styles.partsAwarenessContainer}>

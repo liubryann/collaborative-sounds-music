@@ -99,7 +99,7 @@ const updateNoteGridAndSequence = function (
   set: boolean
 ) {
   const part = doc.getMap(partId);
-  const noteGrid = part.get(schema.NOTE_GRID);
+  const noteGrid: any = part.get(schema.NOTE_GRID);
   let row = noteGrid.get(j);
 
   if (set) {
@@ -114,7 +114,7 @@ const updateNoteGridAndSequence = function (
     row[i] = null;
   }
 
-  const sequence = part.get(schema.SEQUENCE);
+  const sequence: any = part.get(schema.SEQUENCE);
   let newNote = sequence.get(j);
   if (set) {
     if (newNote.note === 0) {
@@ -142,7 +142,7 @@ const updateNoteGridAndSequence = function (
 };
 
 // get the note grid
-const getNoteGrid = function (partId: string) {
+const getNoteGrid = function (partId: string): any {
   return doc.getMap(partId).get(schema.NOTE_GRID);
 };
 
