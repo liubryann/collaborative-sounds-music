@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { login } from "@/services/api-service";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import * as Sentry from "@sentry/nextjs"
 
 export default function Login() {
   const router = useRouter();
