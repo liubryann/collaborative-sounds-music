@@ -32,6 +32,7 @@ Tentative
 - [x] Sentry enabled error logging
 - [x] Frontend UI Polish
 - [ ] ChatBot Implemented
+- [ ] Deployment
 
 ---
 
