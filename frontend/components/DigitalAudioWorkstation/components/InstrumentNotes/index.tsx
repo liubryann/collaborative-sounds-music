@@ -89,8 +89,9 @@ export default function InstrumentNotes({
             onClick={(e) => clickNoteCell(e, i, j)}
             onContextMenu={(e) => clickNoteCell(e, i, j)}
             key={`${j}-${i}`}
-            className={`${styles.cell} ${noteGrid[j][i] && styles.selectedCell
-              }`}
+            className={`${styles.cell} ${
+              noteGrid[j][i] && styles.selectedCell
+            }`}
             style={{
               border: getCellBorderColor(i, j),
             }}
@@ -107,8 +108,9 @@ export default function InstrumentNotes({
   const renderBarNumbers = () => {
     const barNumbers = Array.from(Array(gridLength + 1).keys()).map((i) => (
       <div
-        className={`${styles.header} ${currentBar === i ? styles.highlight : ""
-          }`}
+        className={`${styles.header} ${
+          currentBar === i ? styles.highlight : ""
+        }`}
         key={i}
       >
         {i}
@@ -116,7 +118,7 @@ export default function InstrumentNotes({
     ));
     barNumbers[0] = (
       <div className={styles.header} key={0}>
-        { }
+        {}
       </div>
     );
 

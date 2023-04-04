@@ -9,7 +9,7 @@ interface CollaborationModalProps {
 }
 
 const CollaborationModal = ({ setIsOpen, roomId }: CollaborationModalProps) => {
-  const handleSubmit = (e : any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     shareComposition(roomId, e.target.email.value).then((res) => {
       console.log(res);
