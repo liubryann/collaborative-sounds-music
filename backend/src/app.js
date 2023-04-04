@@ -7,11 +7,23 @@ const { userRouter } = require("./routes/usersRouter.js");
 const { compositionRouter } = require("./routes/compositionsRouter.js");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const Sentry = require("@sentry/node");
+
 dotenv.config();
 
 const port = process.env.PROD_PORT || process.env.DEV_PORT;
 
 const app = express();
+Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.errorHandler({
+  shouldHandleError(error) {
+    if (error.status >= 400) {
+      return true;
+    }
+  }
+}));
 app.use(bodyParser.json());
 app.use(
   cors({
