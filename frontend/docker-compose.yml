@@ -3,11 +3,8 @@ services:
   web:
     build:
       context: ./
-      target: runner
-    volumes:
-      - .:/app
-    command: npm run dev
+      # target: runner
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
