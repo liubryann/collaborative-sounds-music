@@ -40,7 +40,7 @@ export default function AudioExport({ play, pause }: AudioExportProps) {
     }
 
     return () => clearInterval(tick.current);
-  }, [timerStart]);
+  }, [timerStart, recorder]);
 
   /** Recording commands */
   const startRecording = () => {

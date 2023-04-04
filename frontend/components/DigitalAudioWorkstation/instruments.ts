@@ -56,10 +56,11 @@ export const getToneInstrument = (
       .connect(lowPass)
       .toDestination();
   }
-
+  // @ts-ignore
   return new Tone.PolySynth(Tone[instrumentType], {
     volume: convertVolume(volume),
     oscillator: {
+      // @ts-ignore
       type: oscillator || "triangle",
     },
     envelope: {

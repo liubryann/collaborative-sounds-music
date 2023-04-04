@@ -17,7 +17,7 @@ export default function AudioImport() {
       newPlayer.sync();
       setPlayer(newPlayer);
     }
-  }, []);
+  }, [player]);
 
   const changeOptions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newOptions = {
