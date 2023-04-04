@@ -17,21 +17,21 @@ Tone.js: https://tonejs.github.io/
 
 Tentative
 
-- [ ] User account creation (login, etc.) (required for collaboration across sessions)
+- [x] User account creation (login, etc.) (required for collaboration across sessions)
 - [x] Basic collaboration level
 
 ### [Beta](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/2)
 
-- [ ] account creation + room integration (frontend)
-- [ ] Ability to upload and export audio
-
-Tentative
-
-- [ ] Connection with MIDI devices directly.
+- [x] account creation + room integration
+- [x] Improved Collaboration Features
+- [x] Email integration with collaboration and account creation
+- [x] Ability to export audio
 
 ### [Final](https://github.com/UofT-UTSC-CS-sandbox/project-dj-chos-disciples/milestone/3)
 
-Front end UI polish, optimization features. Payment services
+- [x] Sentry enabled error logging
+- [x] Frontend UI Polish
+- [ ] ChatBot Implemented
 
 ---
 
@@ -56,16 +56,11 @@ https://docs.google.com/spreadsheets/d/1rwvxBiIK_B1DsDoYgQu8l2LZFiDy3RW6HTDg-oEW
 
 Solidified
 
-- Email: 2 pt
+- SendGrid Email: 2 pt
 - Yjs: 3 pts
-- Auth: 1 pts
 - Tonejs: 2 pts
-- [MIDI](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API): 2pt
-
-TBD
-
-- Worker: 2pt (?)
-- Web audio: 1pt
+- Sentry: 1 pt
+- GPT Integration: 1pt
 
 **(optional) What complexity points will be attempted as bonus for the challenge factor**
 
