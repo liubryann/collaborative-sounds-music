@@ -4,8 +4,11 @@ import {
   gridLength,
   notes,
   baseNoteLength,
+  getDefaultSequence,
+  loopEnd,
 } from "../../instruments";
 import { getNoteGrid, updateNoteGridAndSequence } from "../../adapter";
+import * as Tone from "tone";
 
 interface InstrumentNotesProps {
   partId: string;
