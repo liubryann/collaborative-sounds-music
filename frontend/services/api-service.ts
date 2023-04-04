@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/nextjs"
+import * as Sentry from "@sentry/nextjs";
 const API_URL = process.env.API_URL || "http://localhost:3001";
 
 const constructURL = (path: string) => {

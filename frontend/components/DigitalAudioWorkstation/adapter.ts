@@ -1,7 +1,7 @@
 import { doc, Y } from "./connection";
 import { schema } from "./constants";
 import { getDefaultNoteGrid, getDefaultSequence, notes } from "./instruments";
-import * as Sentry from "@sentry/nextjs"
+import * as Sentry from "@sentry/nextjs";
 ("use strict");
 /*
   NOTE: one room to one composition

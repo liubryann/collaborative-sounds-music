@@ -12,5 +12,4 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
 };
 
-
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
