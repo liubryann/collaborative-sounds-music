@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 const API_URL = process.env.API_URL || "http://localhost:3001";
 
 const constructURL = (path: string) => {
@@ -7,6 +8,7 @@ const constructURL = (path: string) => {
 const handleResponse = (res: Response) => {
   if (!res.ok) {
     return res.json().then((err) => {
+      Sentry.captureException(err.error);
       throw new Error(err.error);
     });
   } else {
