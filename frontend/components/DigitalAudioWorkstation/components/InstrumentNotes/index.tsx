@@ -73,7 +73,7 @@ export default function InstrumentNotes({
       }
       const index = [i, j].toString();
       return selectedCellAwareness[index]
-        ? `4px solid ${selectedCellAwareness[index]}`
+        ? `2px solid ${selectedCellAwareness[index]}`
         : "";
     };
 
@@ -123,31 +123,28 @@ export default function InstrumentNotes({
   const [currentBar, setCurrentBar] = useState(0);
 
   // TODO: Experimental
-  // useEffect(() => {
-  //   const seq = getDefaultSequence();
-  //   console.log(seq);
-  //   const drawPart = new Tone.Part((time, value) => {
-  //     Tone.Draw.schedule(() => {
-  //       const t = Tone.Time(time).toBarsBeatsSixteenths();
-  //       const [bar, beat, sixteenth] = t.split(".")[0].split(":");
-  //       // console.log(bar, beat, sixteenth);
-  //       const index =
-  //         (parseInt(bar) % 2) * 16 +
-  //         parseInt(beat) * 4 +
-  //         parseInt(sixteenth) +
-  //         1;
-  //       console.log(index);
-  //       setCurrentBar(index);
-  //     }, time);
-  //   }, seq).start(0);
-  //   drawPart.loopStart = 0;
-  //   drawPart.loopEnd = loopEnd;
-  //   drawPart.loop = true;
+  useEffect(() => {
+    const seq = getDefaultSequence();
+    const drawPart = new Tone.Part((time, value) => {
+      Tone.Draw.schedule(() => {
+        const t = Tone.Transport.position.toString();
+        const [bar, beat, sixteenth] = t.split(".")[0].split(":");
+        const index =
+          (parseInt(bar) % 2) * 16 +
+          parseInt(beat) * 4 +
+          parseInt(sixteenth) +
+          1;
+        setCurrentBar(index);
+      }, time);
+    }, seq).start(0);
+    drawPart.loopStart = 0;
+    drawPart.loopEnd = loopEnd;
+    drawPart.loop = true;
 
-  //   return () => {
-  //     drawPart.dispose();
-  //   };
-  // }, []);
+    return () => {
+      drawPart.dispose();
+    };
+  }, []);
 
   return (
     <div className={styles.container2}>

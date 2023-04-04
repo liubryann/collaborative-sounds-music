@@ -27,8 +27,8 @@
   z-index: 2;
 
   .saveModal {
-    background-color: white;
-    border-radius: 5px;
+    background-color: $background-color;
+    border-radius: $big-border-radius;
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -44,24 +44,38 @@
         font-size: 0.8rem;
         margin-right: 5px;
         width: 40px;
+        color: $text-color;
       }
-      select {
+      .input {
         flex-grow: 1;
-      }
-      input {
-        flex-grow: 1;
+        background-color: $layer-color;
+        color: $text-color;
+        border-radius: $border-radius;
+        border: $border;
+        padding: 5px;
+
+        &:focus {
+          border: $border-highlight;
+          outline: none;
+        }
       }
     }
 
     div {
       display: flex;
       button {
-        flex-grow: 1;
         margin-left: 2.5px;
       }
       input {
-        flex-grow: 1;
         margin-right: 2.5px;
+      }
+
+      .button {
+        flex-grow: 1;
+        color: $text-color;
+        background-color: $layer-color;
+        border-radius: $border-radius;
+        border: $border;
       }
     }
   }
@@ -69,4 +83,5 @@
 
 .timer {
   width: 50px;
+  color: $text-color;
 }

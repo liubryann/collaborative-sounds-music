@@ -3,10 +3,10 @@
 .instrumentList {
   grid-area: instrumentList;
   overflow: hidden;
-  // width: 100%;
   height: 95%;
   margin-left: 15px;
   margin-top: 25px;
+  margin-bottom: 10px;
   background-color: $layer-color;
   border-radius: $big-border-radius;
 
@@ -22,7 +22,10 @@
 .instrumentNotes {
   grid-area: instrumentNotes;
   padding: 20px;
-  background-color: white;
+  background-color: $layer-color;
+  border-radius: $big-border-radius;
+  margin: 25px 15px 10px 15px;
+  max-width: 75vw;
 }
 
 .controller {
@@ -33,13 +36,18 @@
   grid-area: userPresence;
 }
 
+.collaboration {
+  grid-area: collaboration;
+}
+
 .container {
   flex: 1;
   display: grid;
   grid-template-columns: 220px auto;
   grid-template-rows: 30px 80vh 100px;
   grid-template-areas:
-    "userPresence userPresence"
+    "collaboration userPresence"
     "instrumentList instrumentNotes"
     "controller controller";
+  background-color: $background-color;
 }

@@ -24,7 +24,6 @@ export default function Login() {
   return (
     <div className={styles["registration-container"]}>
       <div className={styles["registration-card"]}>
-        <div>Compose something beautiful</div>
         <p className={styles["error-msg"]}>{error}</p>
         <form onSubmit={handleLogin} className={styles["registration-form"]}>
           <input

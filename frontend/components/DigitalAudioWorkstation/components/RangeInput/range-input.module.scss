@@ -1,3 +1,5 @@
+@use "../../../../styles/globals.scss" as *;
+
 .wrapper {
   display: flex;
   align-items: center;
@@ -19,7 +21,7 @@
   /***** Chrome, Safari, Opera and Edge Chromium styles *****/
   /* slider track */
   input[type="range"]::-webkit-slider-runnable-track {
-    background-color: #e0e0e0;
+    background-color: $layer-color;
     border-radius: 0.5rem;
     height: 0.3rem;
   }
@@ -31,7 +33,7 @@
     margin-top: -3px; /* Centers thumb on the track */
 
     /*custom styles*/
-    background-color: #5cd5eb;
+    background-color: $highlight-color;
     height: 0.6rem;
     width: 0.6rem;
     border-radius: 50%;
@@ -40,7 +42,7 @@
   /******** Firefox styles ********/
   /* slider track */
   input[type="range"]::-moz-range-track {
-    background-color: #e0e0e0;
+    background-color: $layer-color;
     border-radius: 0.5rem;
     height: 0.3rem;
   }
@@ -51,7 +53,7 @@
     border-radius: 0; /*Removes default border-radius that FF applies*/
 
     /*custom styles*/
-    background-color: #5cd5eb;
+    background-color: $highlight-color;
     height: 0.6rem;
     width: 0.6rem;
     border-radius: 50%;

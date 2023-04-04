@@ -5,6 +5,8 @@ const { UsersCompositions } = require("../models/userscompositions.js");
 const { isAuthenticated } = require("../middleware/auth.js");
 const compositionSchema = require("../middleware/schemas/compositionSchema.js");
 const isRequestValid = require("../middleware/validator.js");
+const { sequelize } = require("../datasource.js");
+const sgMail = require("@sendgrid/mail");
 
 const compositionRouter = express.Router();
 
@@ -87,30 +89,48 @@ compositionRouter.patch(
   }
 );
 
-// TODO: post or put request?
+// Update the composition's shared
 compositionRouter.post(
   "/collaborators/:id",
   isAuthenticated,
   async (req, res) => {
+    const user = await User.findOne({
+      where: { email: req.body.email },
+    });
+    if (!user) {
+      return res.status(404).json({ error: "No user with that email." });
+    }
+    const comp = await Composition.findOne({
+      where: { pageUuid: req.params.id },
+    });
+    if (!comp) {
+      return res.status(404).json({ error: "Composition not found" });
+    }
     try {
-      const [_, recordCreated] = await UsersCompositions.findOrCreate({
+      const newusercomp = await UsersCompositions.findOrCreate({
         where: {
-          UserId: req.body.userId,
-          CompositionId: req.params.id,
+          CompositionId: comp.id,
+          UserId: user.id,
         },
       });
-      // TODO: how to handle when user already has access to the composition
-      if (!recordCreated)
-        return res
-          .status(200)
-          .json({ message: "User already has access to composition" });
-
-      const composition = await Composition.findOne({
-        where: { id: req.params.id },
-      });
-      return res.status(200).json({ composition: composition });
-    } catch (error) {
-      return res.status(422).json({ error: error.message });
+      if (!newusercomp) {
+        return res.status(500).json({ error: "Creation failed" });
+      }
+      //send email.
+      //Try to send an email
+      const msg = {
+        to: req.body.email,
+        from: process.env.SENDGRID_EMAIL_ADDR,
+        subject: "Invite to collaborate on CSM.",
+        text: `A new composition has been shared with you! View it here: localhost:3000/compose/${req.params.id}`,
+      };
+      sgMail
+        .send(msg)
+        .then(() => {})
+        .catch(console.error("failed email"));
+      return res.status(200).json({ message: "Composition updated" });
+    } catch (e) {
+      return res.status(422).json({ error: e.message });
     }
   }
 );
