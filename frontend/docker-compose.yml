@@ -5,8 +5,6 @@ services:
       context: ./
     depends_on:
       - nginx
-    ports:
-      - 3000:3000
     environment:
       NODE_ENV: production
 
@@ -17,15 +15,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx.conf:/etc/nginx/sites-available/www.djcsm.studio.conf:ro
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
       - ./certbot/www:/var/www/certbot/:ro
-      # - ./certbot/conf/:/etc/nginx/ssl/:ro
-  
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+
   certbot:
     image: certbot/certbot
-    restart: always
     volumes:
       - ./certbot/www:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
-      # - ./certbot/certs:/etc/letsencrypt/:ro
-    # command: "certonly --webroot -w /var/www/certbot/ --dry-run -d www.djcsm.studio -d djcsm.studio --email
