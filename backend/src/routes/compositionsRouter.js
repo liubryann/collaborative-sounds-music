@@ -117,12 +117,13 @@ compositionRouter.post(
         return res.status(500).json({ error: "Creation failed" });
       }
       //send email.
+      const origin = process.env.PUBLIC_URL || "http://localhost:3000";
       //Try to send an email
       const msg = {
         to: req.body.email,
         from: process.env.SENDGRID_EMAIL_ADDR,
         subject: "Invite to collaborate on CSM.",
-        text: `A new composition has been shared with you! View it here: localhost:3000/compose/${req.params.id}`,
+        text: `A new composition has been shared with you! View it here: ${origin}/compose/${req.params.id}`,
       };
       sgMail
         .send(msg)
