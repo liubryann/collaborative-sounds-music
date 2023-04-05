@@ -30,6 +30,7 @@ import { Instrument, getToneInstrument, Note, loopEnd } from "./instruments";
 import { schema } from "./constants";
 import * as Tone from "tone";
 import CollaborationController from "./components/CollaborationController";
+import AiHelper from "./components/AiHelper";
 
 interface DigitalAudioWorkstationProps {
   roomId: string;
@@ -278,7 +279,9 @@ export default function DigitalAudioWorkstation({
       </div>
       <div className={styles.collaboration}>
         <CollaborationController roomId={roomId} />
+        <AiHelper />
       </div>
+      <div className={styles.aiHelper}></div>
       <div className={styles.instrumentList}>
         <div className={styles.hiddenScroll}>
           {parts.map((partId) => {

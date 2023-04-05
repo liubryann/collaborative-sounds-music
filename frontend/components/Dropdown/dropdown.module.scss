@@ -12,6 +12,7 @@
   font-family: $main-font;
   color: $text-color;
   font-size: 0.8rem;
+  position: relative;
 
   .modifierNameContainer {
     display: flex;
@@ -19,6 +20,7 @@
     width: 100%;
     .modifierName {
       flex-grow: 1;
+      padding-right: 5px;
     }
   }
 
@@ -27,7 +29,6 @@
     padding: 0;
     margin: 0;
     margin-top: 5px;
-    z-index: 2;
 
     li {
       button {
@@ -49,9 +50,9 @@
       }
     }
   }
+  background-color: $layer-color;
 
   &:hover {
     cursor: pointer;
-    background-color: $layer-color;
   }
 }
