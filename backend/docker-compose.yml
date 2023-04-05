@@ -1,8 +1,10 @@
-version: "3.5"
+version: "3.8"
 services:
   backend:
     build: .
     restart: on-failure
+    networks:
+      - csm-network
     depends_on:
       - postgres
     ports:
@@ -11,6 +13,8 @@ services:
   # Generic PostgreSQL database
   postgres:
     restart: always
+    networks:
+      - csm-network
     image: postgres:15
     ports:
       # Different port in case host has Postgres installed already
@@ -25,3 +29,7 @@ services:
       - ./init.sql/:/docker-entrypoint-initdb.d/init.sql
 volumes:
   postgres-volume:
+networks:
+  csm-network:
+    name: csm-network
+    driver: bridge

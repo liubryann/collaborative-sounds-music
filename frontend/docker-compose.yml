@@ -3,6 +3,8 @@ services:
   frontend:
     build:
       context: ./
+    networks:
+      - csm-network
     depends_on:
       - nginx
     environment:
@@ -10,6 +12,8 @@ services:
 
   nginx:
     image: nginx:1.19.0-alpine
+    networks:
+      - csm-network
     restart: always
     ports:
       - 80:80
@@ -24,3 +28,8 @@ services:
     volumes:
       - ./certbot/www:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
+
+networks:
+  csm-network:
+    name: csm-network
+    external: true
