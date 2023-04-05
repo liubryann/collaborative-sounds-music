@@ -1,4 +1,6 @@
 import React from "react";
+import styles from "./composition-item.module.scss";
+import { AiFillDelete } from "react-icons/ai";
 
 interface CompositionItemProps {
   id: number;
@@ -24,10 +26,14 @@ export default function CompositionItem({
     return new Date(date).toLocaleDateString("en-US", options);
   }
   return (
-    <div>
-      <div>{title}</div>
-      <div>{formatDate(updatedAt)}</div>
-      <button onClick={(e) => handleDelete(e, id)}>x</button>
+    <div className={styles.wrapper}>
+      <div>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.date}>{formatDate(updatedAt)}</div>
+      </div>
+      <button className={styles.delete} onClick={(e) => handleDelete(e, id)}>
+        <AiFillDelete />
+      </button>
     </div>
   );
 }

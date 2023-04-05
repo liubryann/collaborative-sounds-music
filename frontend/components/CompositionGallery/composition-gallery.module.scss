@@ -1,11 +1,68 @@
+@use "../../styles/globals.scss" as *;
+
+.wrapper {
+  flex: 1;
+  background-color: $background-color;
+}
+
 .composition-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  padding: 20px;
 }
 
 .dashboard-header {
-  margin: 20px;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
+  background-color: $background-color;
+
+  .compTitle {
+    background-color: $layer-color;
+    border: $border;
+    border-radius: $border-radius;
+    padding: 10px;
+    color: $text-color;
+    font-family: $main-font;
+    font-size: 1rem;
+    &:focus {
+      outline: none;
+      border: $border-highlight;
+    }
+  }
+
+  .new {
+    background-color: $highlight-color;
+    border: $border;
+    border-radius: $border-radius;
+    padding: 10px 13px;
+    color: $background-color;
+    font-family: $main-font;
+    font-size: 1rem;
+    margin-left: 10px;
+
+    cursor: pointer;
+    &:hover {
+      background-color: $highlight-color-2;
+      border: $border-highlight;
+    }
+  }
+
+  .signout {
+    background-color: $layer-color;
+    border: $border;
+    border-radius: $border-radius;
+    padding: 10px 13px;
+    color: $text-color;
+    font-family: $main-font;
+
+    font-size: 0.8rem;
+    margin-left: 10px;
+
+    cursor: pointer;
+    &:hover {
+      background-color: $highlight-color-2;
+      border: $border-highlight;
+    }
+  }
 }
