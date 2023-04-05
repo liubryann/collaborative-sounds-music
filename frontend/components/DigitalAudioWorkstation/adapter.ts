@@ -48,7 +48,7 @@ const updateBpm = function (bpm: string): void {
 };
 
 // add a new instrument to the list of instruments
-const addPart = function (instrumentType: string, partId: string): void {
+const addPart = function (partId: string): void {
   const parts = doc.getArray(schema.PARTS);
 
   for (let part of parts) {
@@ -62,7 +62,7 @@ const addPart = function (instrumentType: string, partId: string): void {
       const part = doc.getMap(partId);
 
       const instrument = new Y.Map();
-      instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
+      instrument.set(schema.INSTRUMENT_TYPE, "Synth");
       instrument.set(schema.INSTRUMENT_VOLUME, 100);
       instrument.set(schema.INSTRUMENT_OSCILLATOR, "triangle");
       part.set(schema.INSTRUMENT, instrument);

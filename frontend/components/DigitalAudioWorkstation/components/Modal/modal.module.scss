@@ -1,0 +1,52 @@
+@use "../../../../styles/globals.scss" as *;
+
+.button {
+  background-color: transparent;
+  border: none;
+  font-family: $main-font;
+  color: $text-color;
+  font-size: 0.8rem;
+  padding: 0 5px;
+  cursor: pointer;
+  border-radius: $border-radius;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+.modal {
+  background-color: $background-color;
+  border-radius: $big-border-radius;
+  border: $border;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 10px;
+
+  .modalHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    font-family: $main-font;
+    color: $text-color;
+  }
+}

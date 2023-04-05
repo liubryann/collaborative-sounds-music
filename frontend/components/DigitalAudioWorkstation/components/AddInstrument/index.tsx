@@ -1,26 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./add-instrument.module.scss";
 import { addPart } from "../../adapter";
-import * as Tone from "tone";
+import Modal from "../Modal";
 
 interface AddInstrumentProps {
   pause: () => void;
 }
 
 export default function AddInstrument({ pause }: AddInstrumentProps) {
-  function handleAddInstrument(instrument: string) {
-    const partName = prompt("Enter the name of this part");
-    if (partName !== null) {
-      pause();
-      addPart(instrument, partName);
-    }
+  const [partName, setPartName] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleAddInstrument(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    pause();
+    addPart(partName);
+    setPartName("");
+    setIsOpen(false);
+  }
+
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPartName(e.target.value);
   }
 
   return (
     <div className={styles.wrapper}>
-      <button onClick={() => handleAddInstrument("Synth")}>
-        Add Instrument
-      </button>
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        button={"Add Instrument"}
+        modalHeader={"Enter the name for this part"}
+      >
+        <form onSubmit={handleAddInstrument} className={styles.form}>
+          <input
+            type="text"
+            value={partName}
+            onChange={handleOnChange}
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+      </Modal>
     </div>
   );
 }
