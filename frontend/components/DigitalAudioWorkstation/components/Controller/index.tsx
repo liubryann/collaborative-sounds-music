@@ -24,14 +24,20 @@ export default function Controller({
 
   useEffect(() => {
     const yBpm = getBpm();
-    setBpm(yBpm.toString());
-    Tone.Transport.bpm.value = +yBpm.toString();
 
     yBpm.observe((e) => {
       const newBpm = e.target.toString();
       setBpm(newBpm);
       Tone.Transport.bpm.value = +newBpm;
     });
+
+    const strBpm = yBpm.toString();
+    if (!strBpm || !strBpm.length || strBpm === "NaN") {
+      updateBpm(defaultBpm.toString());
+    } else {
+      setBpm(yBpm.toString());
+      Tone.Transport.bpm.value = +yBpm.toString();
+    }
   }, []);
 
   function handleBpmChange(e: React.ChangeEvent<HTMLInputElement>) {
