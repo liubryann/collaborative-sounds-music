@@ -27,7 +27,7 @@ app.use(
   })
 );
 
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/compositions", compositionRouter);
 
 const server = http.createServer(app);
