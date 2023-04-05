@@ -20,5 +20,4 @@ All of our lovely External Providers
   <div>
     <a href="https://sentry.io/">Sentry</a>
   </div>
-  <a>
 </div>
