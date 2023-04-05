@@ -1,6 +1,7 @@
 import { doc, Y } from "./connection";
 import { schema } from "./constants";
 import { getDefaultNoteGrid, getDefaultSequence, notes } from "./instruments";
+import * as Sentry from "@sentry/nextjs";
 ("use strict");
 /*
   NOTE: one room to one composition
@@ -35,15 +36,19 @@ const updateBpm = function (bpm: string): void {
     console.error("bpm cannot be negative");
     return;
   }
-  const bpmText = doc.getText(schema.BPM);
-  doc.transact(() => {
-    bpmText.delete(0, bpmText.length);
-    bpmText.insert(0, bpm);
-  });
+  try {
+    const bpmText = doc.getText(schema.BPM);
+    doc.transact(() => {
+      bpmText.delete(0, bpmText.length);
+      bpmText.insert(0, bpm);
+    });
+  } catch (e) {
+    Sentry.captureException(e);
+  }
 };
 
 // add a new instrument to the list of instruments
-const addPart = function (instrumentType: string, partId: string): void {
+const addPart = function (partId: string): void {
   const parts = doc.getArray(schema.PARTS);
 
   for (let part of parts) {
@@ -52,20 +57,23 @@ const addPart = function (instrumentType: string, partId: string): void {
       return;
     }
   }
+  try {
+    doc.transact(() => {
+      const part = doc.getMap(partId);
 
-  doc.transact(() => {
-    const part = doc.getMap(partId);
+      const instrument = new Y.Map();
+      instrument.set(schema.INSTRUMENT_TYPE, "Synth");
+      instrument.set(schema.INSTRUMENT_VOLUME, 100);
+      instrument.set(schema.INSTRUMENT_OSCILLATOR, "triangle");
+      part.set(schema.INSTRUMENT, instrument);
 
-    const instrument = new Y.Map();
-    instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
-    instrument.set(schema.INSTRUMENT_VOLUME, 100);
-    instrument.set(schema.INSTRUMENT_OSCILLATOR, "triangle");
-    part.set(schema.INSTRUMENT, instrument);
-
-    part.set(schema.NOTE_GRID, Y.Array.from(getDefaultNoteGrid()));
-    part.set(schema.SEQUENCE, Y.Array.from(getDefaultSequence()));
-    parts.push([partId]);
-  });
+      part.set(schema.NOTE_GRID, Y.Array.from(getDefaultNoteGrid()));
+      part.set(schema.SEQUENCE, Y.Array.from(getDefaultSequence()));
+      parts.push([partId]);
+    });
+  } catch (e) {
+    Sentry.captureException(e);
+  }
 };
 
 // get the list of instruments
@@ -75,13 +83,16 @@ const getParts = function (): Y.Array<string> {
 
 // delete an instrument from the list of instruments
 const deletePart = function (partId: string): void {
-  const parts = doc.getArray(schema.PARTS);
-  for (let i = 0; i < parts.length; i++) {
-    if (parts.get(i) === partId) {
-      parts.delete(i, 1);
-      // TODO: clean up the respective instrument part
-      break;
+  try {
+    const parts = doc.getArray(schema.PARTS);
+    for (let i = 0; i < parts.length; i++) {
+      if (parts.get(i) === partId) {
+        parts.delete(i, 1);
+        break;
+      }
     }
+  } catch (e) {
+    Sentry.captureException(e);
   }
 };
 
@@ -98,47 +109,50 @@ const updateNoteGridAndSequence = function (
   duration: string,
   set: boolean
 ) {
-  const part = doc.getMap(partId);
-  const noteGrid: any = part.get(schema.NOTE_GRID);
-  let row = noteGrid.get(j);
+  try {
+    const part = doc.getMap(partId);
+    const noteGrid = part.get(schema.NOTE_GRID);
+    let row = noteGrid.get(j);
 
-  if (set) {
-    row[i] = duration;
-    row = row.map((cell: boolean | null) => {
-      if (cell !== null) {
-        return duration;
+    if (set) {
+      row[i] = duration;
+      row = row.map((cell: boolean | null) => {
+        if (cell !== null) {
+          return duration;
+        }
+        return cell;
+      });
+    } else {
+      row[i] = null;
+    }
+
+    const sequence = part.get(schema.SEQUENCE);
+    let newNote = sequence.get(j);
+    if (set) {
+      if (newNote.note === 0) {
+        newNote.note = [notes[i]];
+      } else {
+        if (!newNote.note.includes(notes[i])) {
+          newNote.note.push(notes[i]);
+        }
       }
-      return cell;
+      newNote.duration = duration;
+    } else {
+      if (newNote.note.length === 1) {
+        newNote.note = 0;
+      } else {
+        newNote.note.splice(newNote.note.indexOf(notes[i]), 1);
+      }
+    }
+    doc.transact(() => {
+      noteGrid.delete(j, 1);
+      noteGrid.insert(j, [row]);
+      sequence.delete(j, 1);
+      sequence.insert(j, [newNote]);
     });
-  } else {
-    row[i] = null;
+  } catch (e) {
+    Sentry.captureException(e);
   }
-
-  const sequence: any = part.get(schema.SEQUENCE);
-  let newNote = sequence.get(j);
-  if (set) {
-    if (newNote.note === 0) {
-      newNote.note = [notes[i]];
-    } else {
-      if (!newNote.note.includes(notes[i])) {
-        newNote.note.push(notes[i]);
-      }
-    }
-    newNote.duration = duration;
-  } else {
-    if (newNote.note.length === 1) {
-      newNote.note = 0;
-    } else {
-      newNote.note.splice(newNote.note.indexOf(notes[i]), 1);
-    }
-  }
-
-  doc.transact(() => {
-    noteGrid.delete(j, 1);
-    noteGrid.insert(j, [row]);
-    sequence.delete(j, 1);
-    sequence.insert(j, [newNote]);
-  });
 };
 
 // get the note grid
@@ -158,25 +172,41 @@ const getInstrument = function (partId: string): Y.Map<any> {
 
 // update the volume of the instrument
 const updateInstrumentVolume = function (partId: string, volume: string) {
-  const instrument = getInstrument(partId);
-  instrument.set(schema.INSTRUMENT_VOLUME, volume);
+  try {
+    const instrument = getInstrument(partId);
+    instrument.set(schema.INSTRUMENT_VOLUME, volume);
+  } catch (e) {
+    Sentry.captureException(e);
+  }
 };
 
 const updateInstrumentOscillator = function (
   partId: string,
   oscillator: string
 ) {
-  const instrument = getInstrument(partId);
-  instrument.set(schema.INSTRUMENT_OSCILLATOR, oscillator);
+  try {
+    const instrument = getInstrument(partId);
+    instrument.set(schema.INSTRUMENT_OSCILLATOR, oscillator);
+  } catch (e) {
+    Sentry.captureException(e);
+  }
 };
 
 const destroyDocument = function () {
-  doc.destroy();
+  try {
+    doc.destroy();
+  } catch (e) {
+    Sentry.captureException(e);
+  }
 };
 
 const updateInstrumentType = function (partId: string, instrumentType: string) {
-  const instrument = getInstrument(partId);
-  instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
+  try {
+    const instrument = getInstrument(partId);
+    instrument.set(schema.INSTRUMENT_TYPE, instrumentType);
+  } catch (e) {
+    Sentry.captureException(e);
+  }
 };
 
 export {

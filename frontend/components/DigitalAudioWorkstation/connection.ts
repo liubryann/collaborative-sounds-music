@@ -1,8 +1,9 @@
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
+import * as Sentry from "@sentry/nextjs";
 
 let wsProvider: WebsocketProvider;
-let doc: Y.Doc = new Y.Doc(); // TODO: exporting and resetting doc in connectAndSyncDoc is a hack
+let doc: Y.Doc = new Y.Doc();
 const url: string = "ws://localhost:3001";
 
 /**
@@ -15,7 +16,7 @@ function connectAndSyncDoc(room: string): Promise<any> {
     const awareness = wsProvider.awareness;
 
     wsProvider.on("status", (event: { status: any }) => {
-      // console.log(event.status); // logs "connected" or "disconnected"
+      Sentry.captureMessage(event.status);
     });
 
     const pollConnected = setInterval(() => {

@@ -1,0 +1,65 @@
+@use "../../../../styles/globals.scss" as *;
+
+.chatButton {
+  background-color: $layer-color;
+  border: $border;
+  border-radius: $big-border-radius;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: $text-color;
+    font-family: $main-font;
+    margin-left: 10px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $highlight-color-2;
+    border: $border-highlight;
+  }
+}
+
+.modalContent {
+  color: $text-color;
+  font-family: $main-font;
+  font-size: 0.8rem;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 60%;
+
+  .selection {
+    display: flex;
+    border: $border;
+    border-radius: $border-radius;
+    margin-bottom: 5px;
+    padding: 5px 0;
+    height: 30px;
+    width: 300px;
+    background-color: $layer-color;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $highlight-color-2;
+      border: $border-highlight;
+    }
+
+    .selectionLabel {
+      padding: 0 5px;
+      align-self: center;
+    }
+  }
+
+  .aiResponse {
+    max-width: 300px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+  }
+}

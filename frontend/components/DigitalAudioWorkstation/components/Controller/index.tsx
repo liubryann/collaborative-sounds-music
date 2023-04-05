@@ -7,6 +7,7 @@ import AudioExport from "../AudioFile/AudioExport";
 import AudioImport from "../AudioFile/AudioImport";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { IconContext } from "react-icons";
+import AiHelper from "../AiHelper";
 
 interface ControllerProps {
   play: () => void;
@@ -55,9 +56,16 @@ export default function Controller({
 
           <AudioExport play={play} pause={pause} />
         </div>
-        <div className={styles.bpm}>
-          BPM
-          <input type="number" min="1" onChange={handleBpmChange} value={bpm} />
+        <div className={styles.helperControls}>
+          <div className={styles.bpm}>
+            BPM
+            <input
+              type="number"
+              min="1"
+              onChange={handleBpmChange}
+              value={bpm}
+            />
+          </div>
         </div>
       </div>
     </IconContext.Provider>

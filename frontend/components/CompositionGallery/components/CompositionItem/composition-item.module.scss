@@ -1,0 +1,32 @@
+@use "../../../../styles/globals.scss" as *;
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $text-color;
+  font-family: $main-font;
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .date {
+    font-size: 0.8rem;
+  }
+
+  .delete {
+    cursor: pointer;
+    border: $border;
+    border-radius: $border-radius;
+    padding: 5px 10px;
+    background-color: $background-color;
+    color: $text-color;
+
+    &:hover {
+      background-color: $highlight-color-2;
+      color: $background-color;
+      border: $border-highlight;
+    }
+  }
+}

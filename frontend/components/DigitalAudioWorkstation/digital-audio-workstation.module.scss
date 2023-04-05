@@ -38,6 +38,9 @@
 
 .collaboration {
   grid-area: collaboration;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .container {

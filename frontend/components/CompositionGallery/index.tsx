@@ -2,12 +2,14 @@ import {
   signout,
   getUsersCompositions,
   createComposition,
+  deleteComposition,
 } from "@/services/api-service";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CardContainer from "../CardContainer";
 import styles from "./composition-gallery.module.scss";
 import CompositionItem from "./components/CompositionItem";
+import { AiOutlinePlus } from "react-icons/ai";
 
 interface Composition {
   id: number;
@@ -54,25 +56,32 @@ export default function CompositionGallery() {
   }
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>, id: number) {
     e.stopPropagation();
+    deleteComposition(id);
     setCompositions(
       compositions.filter((composition) => composition.id !== id)
     );
   }
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <div className={styles["dashboard-header"]}>
         <form onSubmit={createNewComposition}>
           <input
+            className={styles.compTitle}
             type="text"
             name="title"
+            required
             placeholder="Composition Title"
             value={newCompositionTitle}
             onChange={(e) => setNewCompositionTitle(e.target.value)}
           />
-          <button type="submit">New Composition</button>
+          <button className={styles.new} type="submit">
+            <AiOutlinePlus />
+          </button>
         </form>
-        <button onClick={handleSignout}>Sign out</button>
+        <button className={styles.signout} onClick={handleSignout}>
+          Sign out
+        </button>
       </div>
       <div className={styles["composition-grid"]}>
         {compositions.map((composition) => {

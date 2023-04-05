@@ -1,12 +1,15 @@
+import * as Sentry from "@sentry/nextjs";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-const constructURL = (path: string) => {
+export const constructURL = (path: string) => {
   return `${API_URL}${path}`;
 };
 
-const handleResponse = (res: Response) => {
+export const handleResponse = (res: Response) => {
   if (!res.ok) {
     return res.json().then((err) => {
+      Sentry.captureException(err.error);
       throw new Error(err.error);
     });
   } else {
