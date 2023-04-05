@@ -117,7 +117,7 @@ compositionRouter.post(
         return res.status(500).json({ error: "Creation failed" });
       }
       //send email.
-      const origin = process.env.PUBLIC_URL || "http://localhost:3000"
+      const origin = process.env.PUBLIC_URL || "http://localhost:3000";
       //Try to send an email
       const msg = {
         to: req.body.email,
