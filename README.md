@@ -72,3 +72,15 @@ Solidified
 **(optional) What complexity points will be attempted as bonus for the challenge factor**
 
 n/a
+
+**How To Test the App**
+1. On the login page, you will likely need to sign up for an account.
+2. You can check your email for an email for signing up (might be sent to spam)
+3. Login to the app using your username and password.
+4. Create a composition
+5. Add instruments, test out the UI and click on the tones and use the play button to play the sound. Left click on UI to add a note, right click to change the note.
+6. Try out the record feature by running for some time and clicking again to have a modal popup for export settings.
+7. Try out the Chat Bot features by clicking on the button at the top left.
+8. (Create another account, email and username must be unique) Try out sharing by sharing with another user's email. The other user should see an email with a link to the composition (similar to Google Docs) only works with emails that have accounts.
+9. Have both (or more) accounts working on the same composition and evaluate the collaboration recognition features (again similar to Google Docs location knowledge).
+10. Message us if you wnat access to the Sentry
