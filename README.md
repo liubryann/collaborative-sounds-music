@@ -74,6 +74,7 @@ Solidified
 n/a
 
 **How To Test the App**
+
 1. On the login page, you will likely need to sign up for an account.
 2. You can check your email for an email for signing up (might be sent to spam)
 3. Login to the app using your username and password.
