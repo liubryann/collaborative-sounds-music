@@ -127,7 +127,6 @@ export const setUserPresence = (
   username: string | undefined
 ): void => {
   if (!username) {
-    console.log("No username provided");
     return;
   }
   const color = getRandomColor();

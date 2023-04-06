@@ -4,8 +4,9 @@ import * as Sentry from "@sentry/nextjs";
 
 let wsProvider: WebsocketProvider;
 let doc: Y.Doc = new Y.Doc();
-const url: string =
-  "wss://" + process.env.NEXT_PUBLIC_API_DOMAIN + "/ws" || "ws://localhost:3001";
+const url: string = process.env.NEXT_PUBLIC_API_DOMAIN
+  ? "wss://" + process.env.NEXT_PUBLIC_API_DOMAIN + "/ws"
+  : "ws://localhost:3001";
 
 /**
  * Connects to the websocket server and syncs the document.
@@ -17,7 +18,6 @@ function connectAndSyncDoc(room: string): Promise<any> {
     const awareness = wsProvider.awareness;
 
     wsProvider.on("status", (event: { status: any }) => {
-	    console.log(event.status);
       Sentry.captureMessage(event.status);
     });
 

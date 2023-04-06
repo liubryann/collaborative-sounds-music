@@ -1,7 +1,8 @@
 import * as Sentry from "@sentry/nextjs";
 
-const API_URL =
-  "https://" + process.env.NEXT_PUBLIC_API_DOMAIN || "http://localhost:3000";
+const API_URL = process.env.NEXT_PUBLIC_API_DOMAIN
+  ? "https://" + process.env.NEXT_PUBLIC_API_DOMAIN
+  : "http://localhost:3001";
 
 export const constructURL = (path: string) => {
   return `${API_URL}${path}`;

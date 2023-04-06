@@ -26,7 +26,9 @@ const sequelize = new Sequelize(
 );
 
 const startWebsocketServer = function (server) {
-  const wss = new WebSocketServer({ port: 8080 });
+  const wss = process.env.PUBLIC_URL
+    ? new WebSocketServer({ port: 8080 })
+    : new WebSocketServer({ server });
 
   wss.on("connection", setupWSConnection);
   // TODO: figure out what the heck this is doing
