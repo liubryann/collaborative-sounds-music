@@ -17,6 +17,7 @@ function connectAndSyncDoc(room: string): Promise<any> {
     const awareness = wsProvider.awareness;
 
     wsProvider.on("status", (event: { status: any }) => {
+	    console.log(event.status);
       Sentry.captureMessage(event.status);
     });
 

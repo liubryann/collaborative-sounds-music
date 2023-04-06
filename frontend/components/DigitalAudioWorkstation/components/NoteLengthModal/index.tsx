@@ -23,11 +23,13 @@ export default function NoteLengthModal({
   selectNoteLength,
 }: NoteLengthModalProps) {
   const modalStyle = {
+    position: "absolute",
     top: position.y,
     left: position.x,
   };
 
   return (
+    // @ts-ignore
     <div className={styles.noteLengthModalContainer} style={modalStyle}>
       <ul>
         {noteLengths.map((noteLength) => {
