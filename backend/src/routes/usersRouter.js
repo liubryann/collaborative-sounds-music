@@ -15,6 +15,18 @@ const userRouter = express.Router();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 userRouter.post("/signup", isRequestValid(userSchema), async (req, res) => {
+  const userExists = await User.findOne({
+    where: { username: req.body.username },
+  });
+  if (userExists) {
+    return res.status(422).json({ error: "Username already exists" });
+  }
+
+  const emailExists = await User.findOne({ where: { email: req.body.email } });
+  if (emailExists) {
+    return res.status(422).json({ error: "Email already exists" });
+  }
+
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
   const hashedPassword = bcrypt.hashSync(req.body.password, salt);
