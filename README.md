@@ -2,6 +2,8 @@
 
 ## Team Name: DJ Cho’s Disciples
 
+### WARNING: DON'T TEST WITH HEADPHONES YOU MAY ACCIDENTALLY RUPTURE YOUR EARDRUMS
+
 #### Useful Links
 
 Deployed Website URL: https://djcsm.studio/
@@ -35,14 +37,14 @@ Tentative
 
 - [x] Sentry enabled error logging
 - [x] Frontend UI Polish
-- [ ] ChatBot Implemented
-- [ ] Deployment
+- [x] ChatBot Implemented
+- [x] Deployment
 
 ---
 
 **Your focus (frontend focused or backend focused)**
 
-Back-end focused, necessary for user collaboration, audio file upload and export, user account authentication, and payment features. With complimenting front end for UI and audio manipulation.
+Both, backend necessary for user collaboration, audio file upload and export, user account authentication, and payment features. Front end for UI and audio manipulation.
 
 **Team members with student numbers**
 
@@ -65,7 +67,7 @@ Solidified
 - Yjs: 3 pts
 - Tonejs: 2 pts
 - Sentry: 1 pt
-- GPT Integration: 1pt
+- OpenAI: 1pt
 
 **(optional) What complexity points will be attempted as bonus for the challenge factor**
 
