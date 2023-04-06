@@ -9,6 +9,8 @@ Deployed Website URL: https://djcsm.studio/
 Youtube Video Demo: https://www.youtube.com/watch?v=82ogWO2IlVY&t=2s
 ShareDB: https://share.github.io/sharedb/getting-started  
 Tone.js: https://tonejs.github.io/
+Sentry: https://university-of-toronto-cm.sentry.io/issues/
+Sendgrid: https://app.sendgrid.com/statistics
 
 **What you aim to complete for the alpha version, beta version, and final version**
 
