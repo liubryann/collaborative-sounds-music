@@ -9,6 +9,7 @@ services:
       - postgres
     ports:
       - 3001:3001
+      - 8080:8080
 
   # Generic PostgreSQL database
   postgres:
