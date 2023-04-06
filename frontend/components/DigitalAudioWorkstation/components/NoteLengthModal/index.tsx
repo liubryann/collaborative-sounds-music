@@ -29,6 +29,7 @@ export default function NoteLengthModal({
   };
 
   return (
+    // @ts-ignore
     <div className={styles.noteLengthModalContainer} style={modalStyle}>
       <ul>
         {noteLengths.map((noteLength) => {

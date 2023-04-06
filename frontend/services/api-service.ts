@@ -1,5 +1,8 @@
 import * as Sentry from "@sentry/nextjs";
-const API_URL = process.env.API_URL || "http://localhost:3001";
+
+const API_URL = process.env.NEXT_PUBLIC_API_DOMAIN
+  ? "https://" + process.env.NEXT_PUBLIC_API_DOMAIN
+  : "http://localhost:3001";
 
 export const constructURL = (path: string) => {
   return `${API_URL}${path}`;
@@ -35,7 +38,7 @@ const signup = (
   password: string,
   mailing: boolean
 ) => {
-  return fetch(constructURL("/users/signup"), {
+  return fetch(constructURL("/api/users/signup"), {
     credentials: "include",
     method: "POST",
     headers: {
@@ -60,7 +63,7 @@ const signup = (
  * @description Logs in a user and returns the user object.
  */
 const login = (username: string, password: string) => {
-  return fetch(constructURL("/users/login"), {
+  return fetch(constructURL("/api/users/login"), {
     credentials: "include",
     method: "POST",
     headers: {
@@ -79,7 +82,7 @@ const login = (username: string, password: string) => {
  * @description Signs out a user and returns the user object.
  */
 const signout = () => {
-  return fetch(constructURL("/users/signout"), {
+  return fetch(constructURL("/api/users/signout"), {
     credentials: "include",
     method: "GET",
   }).then(handleResponse);
@@ -90,7 +93,7 @@ const signout = () => {
  * @description Gets the logged in user and returns the user object.
  */
 const getLoggedInUser = () => {
-  return fetch(constructURL("/users/me"), {
+  return fetch(constructURL("/api/users/me"), {
     credentials: "include",
     method: "GET",
   }).then(handleResponse);
@@ -102,7 +105,7 @@ const getLoggedInUser = () => {
  * @description Gets all compositions for a logged in user
  */
 const getUsersCompositions = () => {
-  return fetch(constructURL("/users/compositions"), {
+  return fetch(constructURL("/api/users/compositions"), {
     credentials: "include",
     method: "GET",
   }).then(handleResponse);

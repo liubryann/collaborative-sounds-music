@@ -1,7 +1,19 @@
-Photo by <a href="https://unsplash.com/@zacharytnelson?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Zachary Nelson</a> on <a href="https://unsplash.com/photos/kt9iCv1d8wU?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-
 <div>
-  All of our lovely External Providers
+  Resources
+  <ul>
+    <li>
+      <a href= "https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile" >Docker Resources</a>
+    </li>
+    <li>
+      <a href= "https://github.com/MaxNoetzold/y-mongodb-provider" > mongodb connection with Yjs </a>
+    </li>
+    <li>
+      <a href= "https://geshan.com.np/blog/2023/01/nextjs-docker/" > Dockerizing Nextjs </a>
+    </li>
+  </ul>
+
+All of our lovely External Providers
+
   <div>
     <a href="https://app.sendgrid.com/">Sendgrid</a>
   </div>

@@ -23,7 +23,7 @@ export default function AudioExport({ play, pause }: AudioExportProps) {
   const [timer, setTimer] = useState(0);
   const [timerStart, setTimerStart] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const tick = useRef();
+  const tick = useRef<any>();
 
   useEffect(() => {
     if (!recorder) {
@@ -40,7 +40,7 @@ export default function AudioExport({ play, pause }: AudioExportProps) {
     }
 
     return () => clearInterval(tick.current);
-  }, [timerStart]);
+  }, [timerStart, recorder]);
 
   /** Recording commands */
   const startRecording = () => {

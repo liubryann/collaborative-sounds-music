@@ -12,7 +12,7 @@ const Sentry = require("@sentry/node");
 
 dotenv.config();
 
-const port = process.env.PROD_PORT || process.env.DEV_PORT;
+const port = process.env.PORT;
 
 const app = express();
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -42,7 +42,7 @@ app.use(
   })
 );
 
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/compositions", compositionRouter);
 app.use("/api/ai", aiRouter);
 
@@ -52,5 +52,5 @@ ds.startWebsocketServer(server);
 ds.ySetPersistence();
 ds.connectDatabase().then(() => {
   server.listen(port);
-  console.log(`Listening on http://localhost:${port}`);
+  console.log(`Listening on port ${port}`);
 });

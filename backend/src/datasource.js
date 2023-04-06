@@ -26,20 +26,22 @@ const sequelize = new Sequelize(
 );
 
 const startWebsocketServer = function (server) {
-  const wss = new WebSocketServer({ server });
+  const wss = process.env.PUBLIC_URL
+    ? new WebSocketServer({ port: 8080 })
+    : new WebSocketServer({ server });
 
   wss.on("connection", setupWSConnection);
   // TODO: figure out what the heck this is doing
-  // server.on("upgrade", (request, socket, head) => {
-  //   // You may check auth of request here..
-  //   /**
-  //    * @param {any} ws
-  //    */
-  //   const handleAuth = (ws) => {
-  //     wss.emit("connection", ws, request);
-  //   };
-  //   wss.handleUpgrade(request, socket, head, handleAuth);
-  // });
+  wss.on("upgrade", (request, socket, head) => {
+    // You may check auth of request here..
+    /**
+     * @param {any} ws
+     */
+    const handleAuth = (ws) => {
+      wss.emit("connection", ws, request);
+    };
+    wss.handleUpgrade(request, socket, head, handleAuth);
+  });
 };
 
 const ySetPersistence = function () {
